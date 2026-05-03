@@ -85,12 +85,8 @@
     node: seedextractor
   - type: Anchorable
   - type: Rotatable
-  # Misfit Remove
-  #- type: Machine
-  #  board: SeedExtractorMachineCircuitboard
-  #- type: UpgradePowerDraw
-  #  powerDrawMultiplier: 0.75
-  #  scaling: Exponential
+  - type: Machine
+    board: SeedExtractorMachineCircuitboard
 
 - type: entity
   id: N14SeedExtractorFrame

@@ -4451,3 +4451,37 @@ Entries:
   id: 5824
   time: '2026-05-02T01:44:42.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/404
+- author: Chancerous
+  changes:
+    - type: Add
+      message: Gave BoS a brig
+    - type: Add
+      message: Gave BoS a codex room
+    - type: Add
+      message: Added C-27 armor blueprints
+    - type: Add
+      message: MP spawns are not present
+    - type: Add
+      message: Bugles to NCR
+    - type: Add
+      message: Cornolfdssduass's to the Legion
+    - type: Add
+      message: Caravan shotgun with 5 beanbag rounds to each faction
+    - type: Add
+      message: FoTA tactical map + starting gear to help them paramedic
+    - type: Tweak
+      message: Added windows so NCR can see into the prison
+    - type: Fix
+      message: BoS now starts with power (still need to turn on generators)
+    - type: Fix
+      message: Fixed many OOB areas
+  id: 5825
+  time: '2026-05-03T17:14:33.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/415
+- author: Fox
+  changes:
+    - type: Fix
+      message: Seed extractors
+  id: 5826
+  time: '2026-05-03T17:15:00.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/410
