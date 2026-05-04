@@ -4577,3 +4577,20 @@ Entries:
   id: 5832
   time: '2026-05-03T23:06:32.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/418
+- author: Chancerous
+  changes:
+    - type: Fix
+      message: BoS wall rechargers
+    - type: Fix
+      message: Brig doors
+    - type: Fix
+      message: BoS shooting ranger (theres a button on the wall its a lil dark)
+    - type: Tweak
+      message: Brig is now controlled by the Knights (RP MAX LOSERS <3)
+    - type: Add
+      message: Gave vault overseer access terminal
+    - type: Add
+      message: Extra vault ID's to overseer
+  id: 5833
+  time: '2026-05-04T20:35:31.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/421
