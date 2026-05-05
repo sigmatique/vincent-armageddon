@@ -91,7 +91,7 @@
   physicalDesc: reagent-physical-desc-thick-and-grainy
   color: "#CBFF00"
   recognizable: true
-  flavor: complex
+  flavor: pilk
   metabolisms:
     Drink:
       effects:
