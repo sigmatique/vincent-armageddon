@@ -3,6 +3,7 @@ using Content.Goobstation.Shared.DeviceNetwork;
 using Content.Server.DeviceNetwork.Components;
 using Content.Server.DeviceNetwork.Systems;
 using Content.Shared.UserInterface;
+using Content.Shared.Verbs;
 using Robust.Server.GameObjects;
 
 namespace Content.Goobstation.Server.DeviceNetwork;
@@ -16,6 +17,7 @@ public sealed class DeviceCustomFrequencySystem : EntitySystem
     public override void Initialize()
     {
         SubscribeLocalEvent<DeviceCustomFrequencyComponent, BeforeActivatableUIOpenEvent>(OnBeforeActivatableUIOpen);
+        SubscribeLocalEvent<DeviceCustomFrequencyComponent, GetVerbsEvent<AlternativeVerb>>(AddUiVerb);
 
         Subs.BuiEvents<DeviceCustomFrequencyComponent>(DeviceCustomFrequencyUiKey.Key,
             subs =>
@@ -23,7 +25,6 @@ public sealed class DeviceCustomFrequencySystem : EntitySystem
             subs.Event<DeviceCustomFrequencyChangeMessage>(OnFrequencyChange);
         });
     }
-
     private void OnBeforeActivatableUIOpen(Entity<DeviceCustomFrequencyComponent> ent, ref BeforeActivatableUIOpenEvent args)
     {
         if (!TryComp<DeviceNetworkComponent>(ent.Owner, out var device))
@@ -31,6 +32,30 @@ public sealed class DeviceCustomFrequencySystem : EntitySystem
 
         var newState = new DeviceCustomFrequencyUserInterfaceState(device.ReceiveFrequency);
         _userInterface.SetUiState(ent.Owner, DeviceCustomFrequencyUiKey.Key, newState);
+    }
+
+    private void AddUiVerb(Entity<DeviceCustomFrequencyComponent> ent, ref GetVerbsEvent<AlternativeVerb> args)
+    {
+        if (!args.CanAccess || !args.CanInteract) return;
+        if (!TryComp<DeviceNetworkComponent>(ent.Owner, out var device))
+            return;
+
+        var uiOpen = _userInterface.IsUiOpen(ent.Owner, DeviceCustomFrequencyUiKey.Key, args.User);
+        var user = args.User;
+        if (!uiOpen)
+        {
+            AlternativeVerb verb = new()
+            {
+                Act = () =>
+                {
+                    var newState = new DeviceCustomFrequencyUserInterfaceState(device.ReceiveFrequency);
+                    _userInterface.SetUiState(ent.Owner, DeviceCustomFrequencyUiKey.Key, newState);
+                    _userInterface.OpenUi(ent.Owner, DeviceCustomFrequencyUiKey.Key, user);
+                },
+                Text = "Change Frequency"
+            };
+            args.Verbs.Add(verb);
+        }
     }
 
     private void OnFrequencyChange(Entity<DeviceCustomFrequencyComponent> ent, ref DeviceCustomFrequencyChangeMessage args)

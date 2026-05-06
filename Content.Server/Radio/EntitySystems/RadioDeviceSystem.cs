@@ -183,6 +183,11 @@ public sealed class RadioDeviceSystem : EntitySystem
 
         component.Enabled = enabled;
 
+        // Misfits Start
+        var toggleEv = new ToggleRadioSpeakerEvent(enabled, uid);
+        RaiseLocalEvent(uid, ref toggleEv);
+        // Misfits End
+
         if (!quiet && user != null)
         {
             var state = Loc.GetString(component.Enabled ? "handheld-radio-component-on-state" : "handheld-radio-component-off-state");

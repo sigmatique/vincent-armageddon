@@ -8,10 +8,6 @@
     sprite: _Goobstation/Structures/Machines/StationRadio/stationradioserver.rsi
     layers:
     - state: icon
-  - type: DeviceLinkSource
-    ports:
-    - StationRadioServerPort
-    # TODO: unlit & maints panel sprite
   - type: Transform
     noRot: false
   - type: Rotatable
@@ -36,6 +32,11 @@
         type: DeviceCustomFrequencyBoundUserInterface
   - type: ActivatableUIRequiresPower
   - type: StationRadioServer
+  - type: RadioMicrophone
+    powerRequired: true
+    broadcastChannel: PBS
+    toggleOnInteract: false
+    frequency: 1225
 
 - type: entity
   id: StationRadioRig
@@ -53,7 +54,14 @@
   - type: Machine
     board: StationRadioRigCircuitboard
   - type: RadioRig
-  - type: DeviceNetworkRequiresPower
   - type: DeviceLinkSource
     ports:
     - Microphone
+  - type: RadioMicrophone
+    powerRequired: true
+    broadcastChannel: PBS
+    toggleOnInteract: true
+    frequency: 1225
+  - type: ActiveRadio
+    channels:
+    - PBS

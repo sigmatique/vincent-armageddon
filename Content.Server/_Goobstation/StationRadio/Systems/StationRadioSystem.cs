@@ -1,10 +1,15 @@
+using System.Linq;
 using Content.Goobstation.Common.DeviceNetwork;
 using Content.Goobstation.Shared.StationRadio.Components;
 using Content.Server.DeviceNetwork;
 using Content.Server.DeviceNetwork.Components;
 using Content.Server.DeviceNetwork.Systems;
+using Content.Server.Radio;
+using Content.Server.Radio.Components;
+using Content.Shared.DeviceLinking;
 using Content.Shared.DeviceLinking.Events;
 using Content.Shared.DeviceNetwork;
+using Content.Shared.Power;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Components;
 using Robust.Shared.Audio.Systems;
@@ -33,56 +38,27 @@ public sealed class StationRadioSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<StationRadioServerComponent, NewLinkEvent>(OnNewLink);
+        SubscribeLocalEvent<StationRadioServerComponent, NewLinkEvent>(OnServerNewLink);
         SubscribeLocalEvent<StationRadioServerComponent, DeviceNetworkPacketEvent>(OnServerRelay);
         SubscribeLocalEvent<StationRadioServerComponent, DeviceNetworkFrequencyChangedEvent>(OnServerChangeFrequency);
+        SubscribeLocalEvent<StationRadioServerComponent, PowerChangedEvent>(OnServerPowerChaned);
+        SubscribeLocalEvent<StationRadioServerComponent, EntityTerminatingEvent>(OnServerTerminating);
+
+        SubscribeLocalEvent<StationRadioReceiverComponent, ToggleRadioSpeakerEvent>(OnToggleRadioSpeaker);
         SubscribeLocalEvent<StationRadioReceiverComponent, DeviceNetworkPacketEvent>(OnReceive);
         SubscribeLocalEvent<StationRadioReceiverComponent, DeviceNetworkFrequencyChangedEvent>(OnReceiverChangeFrequency);
+        SubscribeLocalEvent<StationRadioReceiverComponent, PowerChangedEvent>(OnReceiverPowerChanged);
+
+        SubscribeLocalEvent<RadioRigComponent, NewLinkEvent>(OnRigNewLink);
     }
 
-    private void OnNewLink(Entity<StationRadioServerComponent> ent, ref NewLinkEvent args)
+    #region Server
+    private void OnServerNewLink(Entity<StationRadioServerComponent> ent, ref NewLinkEvent args)
     {
         if (args.SourcePort != ent.Comp.MusicOutputPort)
             return;
 
         ent.Comp.VinylPlayer = args.Source;
-    }
-
-    private void OnServerChangeFrequency(Entity<StationRadioServerComponent> ent, ref DeviceNetworkFrequencyChangedEvent args)
-    {
-        // Tell all old listeners to stop playing
-        var payload = new NetworkPayload
-        {
-            [DeviceNetworkConstants.Command] = StopAudioCommand
-        };
-        _device.QueuePacket(ent.Owner, null, payload, args.OldFrequency);
-
-        // Tell all new listeners to start playing
-        if (ent.Comp.VinylPlayer == null || !TryComp<VinylPlayerComponent>(ent.Comp.VinylPlayer, out var vinyl))
-            return;
-        if (!TryComp<AudioComponent>(vinyl.SoundEntity, out var audio))
-            return;
-
-        var currentSong = new SoundPathSpecifier(audio.FileName, audio.Params);
-        var position = CalculateAudioPosition(audio);
-        var startPayload = new NetworkPayload()
-        {
-            [DeviceNetworkConstants.Command] = PlayAudioCommand,
-            [AudioPathData] = currentSong,
-            [AudioPlaybackData] = position
-        };
-        _device.QueuePacket(ent.Owner, null, startPayload, args.NewFrequency);
-    }
-
-    private void OnReceiverChangeFrequency(Entity<StationRadioReceiverComponent> ent, ref DeviceNetworkFrequencyChangedEvent args)
-    {
-        // Send a request to get currently playing music and it's playback position
-        ent.Comp.SoundEntity = _audio.Stop(ent.Comp.SoundEntity);
-        var payload = new NetworkPayload
-        {
-            [DeviceNetworkConstants.Command] = AudioRequestCommand
-        };
-        _device.QueuePacket(ent.Owner, null, payload, args.NewFrequency);
     }
 
     private void OnServerRelay(Entity<StationRadioServerComponent> ent, ref DeviceNetworkPacketEvent args)
@@ -102,7 +78,7 @@ public sealed class StationRadioSystem : EntitySystem
                             [AudioPathData] = sound,
                             [AudioPlaybackData] = playback
                         };
-                        _device.QueuePacket(ent.Owner, null, startPayload, network.TransmitFrequency);
+                        _device.QueuePacket(ent.Owner, null, startPayload, network.ReceiveFrequency);
                     }
                     break;
                 case StopAudioCommand:
@@ -129,6 +105,117 @@ public sealed class StationRadioSystem : EntitySystem
                     _device.QueuePacket(ent.Owner, args.SenderAddress, startPayload2, args.Frequency);
                     break;
             }
+        }
+    }
+
+    private void OnServerChangeFrequency(Entity<StationRadioServerComponent> ent, ref DeviceNetworkFrequencyChangedEvent args)
+    {
+        if (TryComp<RadioMicrophoneComponent>(ent.Owner, out var radioMic) && args.NewFrequency != null)
+        {
+            radioMic.Frequency = (int) args.NewFrequency;
+        }
+
+        if (TryComp<DeviceLinkSinkComponent>(ent.Owner, out var link))
+        {
+            var rig = link.LinkedSources.FirstOrDefault(HasComp<RadioRigComponent>);
+            if (rig == default)
+                return;
+
+            if (!TryComp<RadioMicrophoneComponent>(rig, out var microphone) || args.NewFrequency == null)
+                return;
+            microphone.Frequency = (int) args.NewFrequency;
+        }
+
+        // Tell all old listeners to stop playing
+        var payload = new NetworkPayload
+        {
+            [DeviceNetworkConstants.Command] = StopAudioCommand
+        };
+        _device.QueuePacket(ent.Owner, null, payload, args.OldFrequency);
+
+        // Tell all new listeners to start playing
+        if (ent.Comp.VinylPlayer == null || !TryComp<VinylPlayerComponent>(ent.Comp.VinylPlayer, out var vinyl))
+            return;
+        if (!TryComp<AudioComponent>(vinyl.SoundEntity, out var audio))
+            return;
+
+        var currentSong = new SoundPathSpecifier(audio.FileName, audio.Params);
+        var position = CalculateAudioPosition(audio);
+        var startPayload = new NetworkPayload()
+        {
+            [DeviceNetworkConstants.Command] = PlayAudioCommand,
+            [AudioPathData] = currentSong,
+            [AudioPlaybackData] = position
+        };
+        _device.QueuePacket(ent.Owner, null, startPayload, args.NewFrequency);
+    }
+
+    private void OnServerPowerChaned(Entity<StationRadioServerComponent> ent, ref PowerChangedEvent args)
+    {
+        if (!TryComp<DeviceNetworkComponent>(ent.Owner, out var network)) return;
+
+        if (!args.Powered)
+        {
+            var payload = new NetworkPayload
+            {
+                [DeviceNetworkConstants.Command] = StopAudioCommand
+            };
+            _device.QueuePacket(ent.Owner, null, payload, network.ReceiveFrequency);
+        }
+        else
+        {
+            if (ent.Comp.VinylPlayer == null || !TryComp<VinylPlayerComponent>(ent.Comp.VinylPlayer, out var vinyl))
+                return;
+            if (!TryComp<AudioComponent>(vinyl.SoundEntity, out var audio))
+                return;
+
+            var currentSong = new SoundPathSpecifier(audio.FileName, audio.Params);
+            var position = CalculateAudioPosition(audio);
+            var startPayload = new NetworkPayload()
+            {
+                [DeviceNetworkConstants.Command] = PlayAudioCommand,
+                [AudioPathData] = currentSong,
+                [AudioPlaybackData] = position
+            };
+            _device.QueuePacket(ent.Owner, null, startPayload, network.ReceiveFrequency);
+        }
+    }
+
+    private void OnServerTerminating(Entity<StationRadioServerComponent> ent, ref EntityTerminatingEvent args)
+    {
+        if (!TryComp<DeviceNetworkComponent>(ent.Owner, out var network) 
+            || network.ReceiveFrequency == null)
+            return;
+
+        var query = EntityQueryEnumerator<StationRadioReceiverComponent, DeviceNetworkComponent>();
+        while (query.MoveNext(out var uid, out var receiver, out var receiverNetwork))
+        {
+            if (receiverNetwork.ReceiveFrequency != network.ReceiveFrequency)
+                continue;
+
+            receiver.SoundEntity = _audio.Stop(receiver.SoundEntity);
+        }
+    }
+
+
+    #endregion
+    #region Receiver
+
+    private void OnToggleRadioSpeaker(Entity<StationRadioReceiverComponent> ent, ref ToggleRadioSpeakerEvent args)
+    {
+        if (!TryComp<DeviceNetworkComponent>(ent.Owner, out var network))
+            return;
+        if (!args.Enabled)
+        {
+            ent.Comp.SoundEntity = _audio.Stop(ent.Comp.SoundEntity);
+        }
+        else
+        {
+            var payload = new NetworkPayload
+            {
+                [DeviceNetworkConstants.Command] = AudioRequestCommand
+            };
+            _device.QueuePacket(ent.Owner, null, payload, network.ReceiveFrequency);
         }
     }
 
@@ -159,6 +246,58 @@ public sealed class StationRadioSystem : EntitySystem
                 break;
         }
     }
+
+    private void OnReceiverChangeFrequency(Entity<StationRadioReceiverComponent> ent, ref DeviceNetworkFrequencyChangedEvent args)
+    {
+        if (TryComp<RadioMicrophoneComponent>(ent.Owner, out var radioMic) && args.NewFrequency != null)
+        {
+            radioMic.Frequency = (int) args.NewFrequency;
+        }
+
+        // Send a request to get currently playing music and it's playback position
+        ent.Comp.SoundEntity = _audio.Stop(ent.Comp.SoundEntity);
+        var payload = new NetworkPayload
+        {
+            [DeviceNetworkConstants.Command] = AudioRequestCommand
+        };
+        _device.QueuePacket(ent.Owner, null, payload, args.NewFrequency);
+    }
+
+    private void OnReceiverPowerChanged(Entity<StationRadioReceiverComponent> ent, ref PowerChangedEvent args)
+    {
+        if (!TryComp<DeviceNetworkComponent>(ent.Owner, out var network) || !TryComp<RadioSpeakerComponent>(ent.Owner, out var speaker))
+            return;
+
+        if (!args.Powered)
+        {
+            ent.Comp.SoundEntity = _audio.Stop(ent.Comp.SoundEntity);
+        }
+        else
+        {
+            if (!speaker.Enabled) return;
+
+            var payload = new NetworkPayload
+            {
+                [DeviceNetworkConstants.Command] = AudioRequestCommand
+            };
+            _device.QueuePacket(ent.Owner, null, payload, network.ReceiveFrequency);
+        }
+    }
+
+    #endregion
+
+    #region Radio Rig
+    private void OnRigNewLink(Entity<RadioRigComponent> ent, ref NewLinkEvent args)
+    {
+        if (args.SourcePort != ent.Comp.MicrophoneOutputPort)
+            return;
+
+        if (!TryComp<RadioMicrophoneComponent>(ent.Owner, out var microphone) || !TryComp<DeviceNetworkComponent>(args.Sink, out var network) || network.ReceiveFrequency == null)
+            return;
+        microphone.Frequency = (int) network.ReceiveFrequency;
+    }
+
+    #endregion
 
     private void PlayAudio(Entity<StationRadioReceiverComponent> ent, SoundSpecifier? sound, float playback = 0)
     {
