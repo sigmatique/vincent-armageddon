@@ -207,7 +207,7 @@
 - type: loadout
   id: LoadoutLegionPrimeHeavyArmor
   category: Outer
-  Cost: 14 # EVERY. SINGLE. POINT.
+  cost: 14 # EVERY. SINGLE. POINT.
   exclusive: true
   requirements:
     - !type:CharacterJobRequirement
