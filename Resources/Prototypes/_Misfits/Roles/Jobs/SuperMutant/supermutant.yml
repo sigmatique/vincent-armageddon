@@ -364,6 +364,7 @@
   id: SuperMutantTribal
 
 # Misfits add: FOTA supermutant.
+
 - type: job
   id: SuperMutantFollowerDoctor
   jobWhitelistBypassesRoleTimers: true
@@ -396,9 +397,12 @@
 - type: startingGear
   id: SuperMutantFollowerDoctorGear
   equipment:
-    jumpsuit: ClothingSuperMutantJumpsuit
+    jumpsuit: ClothingSuperMutantLabcoat
+    mask: ClothingSuperMutantSterileMask
     back: ClothingBackpackDuffelSurgeryFilled
     belt: N14ClothingBeltMedicalFilled
+    shoes: ClothingSuperMutantGladiatorBoots
+    gloves: SupermutantFollowerGloves
     neck: ClothingNeckStethoscope
     id: N14IDDoctorFollower
     ears: N14ClothingHeadsetFollowers
