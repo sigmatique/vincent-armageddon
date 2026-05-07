@@ -37,16 +37,14 @@
 - type: startingGear
   id: NCRMilitaryPoliceCaptainGear
   equipment:
-    outerClothing: falloutNCRmilitarypolicevest
-    head: FalloutNCRmilitarypoliceHelmet
+    head: N14ClothingHeadHatNCRBeretOfficer
     back: N14ClothingBackpackNCR
     jumpsuit: N14ClothingMPUniformNCRDesert
     shoes: N14ClothingBootsCombatFilled
     belt: ClothingBeltNCR
     eyes: ClothingEyesGlassesSunglasses
     ears: N14ClothingHeadsetNCR
-    pocket1: N14WeaponShotgunRiot
-    pocket2: Handcuffs
+    pocket1: NCRMPKit_Set
     id: N14IDNCRDogtagMPCaptain
   innerClothingSkirt: N14ClothingOfficerUniformNCRDesert
   satchel: N14ClothingBackpackSatchelNCRFilled
