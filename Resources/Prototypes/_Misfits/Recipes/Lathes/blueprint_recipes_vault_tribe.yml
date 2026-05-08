@@ -374,7 +374,7 @@
 
 - type: latheRecipe
   id: N14BPVaultAmmoPlasmaCell
-  result: N14PlasmaCartridgeSmall
+  result: N14PlasmaCartridge
   category: N14BlueprintVaultAmmoT3
   completetime: 8
   requiresBlueprint: true
@@ -389,7 +389,7 @@
 # --- Vault Tier 4 Ammo ---
 - type: latheRecipe
   id: N14BPVaultAmmoPlasmaCartridge
-  result: N14PlasmaCartridge
+  result: N14PlasmaShell
   category: N14BlueprintVaultAmmoT4
   completetime: 10
   requiresBlueprint: true
