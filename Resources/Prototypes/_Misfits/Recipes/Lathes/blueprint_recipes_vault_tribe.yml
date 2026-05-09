@@ -710,18 +710,6 @@
 
 # --- Tribe Tier 1 Armor ---
 - type: latheRecipe
-  id: TribalMaskofGreed
-  result: TribalMaskofGreed
-  category: N14BlueprintTribeArmorT1
-  completetime: 6
-  requiresBlueprint: true
-  availableFaction:
-  - Tribe
-  materials:
-    N14Gold: 200
-    Cloth: 750
-
-- type: latheRecipe
   id: N14BPTribeArmorTribalArmor
   result: N14ClothingOuterTribalArmor
   category: N14BlueprintTribeArmorT1
