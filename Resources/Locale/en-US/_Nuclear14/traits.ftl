@@ -1,28 +1,28 @@
 ﻿trait-name-LanguageTribal = Tribal Language
-trait-description-LanguageTribal = You can understand and speak the local Tribal language. Whether through learning or backstory.
+trait-description-LanguageTribal = You can understand and speak the local Tribal language, whether through learning or backstory.
 
 trait-name-LanguageChinese = Chinese Language
-trait-description-LanguageChinese = You can understand and speak the Chinese language. Whether through learning or backstory.
+trait-description-LanguageChinese = You can understand and speak the Chinese language, whether through learning or backstory.
 
 trait-name-LanguageSpanish = Spanish Language
-trait-description-LanguageSpanish = You can understand and speak the Spanish language. Whether through learning or backstory.
+trait-description-LanguageSpanish = You can understand and speak the Spanish language, whether through learning or backstory.
 
 trait-name-N14SignLanguage = Sign Language
 trait-description-N14SignLanguage =
-    You can understand and use a basic & generally accepted sign language.
+    You can understand and use a basic and generally accepted sign language.
     If you are mute for any reason, you can still communicate with sign language.
 
 trait-name-LanguageTribalRanger = Tribal Language
-trait-description-LanguageTribalRanger = You can understand and speak the local Tribal language. Whether through learning or backstory.
+trait-description-LanguageTribalRanger = You can understand and speak the local Tribal language, whether through learning or backstory.
 
 trait-name-N14SignLanguageRanger = Sign Language
 trait-description-N14SignLanguageRanger =
-    You can understand and use a basic & generally accepted sign language.
+    You can understand and use a basic and generally accepted sign language.
     If you are mute for any reason, you can still communicate with sign language.
 
 trait-name-N14ScottishAccent = Scottish Accent
 trait-description-N14ScottishAccent =
-    Fer tha folk who come frae Hielan clan.  You have Scottish accent, that's about it. Do I have to explain it?
+    Fer tha folk who come frae Hielan clan. You have Scottish accent, that's about it. Do I have to explain it?
 
 trait-name-N14Stutter = Stutter
 trait-description-N14Stutter =
@@ -55,7 +55,7 @@ trait-description-N14Snoring = You tend to snore loudly while sleeping.
 trait-name-N14Stomper = Stomper
 trait-description-N14Stomper =
     Your footsteps are louder than what others tend to produce.
-    It doesn't matter if it's because you want to seem more intimidating, you're stumbling or your weight.
+    You may be trying to seem more intimidating, you may be stumbling, or you may just be heavy.
 
 trait-name-N14Sneak = Sneak
 trait-description-N14Sneak =
@@ -171,7 +171,7 @@ trait-description-N14IronFist =
 
 trait-name-N14RadClaws = Rad Claws
 trait-description-N14RadClaws =
-    Being a ghoul is not that all bad, you got very neat sharp claws that you can use in a brawl.
+    Being a ghoul is not all that bad, you've got sharp claws that you can use in a brawl.
     You deal [color=green]+1[/color] [color=yellow]Slash[/color] and [color=yellow]Radiation[/color] damage in unarmed melee combat.
 
 trait-name-N14WeakLiquor = Weak Liquor
@@ -188,11 +188,11 @@ trait-description-N14PartyAnimal =
 
 trait-name-N14ShortArms = Short Arms
 trait-description-N14ShortArms =
-    Your arms are shorter than they should be. Your [color=yellow]melee range[/color] is [color=red]decreased by 10%[/color].
+    Your arms are shorter than they should be. Your [color=yellow]unarmed melee range[/color] is [color=red]decreased by 10%[/color].
 
 trait-name-N14Blitz = Blitz
 trait-description-N14Blitz =
-    You are able to move really fast and hand slaps out from far away. Your [color=yellow]melee range[/color] is [color=green]increased by 15%[/color].
+    You are able to move really fast and hand slaps out from far away. Your [color=yellow]unarmed melee range[/color] is [color=green]increased by 15%[/color].
 
 trait-name-N14ScriptedDeath = Scripted Death
 trait-description-N14ScriptedDeath =
@@ -224,14 +224,13 @@ trait-description-N14LightningHands =
 
 trait-name-N14Poisoned = Poisoned
 trait-description-N14Poisoned =
-    A while ago you were poisoned by something or someone and it still didn't clear from your system.
-    You are constantly taking [color=red]Poison damage[/color], making you antidote dependant.
+    A while ago you were poisoned by something or someone and it still hasn't cleared from your system.
+    You are constantly taking [color=red]Poison damage[/color], making you antidote-dependant.
 
-trait-name-N14UnnaturalReg = Unnatrual Regeneration
+trait-name-N14UnnaturalReg = Unnatural Regeneration
 trait-description-N14UnnaturalReg =
     For some reason your body heals a lot faster than it normally should.
-    You just keep healing damage, not really fast but it save you from wasting meds,
-    or even bring you out of Critical state.
+    You will slowly recover from injuries on your own, even in a Critical state.
 
 trait-name-N14WorldChampion = World Champion
 trait-description-N14WorldChampion =
@@ -256,13 +255,13 @@ trait-description-N14DeskNinja =
 
 trait-name-N14SilentTakedown = Silent Takedown
 trait-description-N14SilentTakedown =
-    You were taught how to take down knock people out silently. But you're not that good at it. At least you know where to hit.
+    You were taught how to knock people out silently, but you're not that good at it. At least you know where to hit.
     Your unarmed melee attacks [color=green]deal 8 [color=yellow]Stamina damage[/color] as an extra [color=green]bonus[/color].
 
 trait-name-N14GammaShield = Gamma Shield
 trait-description-N14GammaShield =
     Through meditation you were able to channel Atom's radiation to protect you from harm.
-    Significant increase in your overall damage resistances.
+    Significantly increases your overall damage resistances.
 
 trait-name-N14HandyTools = Handy Tools
 trait-description-N14HandyTools =
@@ -271,13 +270,13 @@ trait-description-N14HandyTools =
 
 trait-name-N14DermalArmorWaster = Dermal Armor
 trait-description-N14DermalArmorWaster =
-    You have a series of armour plates & lattice implanted under your skin.
-    This grants you bonuses against physical damage types.
+    You have a series of armour plates and lattice implanted under your skin.
+    This grants you resistance against physical damage types.
 
 trait-name-N14DermalArmor = Dermal Armor
 trait-description-N14DermalArmor =
-    You have a series of armour plates & lattice implanted under your skin.
-    This grants you bonuses against physical damage types.
+    You have a series of armour plates and lattice implanted under your skin.
+    This grants you resistance against physical damage types.
     (Thanks to your faction's technological advancements this came at a discount.)
 
 trait-name-N14PhoenixArmor = Phoenix Armor
