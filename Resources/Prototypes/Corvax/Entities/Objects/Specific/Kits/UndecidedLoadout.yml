@@ -52,6 +52,11 @@
     - CenturionArmorStandardSet
     - CenturionArmorPaladinSlayerSet
     - CenturionArmorRangerHunterSet
+    - CenturionArmorWarforgedSet
+    - CenturionArmorWarlordSet
+    - CenturionArmorCinderSet
+    - CenturionArmorSaltColumnSet
+    - CenturionArmorUnbrokenSet
 
 - type: entity
   id: LegionVenatorloadoutkits
@@ -502,6 +507,56 @@
     state: base
   content:
   - KitCenturionArmorPaladinSlayer
+
+- type: UndecidedLoadoutBackpackSet
+  id: CenturionArmorWarforgedSet
+  name: Centurion Warforged Armor
+  description: "Armor used by Centurions who have seen countless battles, and lived to tell the tale."
+  sprite:
+    sprite: Corvax/Objects/Misc/kits.rsi
+    state: base
+  content:
+  - KitCenturionWarforged
+
+- type: UndecidedLoadoutBackpackSet
+  id: CenturionArmorWarlordSet
+  name: Centurion Warlord Armor
+  description: "Armor for a Centurion who has single handendly won wars."
+  sprite:
+    sprite: Corvax/Objects/Misc/kits.rsi
+    state: base
+  content:
+  - KitCenturionWarlord
+
+- type: UndecidedLoadoutBackpackSet
+  id: CenturionArmorCinderSet
+  name: Centurion Cinder Armor
+  description: "Armor forged in the ashes of fallen legionnaires."
+  sprite:
+    sprite: Corvax/Objects/Misc/kits.rsi
+    state: base
+  content:
+  - KitCenturionCinder
+
+- type: UndecidedLoadoutBackpackSet
+  id: CenturionArmorSaltColumnSet
+  name: Centurion Salt Column Armor
+  description: "Armor made for the Centurion of the Salt Column."
+  sprite:
+    sprite: Corvax/Objects/Misc/kits.rsi
+    state: base
+  content:
+  - KitCenturionSaltColumn
+
+- type: UndecidedLoadoutBackpackSet
+  id: CenturionArmorUnbrokenSet
+  name: Centurion Unbroken Armor
+  description: "Armor for a Centurion who refuses to stay dead."
+  sprite:
+    sprite: Corvax/Objects/Misc/kits.rsi
+    state: base
+  content:
+  - KitCenturionUnbroken
 
 - type: UndecidedLoadoutBackpackSet
   id: CenturionArmorRangerHunterSet

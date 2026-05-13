@@ -1,0 +1,255 @@
+# Cinder Cohort set.
+- type: entity
+  parent: N14FalloutArmorBase
+  id: MisfitsCenturionCinderCohort
+  name: Cinder Cohort Armor
+  description: "Armor forged in the ashes of fallen legionnaires."
+  components:
+  - type: Sprite
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Cinder_Cohort.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Cinder_Cohort.rsi
+  - type: ClothingSpeedModifier
+    walkModifier: 1
+    sprintModifier: 1
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.45
+        Slash: 0.45
+        Piercing: 0.45
+        Heat: 0.45
+  - type: ExplosionResistance
+    damageCoefficient: 0.40
+  - type: StaminaDamageResistance
+    coefficient: 0.85 # 15%
+#  - type: ClothingSpecialModifier
+#    strengthModifier: 2"
+
+- type: entity
+  parent: ClothingHeadBase
+  id: MisfitsCenturionCinderCohortHelmet
+  name: Cinder Cohort Helmet
+  description: "A helmet forged in the ashes of fallen legionnaires."
+  components:
+  - type: Sprite
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Cinder_CohortHelm.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Cinder_CohortHelm.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.8
+  - type: ExplosionResistance
+    damageCoefficient: 0.90
+  - type: HideLayerClothing
+    force: true
+    slots:
+    - Hair
+    - FacialHair
+
+# Salt Column
+
+- type: entity
+  parent: N14FalloutArmorBase
+  id: MisfitsCenturionSaltColumn
+  name: Salt Column Armor
+  description: "Armor made for the Centurion of the Salt Column."
+  components:
+  - type: Sprite
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Salt_Column.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Salt_Column.rsi
+  - type: ClothingSpeedModifier
+    walkModifier: 1
+    sprintModifier: 1
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.45
+        Slash: 0.45
+        Piercing: 0.45
+        Heat: 0.45
+  - type: ExplosionResistance
+    damageCoefficient: 0.40
+  - type: StaminaDamageResistance
+    coefficient: 0.85 # 15%
+
+- type: entity
+  parent: ClothingHeadBase
+  id: MisfitsCenturionSaltColumnHelmet
+  name: Salt Column Helmet
+  description: "A helmet made for the Centurion of the Salt Column."
+  components:
+  - type: Sprite
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Salt_ColumnHelm.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Salt_ColumnHelm.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.8
+  - type: ExplosionResistance
+    damageCoefficient: 0.90
+  - type: HideLayerClothing
+    force: true
+    slots:
+    - Hair
+    - FacialHair
+
+# Unbroken set
+
+- type: entity
+  parent: N14FalloutArmorBase
+  id: MisfitsCenturionUnbroken
+  name: Unbroken Centurion Armor
+  description: "Armor for a Centurion who refuses to stay dead."
+  components:
+  - type: Sprite
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Unbroken.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Unbroken.rsi
+  - type: ClothingSpeedModifier
+    walkModifier: 1
+    sprintModifier: 1
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.45
+        Slash: 0.45
+        Piercing: 0.45
+        Heat: 0.45
+  - type: ExplosionResistance
+    damageCoefficient: 0.40
+  - type: StaminaDamageResistance
+    coefficient: 0.85 # 15%
+
+- type: entity
+  parent: ClothingHeadBase
+  id: MisfitsCenturionUnbrokenHelmet
+  name: Unbroken Centurion Helmet
+  description: "A helmet for a Centurion who refuses to stay dead."
+  components:
+  - type: Sprite
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/UnbrokenHelm.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/UnbrokenHelm.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.8
+  - type: ExplosionResistance
+    damageCoefficient: 0.90
+  - type: HideLayerClothing
+    force: true
+    slots:
+    - Hair
+    - FacialHair
+
+# Warforged set
+
+- type: entity
+  parent: N14FalloutArmorBase
+  id: MisfitsCenturionWarforged
+  name: Warforged Centurion Armor
+  description: "Armor used by Centurions who have seen countless battles, and lived to tell the tale."
+  components:
+  - type: Sprite
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Warforged.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Warforged.rsi
+  - type: ClothingSpeedModifier
+    walkModifier: 1
+    sprintModifier: 1
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.45
+        Slash: 0.45
+        Piercing: 0.45
+        Heat: 0.45
+  - type: ExplosionResistance
+    damageCoefficient: 0.40
+  - type: StaminaDamageResistance
+    coefficient: 0.85 # 15%
+
+- type: entity
+  parent: ClothingHeadBase
+  id: MisfitsCenturionWarforgedHelmet
+  name: Warforged Centurion Helmet
+  description: "A helmet used by Centurions who have seen countless battles, and lived to tell the tale."
+  components:
+  - type: Sprite
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/WarforgedHelm.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/WarforgedHelm.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.8
+  - type: ExplosionResistance
+    damageCoefficient: 0.90
+  - type: HideLayerClothing
+    force: true
+    slots:
+    - Hair
+    - FacialHair
+
+#Warlord set
+
+- type: entity
+  parent: N14FalloutArmorBase
+  id: MisfitsCenturionWarlord
+  name: Warlord Centurion Armor
+  description: "Armor for a Centurion who has single handendly won wars."
+  components:
+  - type: Sprite
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Warlord.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/Warlord.rsi
+  - type: ClothingSpeedModifier
+    walkModifier: 1
+    sprintModifier: 1
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.45
+        Slash: 0.45
+        Piercing: 0.45
+        Heat: 0.45
+  - type: ExplosionResistance
+    damageCoefficient: 0.40
+  - type: StaminaDamageResistance
+    coefficient: 0.85 # 15%
+
+- type: entity
+  parent: ClothingHeadBase
+  id: MisfitsCenturionWarlordHelmet
+  name: Warlord Centurion Helmet
+  description: "A helmet for a Centurion who has single handendly won wars."
+  components:
+  - type: Sprite
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/WarlordHelm.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/CaesarLegion/Centurion/WarlordHelm.rsi
+  - type: Armor
+    modifiers:
+      coefficients:
+        Blunt: 0.8
+        Slash: 0.8
+        Piercing: 0.8
+        Heat: 0.8
+  - type: ExplosionResistance
+    damageCoefficient: 0.90

@@ -585,7 +585,7 @@
       - id: MagazineBox50 # #Misfits Change by bill - one box? ...two box.
         amount: 2
       - id: ClothingBeltRope
-      - id: N14WeaponSMGGreaseGun # #Misfits Change: legion smg for hunting armor. 
+      - id: N14WeaponSMGGreaseGun # #Misfits Change: legion smg for hunting armor.
       - id: Magazine45SubMachineGun
         amount: 2
       - id: N14WeaponShotgunShort
@@ -2173,3 +2173,92 @@
     sound:
       path: /Audio/Effects/unwrap.ogg
 
+- type: entity
+  name: centurion-cinder-kit
+  parent: KitBase
+  id: KitCenturionCinder
+  description: "Cinder centurion armor and matching helmet."
+  components:
+  - type: Sprite
+    sprite: Corvax/Objects/Misc/kits.rsi
+    state: base
+  - type: Item
+    size: Huge
+  - type: SpawnItemsOnUse
+    items:
+      - id: MisfitsCenturionCinderCohort
+      - id: MisfitsCenturionCinderCohortHelmet
+    sound:
+      path: /Audio/Effects/unwrap.ogg
+
+- type: entity
+  name: centurion-salt-column-kit
+  parent: KitBase
+  id: KitCenturionSaltColumn
+  description: "Salt column centurion armor and matching helmet."
+  components:
+  - type: Sprite
+    sprite: Corvax/Objects/Misc/kits.rsi
+    state: base
+  - type: Item
+    size: Huge
+  - type: SpawnItemsOnUse
+    items:
+      - id: MisfitsCenturionSaltColumn
+      - id: MisfitsCenturionSaltColumnHelmet
+    sound:
+      path: /Audio/Effects/unwrap.ogg
+
+- type: entity
+  name: centurion-unbroken-kit
+  parent: KitBase
+  id: KitCenturionUnbroken
+  description: "Unbroken centurion armor and matching helmet."
+  components:
+  - type: Sprite
+    sprite: Corvax/Objects/Misc/kits.rsi
+    state: base
+  - type: Item
+    size: Huge
+  - type: SpawnItemsOnUse
+    items:
+      - id: MisfitsCenturionUnbroken
+      - id: MisfitsCenturionUnbrokenHelmet
+    sound:
+      path: /Audio/Effects/unwrap.ogg
+
+- type: entity
+  name: centurion-warforged-kit
+  parent: KitBase
+  id: KitCenturionWarforged
+  description: "Warforged centurion armor and matching helmet."
+  components:
+  - type: Sprite
+    sprite: Corvax/Objects/Misc/kits.rsi
+    state: base
+  - type: Item
+    size: Huge
+  - type: SpawnItemsOnUse
+    items:
+      - id: MisfitsCenturionWarforged
+      - id: MisfitsCenturionWarforgedHelmet
+    sound:
+      path: /Audio/Effects/unwrap.ogg
+
+- type: entity
+  name: centurion-warlord-kit
+  parent: KitBase
+  id: KitCenturionWarlord
+  description: "Warlord centurion armor and matching helmet."
+  components:
+  - type: Sprite
+    sprite: Corvax/Objects/Misc/kits.rsi
+    state: base
+  - type: Item
+    size: Huge
+  - type: SpawnItemsOnUse
+    items:
+      - id: MisfitsCenturionWarlord
+      - id: MisfitsCenturionWarlordHelmet
+    sound:
+      path: /Audio/Effects/unwrap.ogg

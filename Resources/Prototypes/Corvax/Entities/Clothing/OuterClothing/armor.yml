@@ -31,17 +31,17 @@
   - type: Clothing
     sprite: Corvax/Clothing/OuterClothing/Armor/centurionheavyarmor.rsi
   - type: ClothingSpeedModifier
-    walkModifier: 1 # custom made centurion armor thats more generalist, so here is your speed
-    sprintModifier: 1 # also it makes it useful instead of just DURR PALADIN OR RANGER HUNTER DUURRRHH
+    walkModifier: 1
+    sprintModifier: 1
   - type: Armor
     modifiers:
       coefficients:
-        Blunt: 0.55
-        Slash: 0.55
-        Piercing: 0.45 #Veni Vidi Vici. Bill came, saw liquid dogshit, and fixed.
-        Heat: 0.50
+        Blunt: 0.45
+        Slash: 0.45
+        Piercing: 0.45
+        Heat: 0.45
   - type: ExplosionResistance
-    damageCoefficient: 0.65
+    damageCoefficient: 0.40
   - type: StaminaDamageResistance
     coefficient: 0.85 # 15%
 #  - type: ClothingSpecialModifier
@@ -60,17 +60,17 @@
   - type: Clothing
     sprite: Corvax/Clothing/OuterClothing/Armor/paladinslayercent.rsi
   - type: ClothingSpeedModifier
-    walkModifier: 0.9
-    sprintModifier: 0.9
+    walkModifier: 1
+    sprintModifier: 1
   - type: Armor
     modifiers:
       coefficients:
-        Blunt: 0.50  # #Misfits Fix - corrected from SS13 Big-Iron melee=35
-        Slash: 0.50  # #Misfits Fix - corrected from SS13 Big-Iron melee=35
-        Piercing: 0.45  # #Misfits Bill was here. paladin will be useful.
-        Heat: 0.30  # laser=70 dominates; not fucking consistent but this was worse than ranger shit so here you go.
+        Blunt: 0.45
+        Slash: 0.45
+        Piercing: 0.45
+        Heat: 0.45
   - type: ExplosionResistance
-    damageCoefficient: 0.65  # #Misfits Fix - corrected from SS13 Big-Iron bomb=35
+    damageCoefficient: 0.40
   - type: StaminaDamageResistance
     coefficient: 0.85
 
@@ -87,18 +87,17 @@
   - type: Clothing
     sprite: Corvax/Clothing/OuterClothing/Armor/rangerhuntercent.rsi
   - type: ClothingSpeedModifier
-    walkModifier: 0.9
-    sprintModifier: 0.9
+    walkModifier: 1
+    sprintModifier: 1
   - type: Armor
     modifiers:
       coefficients:
-        Blunt: 0.65  # #Misfits Fix - corrected from SS13 Big-Iron melee=35
-        Slash: 0.65  # #Misfits Fix - corrected from SS13 Big-Iron melee=35
-        Piercing: 0.40  # #Misfits Fix - corrected from SS13 Big-Iron bullet=60
-        Heat: 0.45  # Bill was here. No more fireproof ranger hunter. use paladin slayer for that.
-        Caustic: 0.40  # #Misfits Fix - corrected from SS13 Big-Iron bio=60 (Radiation removed — rad=20 too low)
+        Blunt: 0.45
+        Slash: 0.45
+        Piercing: 0.45
+        Heat: 0.45
   - type: ExplosionResistance
-    damageCoefficient: 0.65  # #Misfits Fix - corrected from SS13 Big-Iron bomb=35
+    damageCoefficient: 0.40
   - type: StaminaDamageResistance
     coefficient: 0.85
 
@@ -213,7 +212,7 @@
     sprite: Corvax/Clothing/OuterClothing/Armor/reconnaissancearmor.rsi
   - type: ClothingSpeedModifier
     walkModifier: 1.10
-    sprintModifier: 1.10 
+    sprintModifier: 1.10
   - type: Armor
     modifiers:
       coefficients:
@@ -235,7 +234,7 @@
   - type: Clothing
     sprite: Corvax/Clothing/OuterClothing/Armor/lightreconnaissancearmor.rsi
   - type: ClothingSpeedModifier
-    walkModifier: 1.15 
+    walkModifier: 1.15
     sprintModifier: 1.15
   - type: Armor
     modifiers:
