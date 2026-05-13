@@ -343,7 +343,7 @@
     availableModes:
     - SemiAuto
   - type: BasicEntityAmmoProvider # #Misfits Add: limited plasma shots, auto-refills after cooldown
-    proto: BulletPlasma
+    proto: BulletBigPlasma
     capacity: 15
     count: 15
   - type: RechargeBasicEntityAmmo # #Misfits Add: recharge simulates internal capacitor cycling
