@@ -4966,3 +4966,10 @@ Entries:
   id: 5872
   time: '2026-05-13T01:09:38.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/493
+- author: Dpellowski
+  changes:
+    - type: Add
+      message: Whispers
+  id: 5873
+  time: '2026-05-13T02:32:11.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/498
