@@ -86,6 +86,8 @@ public sealed partial class IdCardConsoleComponent : Component
         "Scribe",
         "Paladin",
         "PaladinCommander",
+        "80s", //Misfit Addition
+        "80sHead", //Misfit Addition
     };
 
     [Serializable, NetSerializable]
