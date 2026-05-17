@@ -5230,3 +5230,17 @@ Entries:
   id: 5901
   time: '2026-05-17T04:06:53.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/540
+- author: paige404
+  changes:
+    - type: Add
+      message: >-
+        Added a -6 point Tribal Language perk available for wasteland denizens.
+        Available whether your character grew up in the tribe or not.
+    - type: Add
+      message: >-
+        Added a distinctive (Sulik-inspired) Tribal Accent available as a perk
+        for characters that speak the Tribal Language. Let _everyone_ know that
+        you grew up in the tribe.
+  id: 5902
+  time: '2026-05-17T04:08:10.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/539
