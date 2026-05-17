@@ -1154,6 +1154,7 @@
       - id: N14CleanGauze10
       - id: N14Ointment10
       - id: N14MedkitCombatFilled
+      - id: N14HandheldHealthAnalyzer
       - id: N14ClothingHandsGlovesCombat
       - id: N14ClothingBeltBoSWebbing
       - id: N14ClothingOuterBrotherhoodMidwestFieldScribeCoat
