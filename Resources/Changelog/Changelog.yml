@@ -5244,3 +5244,15 @@ Entries:
   id: 5902
   time: '2026-05-17T04:08:10.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/539
+- author: Sirius
+  changes:
+    - type: Add
+      message: >-
+        The BoS, using some of the funds they recovered from the decommissioning
+        of one of their Nuclear Silos, has afforded the purchase of a new Access
+        Terminal and ID printer after the previous set was reportedly eaten by
+        Peter Poley during their brief detention in the BoS bunker. When asked
+        for comment, an eyewitness stated, "I don't want to talk about it."
+  id: 5903
+  time: '2026-05-17T04:09:49.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/534
