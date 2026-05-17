@@ -73,25 +73,9 @@ public abstract partial class SharedBuckleSystem
             return;
 
         if (!CanUnbuckle(ent!, args.Puller, false))
-        {
             args.Cancel();
-            return;
-        }
-
-        if (args.Puller != ent.Owner
-            && TryComp<StrapComponent>(ent.Comp.BuckledTo, out var strap)
-            && strap.UnbuckleDoafterTime > 0)
-        {
-            args.Cancel();
-            var doAfter = new DoAfterArgs(EntityManager, args.Puller, TimeSpan.FromSeconds(strap.UnbuckleDoafterTime), new UnbuckleDoAfterEvent(), ent.Owner, target: ent.Owner)
-            {
-                BreakOnMove = true,
-                BreakOnDamage = true,
-            };
-            _doAfter.TryStartDoAfter(doAfter);
-            return;
-        }
     }
+
     private void OnPullStarted(Entity<BuckleComponent> ent, ref PullStartedMessage args)
     {
         Unbuckle(ent!, args.PullerUid);

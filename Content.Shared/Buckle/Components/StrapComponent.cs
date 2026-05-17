@@ -84,11 +84,6 @@ public sealed partial class StrapComponent : Component
     /// </summary>
     [DataField]
     public bool BuckleOnInteractHand = true;
-    /// <summary>
-    /// How long it takes someone else to unbuckle a buckled entity.
-    /// </summary>
-    [DataField]
-    public float UnbuckleDoafterTime = 1f;
 }
 
 public enum StrapPosition
