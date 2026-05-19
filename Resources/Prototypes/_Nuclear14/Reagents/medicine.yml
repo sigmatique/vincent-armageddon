@@ -42,14 +42,15 @@
               Airloss: -1.0
             types:
               Poison: 3
-        - !type:HealthChange # to prevent doping
-          conditions:
+        - !type:GenericStatusEffect
+          Conditions:
           - !type:ReagentThreshold
-            min: 30
-          - !type:MobStateCondition #Misfits Tweak: OD can push to crit but never kill
-          damage:
-            types:
-              Poison: 5
+            reagent: HealingMixture
+            min: 35
+          key: ForcedSleep
+          component: ForcedSleeping
+          refresh: false
+          type: Add
 
 - type: reagent
   id: DirtyStimpak
