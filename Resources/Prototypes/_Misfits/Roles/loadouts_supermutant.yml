@@ -21,6 +21,44 @@
     - ClothingSuperMutantGladiatorLoincloth
 
 - type: loadout
+  id: ClothingSuperMutantSkullHelmetTribal
+  category: Head
+  cost: 2
+  exclusive: true
+  requirements:
+    - !type:CharacterJobRequirement
+      jobs:
+        - SuperMutant
+        - Nightkin
+        - SuperMutantGladiator
+        - SuperMutantRanger
+        - SuperMutantTrooper
+        - SuperMutantNCRRanger
+        - SuperMutantNCRTrooper
+        - SuperMutantTribal
+  items:
+    - ClothingSuperMutantSkullHelmetTribal
+
+- type: loadout
+  id: ClothingSuperMutantTribalGloves
+  category: Hands
+  cost: 2
+  exclusive: true
+  requirements:
+    - !type:CharacterJobRequirement
+      jobs:
+        - SuperMutant
+        - Nightkin
+        - SuperMutantGladiator
+        - SuperMutantRanger
+        - SuperMutantTrooper
+        - SuperMutantNCRRanger
+        - SuperMutantNCRTrooper
+        - SuperMutantTribal
+  items:
+    - ClothingSuperMutantTribalGloves
+
+- type: loadout
   id: ClothingSuperMutantZootSuit
   category: Uniform
   cost: 2
@@ -42,7 +80,7 @@
 - type: loadout
   id: ClothingSuperMutantZootHat
   category: Head
-  cost: 2 
+  cost: 2
   exclusive: true
   requirements:
     - !type:CharacterJobRequirement
