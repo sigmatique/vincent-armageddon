@@ -31,7 +31,6 @@
   - type: NpcFactionMember
     factions:
     - Followers
-    - SimpleMob
 
 - type: entity
   name: Timmy
@@ -48,6 +47,9 @@
     - FootstepSound
     - DoorBumpOpener
     - CannotSuicide
+  - type: NpcFactionMember
+    factions:
+    - BrotherhoodOfSteel
   - type: MobPrice
     price: 200
 
@@ -66,5 +68,8 @@
     - FootstepSound
     - DoorBumpOpener
     - CannotSuicide
+  - type: NpcFactionMember
+    factions:
+    - BrotherhoodOfSteel
   - type: MobPrice
     price: 200
