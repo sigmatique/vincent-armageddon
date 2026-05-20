@@ -657,15 +657,15 @@
     - type: Sprite
       sprite: Objects/Specific/Hydroponics/cotton.rsi
 
-- type: entity
-  parent: SeedBase
-  name: packet of pyrotton seeds
-  id: PyrottonSeeds
-  components:
-    - type: Seed
-      seedId: pyrotton
-    - type: Sprite
-      sprite: Objects/Specific/Hydroponics/pyrotton.rsi
+#- type: entity
+#  parent: SeedBase
+#  name: packet of pyrotton seeds
+#  id: PyrottonSeeds
+#  components:
+#    - type: Seed
+#      seedId: pyrotton
+#    - type: Sprite
+#      sprite: Objects/Specific/Hydroponics/pyrotton.rsi
 
 - type: entity
   parent: SeedBase
