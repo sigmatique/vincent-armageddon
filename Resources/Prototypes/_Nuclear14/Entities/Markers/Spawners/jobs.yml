@@ -386,6 +386,18 @@
       - state: green
       - state: veteran
 
+- type: entity
+  id: N14SpawnPointNCRPlatoonLeader
+  parent: N14SpawnPointNCRCadet
+  name: platoon leader
+  components:
+  - type: SpawnPoint
+    job_id: NCRPlatoonLeader
+  - type: Sprite
+    layers:
+      - state: green
+      - state: platoonlead
+
 # Tribals
 - type: entity
   id: N14SpawnPointTribal
