@@ -8,7 +8,6 @@
   - type: ContainerFill
     containers:
       key_slots:
-      - EncryptionKeyCommon
       - EncryptionKeyWastelandGlobal
       - EncryptionKeyVault
   - type: Sprite
