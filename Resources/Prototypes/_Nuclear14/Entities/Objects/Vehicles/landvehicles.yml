@@ -193,36 +193,6 @@
       map: ["enum.VehicleVisualLayers.Cover"]
 
 - type: entity
-  parent: BaseVehicle
-  id: N14VehicleMotorbike
-  name: motorbike
-  description: A rugged two-wheeler ready to ride.
-  components:
-  - type: Vehicle
-  - type: Sprite
-    sprite: Objects/Vehicles/motorbike.rsi
-    state: vehicle
-    noRot: true
-  - type: MovementSpeedModifier
-    acceleration: 1
-    friction: 0.5
-    baseWalkSpeed: 4.5
-    baseSprintSpeed: 8
-  - type: ItemSlots
-    slots:
-      key_slot:
-        name: Keys
-        whitelist:
-          requireAll: true
-          tags:
-          - VehicleKey
-          - MotorbikeKeys
-        insertSound:
-          path: /Audio/Effects/Vehicle/vehiclestartup.ogg
-          params:
-            volume: -3
-
-- type: entity
   id: VehicleBuggyOverlay
   name: buggy overlay
   categories: [ HideSpawnMenu ]

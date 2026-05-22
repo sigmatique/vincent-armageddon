@@ -52,4 +52,5 @@
         state: keys
   - type: ConditionalSpawner
     prototypes:
-      - N14VehicleMotorbike
+      - N14VehicleBikeScrambler
+      - N14VehicleBikeFlamey
