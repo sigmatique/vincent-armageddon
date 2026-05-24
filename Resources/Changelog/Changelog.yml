@@ -5635,3 +5635,16 @@ Entries:
   id: 5939
   time: '2026-05-24T20:19:25.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/586
+- author: Squagg
+  changes:
+    - type: Fix
+      message: TacMap now works with an upscaled UI
+    - type: Fix
+      message: Prevents ghosts from using the SPECIAL system and sounding silly
+    - type: Fix
+      message: Admins can now actually use commands modifying the SPECIAL system
+    - type: Fix
+      message: Added comments and stuff to the special system back-end
+  id: 5940
+  time: '2026-05-24T22:04:23.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/589
