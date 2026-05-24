@@ -13,6 +13,7 @@
 #   NCRWeaponSpecialist  — NCR Weapon Specialist
 #   NCRHeavyTrooper      — NCR Heavy Trooper
 #   NCRTrooper           — NCR Trooper
+#   C27NCR               — NCR C27
 
 # Command Officers: Captain (O-3) → Major (O-4) at 20h NCR dept time
 - type: ncrRankPinProgression
@@ -120,3 +121,18 @@
       entity: ClothingNeckPinNCRPrivate1st
     - min: 216000  # 60 hours
       entity: ClothingNeckPinNCRSpecialist
+      
+# C-27: Sergeant (E-5) ->  1st Sergeant (E-6) -> Master Sergeant (E-8)
+- type: ncrRankPinProgression
+  id: NCRC27Pins
+  jobs:
+    - C27NCR
+  tracker: C27NCR
+  departmentTracker: false
+  thresholds:
+    - min: 0
+      entity: ClothingNeckPinNCRSergeant
+    - min: 36000  # 10 hours
+      entity: ClothingNeckPinNCRSergeant1st
+    - min: 72000  # 20 hours
+      entity: ClothingNeckPinNCRMasterSergeant
