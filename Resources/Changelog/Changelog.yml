@@ -5655,3 +5655,16 @@ Entries:
   id: 5941
   time: '2026-05-24T23:45:55.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/583
+- author: Squagg
+  changes:
+    - type: Tweak
+      message: Luck crit chance now applies per hit instead of being single-shot based.
+    - type: Tweak
+      message: Revolvers now naturally have double crit chance.
+    - type: Add
+      message: >-
+        SPECIAL stats now show current effects and lower/raise previews in
+        character selection.
+  id: 5942
+  time: '2026-05-25T01:20:14.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/591
