@@ -5990,3 +5990,20 @@ Entries:
   id: 5974
   time: '2026-05-28T16:08:46.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/625
+- author: Lucky
+  changes:
+    - type: Tweak
+      message: Vault and BOS blast doors can no longer be linked without access.
+    - type: Fix
+      message: BOS cell doors have the correct access.
+    - type: Fix
+      message: Minor BOS fixes.
+    - type: Add
+      message: >-
+        All factions now start with a safe containing spare IDs, enc keys (if
+        applicable), and starting materials for the ID printer.
+    - type: Add
+      message: NCR Requisition officer spawn and Legion Forgemaster Spawn
+  id: 5975
+  time: '2026-05-28T18:54:06.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/624
