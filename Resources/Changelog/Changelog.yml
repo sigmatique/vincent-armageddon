@@ -5975,3 +5975,18 @@ Entries:
   id: 5973
   time: '2026-05-28T10:32:27.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/622
+- author: Lucky
+  changes:
+    - type: Fix
+      message: BOS and Legion can now correctly change the ID accesses.
+    - type: Fix
+      message: Faction headset boxes are now filled correctly.
+    - type: Tweak
+      message: BOS Heads can now always understand Brotherhood Code.
+    - type: Fix
+      message: >-
+        BOS Code can no longer be selected as Head Member, Scribe, or Senior
+        Scribe.
+  id: 5974
+  time: '2026-05-28T16:08:46.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/625
