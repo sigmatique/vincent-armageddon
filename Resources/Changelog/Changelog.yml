@@ -6077,3 +6077,12 @@ Entries:
   id: 5983
   time: '2026-05-29T18:16:14.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/634
+- author: Bradysgaming
+  changes:
+    - type: Tweak
+      message: >-
+        Made certain cheap sheilds more easilly broken due to how easy they are
+        to craft.
+  id: 5984
+  time: '2026-05-29T19:07:34.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/635
