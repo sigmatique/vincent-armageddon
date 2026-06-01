@@ -23,7 +23,7 @@
   requirements:
     - !type:CharacterDepartmentTimeRequirement
       department: Rangers
-      min: 57600 # 16 hours
+      min: 28800 # Misfits Change - Patrol Ranger only needs 8 hours
     - !type:CharacterSpeciesRequirement # #Misfits Change - robots, super mutants, and glowing ghouls cannot be Rangers
       inverted: true
       species:
