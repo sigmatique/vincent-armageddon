@@ -225,7 +225,7 @@ public sealed class RequisitionsBui : BoundUserInterface
         var bounties = _state?.Bounties;
         var sig = bounties == null
             ? "x"
-            : $"{string.Join(";", bounties.Select(b => $"{b.Id}|{b.Amount}|{b.Reward}|{b.RewardCrate}"))}#{string.Join(",", _state?.CompletedBounties ?? [])}#{DictSignature(_state?.BountyProgress)}";
+            : $"{string.Join(";", bounties.Select(b => $"{b.Id}|{b.Amount}|{b.Reward}|{b.RewardCrate}"))}#{string.Join(",", _state?.CompletedBounties ?? new List<string>())}#{DictSignature(_state?.BountyProgress)}";
         if (!RenderChanged("bounties", sig))
             return;
 
@@ -268,7 +268,7 @@ public sealed class RequisitionsBui : BoundUserInterface
                     ("reward", rewardText));
             }
 
-            var rewardIcons = rewardCrate is { } rc ? [rc] : (List<EntProtoId>?) null;
+            var rewardIcons = rewardCrate is { } rc ? new List<EntProtoId> { rc } : null;
             _window.BountiesContainer.AddChild(MakeIconRow(bounty.Item.Id, markup, rewardIcons));
         }
     }
