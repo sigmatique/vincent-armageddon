@@ -6486,3 +6486,16 @@ Entries:
   id: 6020
   time: '2026-06-05T10:16:14.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/693
+- author: Squagg
+  changes:
+    - type: Add
+      message: Added themed starting loadout kits for all Eighties roles.
+    - type: Add
+      message: Added motorbike keys to all Eighties roles.
+    - type: Tweak
+      message: >-
+        Replaced the Eighties' fixed starting SMG loadout with rank-specific kit
+        selectors.
+  id: 6021
+  time: '2026-06-05T10:17:12.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/685
