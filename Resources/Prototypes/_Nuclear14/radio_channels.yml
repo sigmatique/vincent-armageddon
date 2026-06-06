@@ -13,7 +13,7 @@
   name: chat-radio-eighties
   keycode: 'y'
   frequency: 1337
-  color: '#795520'
+  color: "#795520"
   longRange: true
 
 

@@ -12,7 +12,7 @@
 - type: radioChannel
   id: Eighties
   name: chat-radio-eighties
-   keycode: 'y'
+  keycode: 'y'
   frequency: 1337
   color: "#795520"
   longRange: true
