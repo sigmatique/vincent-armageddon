@@ -370,7 +370,7 @@ undecided-loadout-category-corvax-optio-defender-description =
 
 undecided-loadout-category-corvax-optio-inquisitor-name = Optio Inquisitor
 undecided-loadout-category-corvax-optio-inquisitor-description =
-    Includes a Marksman Carbine, 2 7.62 magazines,
+    Includes an SKS, three en-block clips,
     a .45 Colt pistol, 2 .45 magazines, a rope belt,
     a ceremonial sword, a bola, handcuffs,
     2 healing powder, 2 K rations, and a ceramic flask.

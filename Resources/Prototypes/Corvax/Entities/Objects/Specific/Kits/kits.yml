@@ -2073,9 +2073,9 @@
     size: Huge
   - type: SpawnItemsOnUse
     items:
-      - id: N14WeaponRifle762Marksman
-      - id: Magazine762Rifle
-        amount: 2
+      - id: N14WeaponRifleSKS
+      - id: SKSEnbloc308
+        amount: 3
       - id: ClothingBeltRope
       - id: N14WeaponPistol45Colt # #Misfits Change: .45 revolver Legion sidearm
       - id: N14MagazinePistol45
