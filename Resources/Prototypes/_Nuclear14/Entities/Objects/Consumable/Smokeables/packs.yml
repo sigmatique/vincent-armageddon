@@ -61,9 +61,6 @@
   - type: Storage
     grid:
     - 0,0,4,1
-    whitelist:
-      tags:
-      - Cigarette
   - type: StorageFill
     contents:
     - id: Cigarette
@@ -91,7 +88,7 @@
   # id: N14CigarettePack
   # name: cigarette packet
   # description: A generic pack of cigarettes.
-  
+
 - type: entity
   parent: N14CigPackBase
   id: N14CigarettePackSalem
@@ -106,7 +103,7 @@
     contents:
     - id: N14CigaretteSalem
       amount: 8
-    
+
 - type: entity
   parent: N14CigPackBase
   id: N14CigarettePackKool
@@ -121,7 +118,7 @@
     contents:
     - id: N14CigaretteKool
       amount: 8
-    
+
 - type: entity
   parent: N14CigPackBase
   id: N14CigarettePackMarlboro
@@ -136,7 +133,7 @@
     contents:
     - id: N14CigaretteMarlboro
       amount: 8
-    
+
 - type: entity
   parent: N14CigPackBase
   id: N14CigarettePackWinston
@@ -151,7 +148,7 @@
     contents:
     - id: N14CigaretteWinston
       amount: 8
-    
+
 - type: entity
   parent: N14CigPackBase
   id: N14CigarettePackCustom
@@ -167,7 +164,7 @@
     contents:
     - id: N14CigaretteRollie
       amount: 8
-    
+
 - type: entity
   parent: N14CigPackBase
   id: N14CigarettePackRepublics
