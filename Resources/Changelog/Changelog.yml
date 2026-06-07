@@ -6603,3 +6603,22 @@ Entries:
   id: 6030
   time: '2026-06-07T15:04:49.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/716
+- author: Sirius
+  changes:
+    - type: Add
+      message: >-
+        A vinyl record player and radio station setup was added to the
+        broadcasting room for town reporters. 
+    - type: Add
+      message: >-
+        A stage for live performances was added to the bar, a second bar counter
+        was added, and some new shelving was installed to store some spare
+        drinks and supplies.
+    - type: Remove
+      message: >-
+        The shelves and lockers being robbed at round start due to their public
+        access have been replaced and removed. No more stealing from the
+        bartenders.
+  id: 6031
+  time: '2026-06-07T15:05:15.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/712
