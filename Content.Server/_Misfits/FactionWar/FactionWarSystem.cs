@@ -15,6 +15,7 @@ using Content.Server.Mind;
 using Content.Server.Roles.Jobs;
 using Content.Shared._Misfits.FactionWar;
 using Content.Shared.GameTicking;
+using Content.Shared.Ghost;
 using Content.Shared.Mind.Components;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
@@ -403,6 +404,13 @@ public sealed class FactionWarSystem : EntitySystem
             return;
         }
 
+        // #Misfits Fix - Ghosts cannot declare war
+        if (HasComp<GhostComponent>(playerEntity))
+        {
+            SendResult(player, false, "Ghosts cannot declare war.");
+            return;
+        }
+
         if (msg.TargetPlayer == player.UserId)
         {
             SendResult(player, false, "You cannot declare war on yourself.");
@@ -445,6 +453,13 @@ public sealed class FactionWarSystem : EntitySystem
         if (targetSession.AttachedEntity is not { } targetEntity)
         {
             SendResult(player, false, "Target player is not yet in-game.");
+            return;
+        }
+
+        // #Misfits Fix - Cannot declare war on ghosts
+        if (HasComp<GhostComponent>(targetEntity))
+        {
+            SendResult(player, false, "Cannot declare war on ghosts.");
             return;
         }
 
