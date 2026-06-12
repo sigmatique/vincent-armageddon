@@ -56,6 +56,9 @@
   - type: GhostTakeoverAvailable
   - type: MobThresholds # #Misfits Add - allow revival by medics
     allowRevives: true
+  - type: Inventory
+    speciesId: cat
+    templateId: cat_pet
   - type: Puller # #Misfits Add - explicit puller for drag mechanic
     needsHands: false
   - type: Hands # #Misfits Add - allows dragging; no hand slots so no actual item holding
@@ -105,6 +108,329 @@
         Toxin: -0.5
         Airloss: -3
 
+- type: entity
+  name: black cat
+  id: N14MobPetCatBlack
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A black cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-black-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: black
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: black
+      Critical:
+        Base: black_dead
+      Dead:
+        Base: black_dead
+
+- type: entity
+  name: brown tabby cat
+  id: N14MobPetCatBrownTabby
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A brown tabby cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-browntabby-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: browntabby
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: browntabby
+      Critical:
+        Base: browntabby_dead
+      Dead:
+        Base: browntabby_dead
+
+- type: entity
+  name: calico cat
+  id: N14MobPetCatCalico
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A calico cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-calico-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: calico
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: calico
+      Critical:
+        Base: calico_dead
+      Dead:
+        Base: calico_dead
+
+- type: entity
+  name: ginger tabby cat
+  id: N14MobPetCatGingerTabby
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A ginger tabby cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-gingertabby-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: gingertabby
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: gingertabby
+      Critical:
+        Base: gingertabby_dead
+      Dead:
+        Base: gingertabby_dead
+
+- type: entity
+  name: gray tabby cat
+  id: N14MobPetCatGrayTabby
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A gray tabby cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-graytabby-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: graytabby
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: graytabby
+      Critical:
+        Base: graytabby_dead
+      Dead:
+        Base: graytabby_dead
+
+- type: entity
+  name: mela cat
+  id: N14MobPetCatMela
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A melanistic cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-mela-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: mela
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: mela
+      Critical:
+        Base: mela_dead
+      Dead:
+        Base: mela_dead
+
+- type: entity
+  name: ocicat
+  id: N14MobPetCatOcicat
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: An ocicat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-ocicat-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: ocicat
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: ocicat
+      Critical:
+        Base: ocicat_dead
+      Dead:
+        Base: ocicat_dead
+
+- type: entity
+  name: siamese cat
+  id: N14MobPetCatSiamese
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A siamese cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-siamese-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: siamese
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: siamese
+      Critical:
+        Base: siamese_dead
+      Dead:
+        Base: siamese_dead
+
+- type: entity
+  name: sphinx cat
+  id: N14MobPetCatSphinx
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A sphinx cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-sphinx-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: sphinx
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: sphinx
+      Critical:
+        Base: sphinx_dead
+      Dead:
+        Base: sphinx_dead
+
+- type: entity
+  name: spoon cat
+  id: N14MobPetCatSpoon
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A spoon cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-spoon-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: spoon_thin
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: spoon_thin
+      Critical:
+        Base: spoon_dead
+      Dead:
+        Base: spoon_dead
+
+- type: entity
+  name: tortoiseshell cat
+  id: N14MobPetCatTortoiseshell
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A tortoiseshell cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-tortie-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: tortie
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: tortie
+      Critical:
+        Base: tortie_dead
+      Dead:
+        Base: tortie_dead
+
+- type: entity
+  name: white cat
+  id: N14MobPetCatWhite
+  parent: N14MobPetCat
+  categories: [ HideSpawnMenu ]
+  description: A white cat, somehow your companion.
+  components:
+  - type: GhostRole
+    name: ghost-role-information-n14pet-cat-white-name
+    description: ghost-role-information-n14pet-generic-description
+    rules: ghost-role-component-default-rules
+    makeSentient: false
+    allowMovement: true
+  - type: Sprite
+    sprite: _Misfits/Mobs/Pets/cat.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: white
+  - type: DamageStateVisuals
+    states:
+      Alive:
+        Base: white
+      Critical:
+        Base: white_dead
+      Dead:
+        Base: white_dead
 
 - type: entity
   name: mirelurk
