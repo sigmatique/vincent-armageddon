@@ -138,6 +138,7 @@
       types:
         Heat: -0.5
         Shock: -0.5
+        Caustic: -0.5
   - type: RobotSelfRepairAnnouncer # #Misfits Change: hull integrity warnings + self-repair popups
   - type: Sanitized # #Misfits Change: makes mr handy not do damage in surgery
 
@@ -245,6 +246,7 @@
       types:
         Heat: -0.5
         Shock: -0.5
+        Caustic: -0.5
   - type: RobotSelfRepairAnnouncer # #Misfits Change: hull integrity warnings + self-repair popups
 
   - type: Tag # #Misfits Change: Protectron walks, so it should have footstep sounds
@@ -328,6 +330,7 @@
       types:
         Heat: -0.5
         Shock: -0.5
+        Caustic: -0.5
   - type: RobotSelfRepairAnnouncer # #Misfits Change: hull integrity warnings + self-repair popups
 
   - type: Gun # #Misfits Add: built-in plasma caster — right-click in combat mode to fire
@@ -663,6 +666,7 @@
       types:
         Heat: -0.5
         Shock: -0.5
+        Caustic: -0.5
   - type: RobotSelfRepairAnnouncer # #Misfits Change: hull integrity warnings + self-repair popups
 
   - type: Tag # #Misfits Change: Assaultron walks, so it should have footstep sounds
@@ -839,6 +843,7 @@
       types:
         Heat: -0.5
         Shock: -0.5
+        Caustic: -0.5
   - type: RobotSelfRepairAnnouncer
   - type: Tag
     tags:
@@ -1013,6 +1018,7 @@
       types:
         Heat: -0.5
         Shock: -0.5
+        Caustic: -0.5
   - type: RobotSelfRepairAnnouncer
   - type: Tag
     tags:
