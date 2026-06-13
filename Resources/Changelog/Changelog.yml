@@ -6917,3 +6917,14 @@ Entries:
   id: 6059
   time: '2026-06-13T17:13:18.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/783
+- author: Vixting
+  changes:
+    - type: Add
+      message: >-
+        Adds a overwatch tab to overseer terminal that allows you to observe
+        members of the vault (those with vault ID)
+    - type: Add
+      message: Adds overseer terminal only accessible with overseer ID
+  id: 6060
+  time: '2026-06-13T22:43:39.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/789
