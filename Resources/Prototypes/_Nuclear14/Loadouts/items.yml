@@ -302,3 +302,50 @@
 #      - NCRPrisoner
 #  items:
 #    - N14CurrencyCap100
+
+
+
+# Paints
+
+- type: loadout
+  id: LoadoutSprayPaintBlue
+  category: Items
+  cost: 1
+  items:
+    - SprayPaintBlue
+
+- type: loadout
+  id: LoadoutSprayPaintRed
+  category: Items
+  cost: 1
+  items:
+    - SprayPaintRed
+
+- type: loadout
+  id: LoadoutSprayPaintBlack
+  category: Items
+  cost: 1
+  items:
+    - SprayPaintBlack
+
+- type: loadout
+  id: LoadoutSprayPaintOrange
+  category: Items
+  cost: 1
+  items:
+    - SprayPaintOrange
+
+- type: loadout
+  id: LoadoutSprayPaintPurple
+  category: Items
+  cost: 1
+  items:
+    - SprayPaintPurple
+
+- type: loadout
+  id: LoadoutSprayPaintWhite
+  category: Items
+  cost: 1
+  items:
+    - SprayPaintWhite
+
