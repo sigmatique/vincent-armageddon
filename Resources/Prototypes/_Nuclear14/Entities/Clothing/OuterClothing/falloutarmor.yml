@@ -796,6 +796,9 @@
     sprite: _Nuclear14/Clothing/OuterClothing/Armor/falloutNCRvestcoatblack.rsi
   - type: Clothing
     sprite: _Nuclear14/Clothing/OuterClothing/Armor/falloutNCRvestcoatblack.rsi
+  - type: ClothingSpeedModifier
+    walkModifier: 1.10
+    sprintModifier: 1.10
   - type: Armor
     modifiers:
       coefficients:
