@@ -456,10 +456,18 @@ public abstract partial class SharedGunSystem : EntitySystem
         var physics = EnsureComp<PhysicsComponent>(uid);
         Physics.SetBodyStatus(uid, physics, BodyStatus.InAir);
 
-        var targetMapVelocity = gunVelocity + direction.Normalized() * speed;
-        var currentMapVelocity = Physics.GetMapLinearVelocity(uid, physics);
-        var finalLinear = physics.LinearVelocity + targetMapVelocity - currentMapVelocity;
-        Physics.SetLinearVelocity(uid, finalLinear, body: physics);
+        // #Misfits Fix - Prevent projectiles from inheriting parent physics (e.g. mount velocity).
+        // Revolvers and battery weapons spawn projectiles at the shooter's (mount-local) coordinates,
+        // making them transform children of dynamic entities like Brahdo mounts or motorcycles.
+        // This caused the projectile to inherit the mount's angular/linear velocity through the
+        // transform hierarchy, letting riders "steer" bullets mid-flight by rotating the mount.
+        // Ballistic weapons were not affected because they re-spawn at grid-level coordinates.
+        //
+        // Fix: reparent the projectile to the map and set map-level velocity directly,
+        // so parent physics cannot influence the projectile's trajectory.
+        var mapCoords = TransformSystem.GetMapCoordinates(uid);
+        TransformSystem.SetCoordinates(uid, TransformSystem.ToCoordinates(mapCoords));
+        Physics.SetLinearVelocity(uid, gunVelocity + direction.Normalized() * speed, body: physics);
 
         var projectile = EnsureComp<ProjectileComponent>(uid);
         Projectiles.SetShooter(uid, projectile, user ?? gunUid);
