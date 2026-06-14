@@ -151,7 +151,7 @@
       jobs:
         - BoSMidPaladin
     - !type:CharacterPlaytimeRequirement
-      tracker: BoSMidCommander
-      min: 72000 # 20 hours as SENIOR Paladin
+      tracker: BoSMidPaladin
+      min: 144000 # 40 hrs
   items:
     - N14ClothingOuterPowerArmorMidwestSilver

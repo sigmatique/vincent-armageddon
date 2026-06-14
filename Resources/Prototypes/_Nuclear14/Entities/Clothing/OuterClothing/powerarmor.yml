@@ -491,31 +491,6 @@
 
 #MIsfit
 
-  - type: ExplosionResistance
-    damageCoefficient: 0.12 # #Misfits Tweak: Midwest BoS blast resistance — ~14 HP at ground zero
-  - type: UserInterface
-    interfaces:
-      enum.ToggleClothingUiKey.Key:
-        type: ToggleableClothingBoundUserInterface
-      enum.WastelandMapUiKey.Key:
-        type: WastelandMapBoundUserInterface
-  - type: WastelandMap
-    mapTexturePath: _Misfits/Maps/wendover_map.png
-    mapTitle: Brotherhood Tactical HUD
-    # #Misfits Fix - Match the corrected Wendover AABB so helmet-linked tactical markers align with the map art.
-    worldBounds: "-517,-308,484,311"
-    tacticalFeed: Brotherhood
-    compactHud: true
-  # #Misfits Change - tactical HUD is provided by the helmet, not the suit itself
-  - type: WastelandMapAction
-    requiredSlot: HEAD
-  - type: ToggleableClothing
-    clothingPrototypes:
-      head: N14ClothingHeadHelmetPowerArmorMidwest
-      gloves: N14ClothingPAGauntletsMBoS
-      shoes: N14ClothingPABootsMBoS
-      back: N14ClothingPowerSystemsBack
-
 
 
 - type: entity
