@@ -6984,3 +6984,10 @@ Entries:
   id: 6066
   time: '2026-06-14T04:08:46.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/787
+- author: Squagg
+  changes:
+    - type: Tweak
+      message: NCR infiltrator armor now grants a 10% movement speed bonus.
+  id: 6067
+  time: '2026-06-14T16:07:58.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/797
