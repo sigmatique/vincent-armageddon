@@ -430,8 +430,8 @@
   description: A unknown model of power armor manufactured by the Brotherhood of Steel. It supports a lighter plating than the normal but is more ergonomic, allowing easier movement.
   components:
   - type: PowerArmorIntegrity
-    brokenBleedthroughRatio: 1.0
-    maxIntegrity: 500
+    brokenBleedthroughRatio: 1.0  # #Misfits Add - when broken, only armor coefficients apply
+    maxIntegrity: 500 # #Misfits Tweak: +150 flat integrity buff
   - type: Sprite
     sprite: _Nuclear14/Clothing/OuterClothing/PowerArmor/midwest.rsi
   - type: Clothing
@@ -445,16 +445,32 @@
         Heat: 0.7
         Caustic: 0.7
         Radiation: 0.6
+  - type: ExplosionResistance
+    damageCoefficient: 0.12 # #Misfits Tweak: Midwest BoS blast resistance — ~14 HP at ground zero
   - type: UserInterface
     interfaces:
       enum.ToggleClothingUiKey.Key:
         type: ToggleableClothingBoundUserInterface
+      enum.WastelandMapUiKey.Key:
+        type: WastelandMapBoundUserInterface
+  - type: WastelandMap
+    mapTexturePath: _Misfits/Maps/wendover_map.png
+    mapTitle: Brotherhood Tactical HUD
+    # #Misfits Fix - Match the corrected Wendover AABB so helmet-linked tactical markers align with the map art.
+    worldBounds: "-517,-308,484,311"
+    tacticalFeed: Brotherhood
+    compactHud: true
+  # #Misfits Change - tactical HUD is provided by the helmet, not the suit itself
+  - type: WastelandMapAction
+    requiredSlot: HEAD
   - type: ToggleableClothing
     clothingPrototypes:
       head: N14ClothingHeadHelmetPowerArmorMidwest
       gloves: N14ClothingPAGauntletsMBoS
       shoes: N14ClothingPABootsMBoS
       back: N14ClothingPowerSystemsBack
+
+#Misfit
 
 - type: entity
   parent: N14ClothingOuterPowerArmorT60
@@ -478,17 +494,31 @@
         Heat: 0.65
         Caustic: 0.65
         Radiation: 0.6
+  - type: ExplosionResistance
+    damageCoefficient: 0.12 # #Misfits Tweak: Midwest BoS blast resistance — ~14 HP at ground zero
   - type: UserInterface
     interfaces:
       enum.ToggleClothingUiKey.Key:
         type: ToggleableClothingBoundUserInterface
-  - type: ToggleableClothing
+      enum.WastelandMapUiKey.Key:
+        type: WastelandMapBoundUserInterface
+  - type: WastelandMap
+    mapTexturePath: _Misfits/Maps/wendover_map.png
+    mapTitle: Brotherhood Tactical HUD
+    # #Misfits Fix - Match the corrected Wendover AABB so helmet-linked tactical markers align with the map art.
+    worldBounds: "-517,-308,484,311"
+    tacticalFeed: Brotherhood
+    compactHud: true
+  # #Misfits Change - tactical HUD is provided by the helmet, not the suit itself
+  - type: WastelandMapAction
+    requiredSlot: HEAD
     clothingPrototypes:
       head: N14ClothingHeadHelmetPowerArmorMidwestSilver
       gloves: N14ClothingPAGauntletsMBoS
       shoes: N14ClothingPABootsMBoS
       back: N14ClothingPowerSystemsBack
 
+#MIsfit
 
   - type: ExplosionResistance
     damageCoefficient: 0.12 # #Misfits Tweak: Midwest BoS blast resistance — ~14 HP at ground zero
