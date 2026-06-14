@@ -654,7 +654,7 @@
   - type: IngestionBlocker # Misfits Change
 
 - type: entity
-  parent: N14ClothingHeadHelmetPowerArmorX01
+  parent: N14ClothingHeadHelmetPowerArmorT45
   id: N14ClothingHeadHelmetPowerArmorMidwest
   name: BoS Power Armor Helmet
   description: A unknown model of Power Armor helmet adopted by the Brotherhood of Steel chapter.
@@ -697,7 +697,7 @@
 ## Misfit
 
 - type: entity
-  parent: N14ClothingHeadHelmetPowerArmorX01
+  parent: N14ClothingHeadHelmetPowerArmorT45
   id: N14ClothingHeadHelmetPowerArmorMidwestSilver
   name: BoS Power Armor Helmet
   description: A unknown model of Power Armor helmet adopted by the Brotherhood of Steel chapter.
