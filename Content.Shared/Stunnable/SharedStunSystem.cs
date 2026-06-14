@@ -16,7 +16,6 @@ using Content.Shared.StatusEffect;
 using Content.Shared.Throwing;
 using Content.Shared.Whitelist;
 using Robust.Shared.Audio.Systems;
-using Robust.Shared.Containers;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
@@ -35,8 +34,6 @@ public abstract class SharedStunSystem : EntitySystem
     [Dependency] private readonly EntityWhitelistSystem _entityWhitelist = default!;
     [Dependency] private readonly StandingStateSystem _standingState = default!;
     [Dependency] private readonly StatusEffectsSystem _statusEffect = default!;
-    [Dependency] private readonly SharedLayingDownSystem _layingDown = default!;
-    [Dependency] private readonly SharedContainerSystem _container = default!;
 
     /// <summary>
     /// Friction modifier for knocked down players.
@@ -92,17 +89,23 @@ public abstract class SharedStunSystem : EntitySystem
         switch (args.NewMobState)
         {
             case MobState.Alive:
+                // if they are no longer knocked down, let mobs stand again only if ALIVE.
+                if (!HasComp<KnockedDownComponent>(uid)
+                    && !HasComp<SleepingComponent>(uid)
+                    && TryComp(uid, out StandingStateComponent? standing))
+                {
+                    _standingState.Stand(uid, standing, force: true);
+                }
+
                 break;
             case MobState.Critical:
-                {
-                    _statusEffect.TryRemoveStatusEffect(uid, "Stun");
-                    break;
-                }
             case MobState.Dead:
-                {
-                    _statusEffect.TryRemoveStatusEffect(uid, "Stun");
-                    break;
-                }
+                _statusEffect.TryRemoveStatusEffect(uid, "Stun");
+
+                // crit/dead mobs should stay visually down even if a stamina
+                // knockdown status expires while they are in crit.   -pierow
+                _standingState.Down(uid, playSound: false, dropHeldItems: false);
+                break;
             case MobState.Invalid:
             default:
                 return;
@@ -149,12 +152,24 @@ public abstract class SharedStunSystem : EntitySystem
 }
 
 private void OnKnockShutdown(EntityUid uid, KnockedDownComponent component, ComponentShutdown args)
-{
-    if (!TryComp(uid, out StandingStateComponent? standing))
-        return;
+    {
+        if (!TryComp(uid, out StandingStateComponent? standing))
+            return;
 
-    _standingState.Stand(uid, standing, force: true);
-}
+        // if stamina knockdown expires while the mob is crit/dead, do not force
+        // them upright. crit/dead visuals should remain sideways.
+        if (TryComp<MobStateComponent>(uid, out var mobState)
+            && mobState.CurrentState != MobState.Alive)
+        {
+            _standingState.Down(uid, playSound: false, dropHeldItems: false);
+            return;
+        }
+
+        if (HasComp<SleepingComponent>(uid))
+            return;
+
+        _standingState.Stand(uid, standing, force: true);
+    }
 
 private void OnStandAttempt(EntityUid uid, KnockedDownComponent component, StandAttemptEvent args)
     {
