@@ -617,6 +617,9 @@
       amount: 4
     - id: N14MaterialRawLeather1
       amount: 4
+    - id: N14MiscRadstagSkull
+      amount: 1
+      prob: 0.75
   - type: MeleeWeapon
     altDisarm: false
     hidden: true
