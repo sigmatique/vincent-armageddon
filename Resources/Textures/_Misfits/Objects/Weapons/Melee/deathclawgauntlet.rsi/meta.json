@@ -2,12 +2,19 @@
   "version": 1,
   "license": "CC-BY-NC-SA-3.0",
   "copyright": "Deathclaw gauntlet sprite submission by nuclear-14 contributor",
-  "size": { "x": 32, "y": 32 },
+  "size": {
+    "x": 32,
+    "y": 32
+  },
   "states": [
-    { "name": "icon" },
-    { "name": "inhand-left" },
-    { "name": "inhand-right" },
-    { "name": "wielded-inhand-left" },
-    { "name": "wielded-inhand-right" }
+    {
+      "name": "icon"
+    },
+    {
+      "name": "wielded-inhand-left"
+    },
+    {
+      "name": "wielded-inhand-right"
+    }
   ]
 }

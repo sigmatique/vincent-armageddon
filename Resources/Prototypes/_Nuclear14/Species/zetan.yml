@@ -5,6 +5,7 @@
   prototype: N14BaseMobZetan
   sprites: N14MobZetanSprites
   dollPrototype: N14MobZetanDummy
+  skinColoration: HumanToned
 
 - type: speciesBaseSprites
   id: N14MobZetanSprites
