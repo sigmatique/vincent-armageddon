@@ -58,9 +58,13 @@ public abstract partial class SharedStationAiSystem : EntitySystem
     [Dependency] private readonly   SharedUserInterfaceSystem _uiSystem = default!;
     [Dependency] private readonly   StationAiVisionSystem _vision = default!;
 
+    // [Changed by MisfitsCrew/Operator] Gives server-side Station AI code protected access
+    // to shared power and vision systems without duplicating dependencies or subscriptions.
     protected SharedPowerReceiverSystem PowerReceiverSystem => PowerReceiver;
     protected StationAiVisionSystem Vision => _vision;
 
+    // [Changed by MisfitsCrew/Operator] Exposes Station AI lifecycle hooks so server-only
+    // systems can react without duplicating the shared core event subscriptions.
     protected virtual void OnStationAiInserted(Entity<StationAiCoreComponent> core, EntityUid ai) { }
     protected virtual void OnStationAiRemoved(Entity<StationAiCoreComponent> core, EntityUid ai) { }
     protected virtual void OnStationAiCoreMapInitialized(Entity<StationAiCoreComponent> core, EntityUid? ai) { }
@@ -335,6 +339,8 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         if (_net.IsClient)
             return;
 
+        // [Changed by MisfitsCrew/Operator] Notifies server hooks before the AI eye is
+        // deleted so view subscriptions tied to this core can be cleaned up.
         OnStationAiCoreShuttingDown(ent, GetInsertedAI(ent));
 
         QueueDel(ent.Comp.RemoteEntity);
@@ -350,11 +356,15 @@ public abstract partial class SharedStationAiSystem : EntitySystem
                 return;
 
             AttachEye(ent);
+            // [Changed by MisfitsCrew/Operator] Refreshes server-side AI camera view
+            // subscriptions after the core regains power and its eye is restored.
             OnStationAiCorePowerChanged(ent, true, GetInsertedAI(ent));
         }
         else
         {
             ClearEye(ent);
+            // [Changed by MisfitsCrew/Operator] Clears server-side AI camera view
+            // subscriptions when the core loses power and should no longer supervise cameras.
             OnStationAiCorePowerChanged(ent, false, GetInsertedAI(ent));
         }
     }
@@ -363,6 +373,8 @@ public abstract partial class SharedStationAiSystem : EntitySystem
     {
         SetupEye(ent);
         AttachEye(ent);
+        // [Changed by MisfitsCrew/Operator] Lets server-side systems initialize AI camera
+        // view subscriptions after the core and eye finish map initialization.
         OnStationAiCoreMapInitialized(ent, GetInsertedAI(ent));
     }
 
@@ -471,6 +483,8 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         _metadata.SetEntityName(ent.Owner, MetaData(args.Entity).EntityName);
 
         AttachEye(ent);
+        // [Changed by MisfitsCrew/Operator] Lets server-side systems register camera PVS
+        // subscriptions after an AI is inserted into the core.
         OnStationAiInserted(ent, args.Entity);
     }
 
@@ -493,6 +507,8 @@ public abstract partial class SharedStationAiSystem : EntitySystem
         }
 
         ClearEye(ent);
+        // [Changed by MisfitsCrew/Operator] Lets server-side systems remove camera PVS
+        // subscriptions after an AI is removed from the core.
         OnStationAiRemoved(ent, args.Entity);
     }
 

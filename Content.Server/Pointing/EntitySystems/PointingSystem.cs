@@ -135,6 +135,8 @@ namespace Content.Server.Pointing.EntitySystems
                 return false;
             }
 
+            // [Changed by MisfitsCrew/Operator] Lets systems such as Station AI replace
+            // the visual point source, validate remote-vision reach, and prevent proxy rotation.
             var sourceEv = new GetPointingSourceEvent(player, coordsPointed, pointed);
             RaiseLocalEvent(player, ref sourceEv);
 
@@ -157,6 +159,8 @@ namespace Content.Server.Pointing.EntitySystems
                 return false;
             }
 
+            // [Changed by MisfitsCrew/Operator] Uses the resolved visual source for arrow
+            // animation, visibility, and nearby-viewer checks while preserving actor identity.
             var mapCoordsPointed = coordsPointed.ToMap(EntityManager, _transform);
             if (sourceEv.RotateSource)
                 _rotateToFaceSystem.TryFaceCoordinates(pointingSource, mapCoordsPointed.Position);

@@ -31,6 +31,8 @@ public sealed class StationAiSystem : SharedStationAiSystem
     [Dependency] private readonly ViewSubscriberSystem _viewSubscriber = default!;
 
     private readonly HashSet<Entity<StationAiCoreComponent>> _ais = new();
+    // [Changed by MisfitsCrew/Operator] Tracks which AI player sessions were subscribed
+    // to which Station AI vision sources so camera PVS can be added and removed safely.
     private readonly Dictionary<EntityUid, HashSet<EntityUid>> _visionSubscriptions = new();
     private readonly HashSet<EntityUid> _desiredVisionSubscriptions = new();
 
@@ -43,7 +45,11 @@ public sealed class StationAiSystem : SharedStationAiSystem
         _broadphaseQuery = GetEntityQuery<BroadphaseComponent>();
 
         SubscribeLocalEvent<ExpandICChatRecipientsEvent>(OnExpandICChatRecipients);
+        // [Changed by MisfitsCrew/Operator] Hooks Station AI point attempts so they can
+        // originate from the nearest supervised camera/core instead of the contained brain.
         SubscribeLocalEvent<StationAiHeldComponent, GetPointingSourceEvent>(OnAiGetPointingSource);
+        // [Changed by MisfitsCrew/Operator] Watches AI vision source startup/shutdown to
+        // keep active AI camera PVS subscriptions in sync with mapped cameras.
         SubscribeLocalEvent<StationAiVisionComponent, ComponentStartup>(OnAiVisionStartup);
         SubscribeLocalEvent<StationAiVisionComponent, ComponentShutdown>(OnAiVisionShutdown);
     }
@@ -84,6 +90,8 @@ public sealed class StationAiSystem : SharedStationAiSystem
         if (!base.SetVisionEnabled(entity, enabled, announce))
             return false;
 
+        // [Changed by MisfitsCrew/Operator] Updates active AI camera PVS subscriptions
+        // whenever a camera/core vision wire enables or disables Station AI supervision.
         if (enabled)
             AddVisionToRelevantAis(entity.Owner);
         else
@@ -99,6 +107,8 @@ public sealed class StationAiSystem : SharedStationAiSystem
 
     private void OnAiGetPointingSource(Entity<StationAiHeldComponent> ent, ref GetPointingSourceEvent args)
     {
+        // [Changed by MisfitsCrew/Operator] Resolves Station AI pointing from visible
+        // supervised sources and rejects points outside the powered core's camera network.
         args.Handled = true;
 
         if (!TryGetStationAiCoreForHeld(ent, out var core) ||
@@ -128,6 +138,8 @@ public sealed class StationAiSystem : SharedStationAiSystem
 
         lock (Vision)
         {
+            // [Changed by MisfitsCrew/Operator] Prefer the exact nearest camera/core that
+            // can see the tile so the point arrow visually emerges from that source.
             if (Vision.TryGetNearestVisibleSource((gridUid, broadphase, grid), targetTile, targetMap, out var source))
             {
                 args.Source = source;
@@ -135,9 +147,8 @@ public sealed class StationAiSystem : SharedStationAiSystem
                 return;
             }
 
-            // Keep pointing usable if the stricter source attribution fails to find the
-            // exact seed. The existing Station AI visibility check is still authoritative
-            // for whether the target tile is supervised.
+            // [Changed by MisfitsCrew/Operator] Keeps pointing usable if stricter source
+            // attribution misses the exact seed while the tile is still AI-supervised.
             if (Vision.IsAccessible((gridUid, broadphase, grid), targetTile))
             {
                 args.Source = core.Value.Owner;
@@ -151,28 +162,38 @@ public sealed class StationAiSystem : SharedStationAiSystem
 
     protected override void OnStationAiInserted(Entity<StationAiCoreComponent> core, EntityUid ai)
     {
+        // [Changed by MisfitsCrew/Operator] Adds camera PVS subscriptions after the AI
+        // brain is inserted into a powered core.
         RefreshAiVisionSubscriptions(ai);
     }
 
     protected override void OnStationAiRemoved(Entity<StationAiCoreComponent> core, EntityUid ai)
     {
+        // [Changed by MisfitsCrew/Operator] Removes camera PVS subscriptions when the AI
+        // brain leaves the core.
         ClearAiVisionSubscriptions(ai);
     }
 
     protected override void OnStationAiCoreMapInitialized(Entity<StationAiCoreComponent> core, EntityUid? ai)
     {
+        // [Changed by MisfitsCrew/Operator] Rebuilds camera PVS subscriptions when a mapped
+        // AI core initializes with an AI already inserted.
         if (ai != null)
             RefreshAiVisionSubscriptions(ai.Value);
     }
 
     protected override void OnStationAiCoreShuttingDown(Entity<StationAiCoreComponent> core, EntityUid? ai)
     {
+        // [Changed by MisfitsCrew/Operator] Clears camera PVS subscriptions before the core
+        // and its remote eye are torn down.
         if (ai != null)
             ClearAiVisionSubscriptions(ai.Value);
     }
 
     protected override void OnStationAiCorePowerChanged(Entity<StationAiCoreComponent> core, bool powered, EntityUid? ai)
     {
+        // [Changed by MisfitsCrew/Operator] Treats core power as the authority for whether
+        // the AI session should receive camera-supervised PVS locations.
         if (ai == null)
             return;
 
@@ -184,17 +205,23 @@ public sealed class StationAiSystem : SharedStationAiSystem
 
     private void OnAiVisionStartup(Entity<StationAiVisionComponent> ent, ref ComponentStartup args)
     {
+        // [Changed by MisfitsCrew/Operator] Adds newly initialized enabled vision sources
+        // to any active same-grid AI sessions.
         if (ent.Comp.Enabled)
             AddVisionToRelevantAis(ent.Owner);
     }
 
     private void OnAiVisionShutdown(Entity<StationAiVisionComponent> ent, ref ComponentShutdown args)
     {
+        // [Changed by MisfitsCrew/Operator] Removes deleted vision sources from any AI
+        // sessions that were using them for camera-supervised PVS.
         RemoveVisionFromAllAis(ent.Owner);
     }
 
     private void RefreshAiVisionSubscriptions(EntityUid ai)
     {
+        // [Changed by MisfitsCrew/Operator] Recomputes all enabled same-grid Station AI
+        // vision sources for one AI session and subscribes the session to their PVS views.
         if (!TryComp(ai, out ActorComponent? actor) ||
             !TryComp(ai, out StationAiHeldComponent? held) ||
             !TryGetStationAiCoreForHeld((ai, held), out var core) ||
@@ -234,6 +261,8 @@ public sealed class StationAiSystem : SharedStationAiSystem
 
     private void AddVisionToRelevantAis(EntityUid vision)
     {
+        // [Changed by MisfitsCrew/Operator] Adds one enabled vision source to all powered
+        // same-grid AI sessions, used when a camera/core vision source appears or re-enables.
         var visionGrid = Transform(vision).GridUid;
         if (visionGrid == null)
             return;
@@ -256,12 +285,16 @@ public sealed class StationAiSystem : SharedStationAiSystem
 
     private void RemoveVisionFromAllAis(EntityUid vision)
     {
+        // [Changed by MisfitsCrew/Operator] Removes one vision source from every tracked AI
+        // session when that source is disabled or deleted.
         foreach (var (ai, _) in _visionSubscriptions.ToArray())
             RemoveVisionSubscription(ai, vision);
     }
 
     private void AddVisionSubscription(EntityUid ai, EntityUid vision, ActorComponent actor)
     {
+        // [Changed by MisfitsCrew/Operator] Records and creates the Robust view subscription
+        // that makes camera-supervised areas visible to the original AI player session.
         if (!_visionSubscriptions.TryGetValue(ai, out var current))
         {
             current = new HashSet<EntityUid>();
@@ -277,6 +310,8 @@ public sealed class StationAiSystem : SharedStationAiSystem
 
     private void RemoveVisionSubscription(EntityUid ai, EntityUid vision, ActorComponent? actor = null)
     {
+        // [Changed by MisfitsCrew/Operator] Tears down a tracked camera PVS subscription and
+        // removes local bookkeeping once the AI should no longer see that source.
         if (!_visionSubscriptions.TryGetValue(ai, out var current) ||
             !current.Remove(vision))
         {
@@ -296,6 +331,8 @@ public sealed class StationAiSystem : SharedStationAiSystem
 
     private void ClearAiVisionSubscriptions(EntityUid ai)
     {
+        // [Changed by MisfitsCrew/Operator] Clears every tracked camera PVS subscription for
+        // an AI session, used on removal, shutdown, or power loss.
         if (!_visionSubscriptions.TryGetValue(ai, out var current))
             return;
 
@@ -305,6 +342,8 @@ public sealed class StationAiSystem : SharedStationAiSystem
 
     private bool IsCorePowered(EntityUid core)
     {
+        // [Changed by MisfitsCrew/Operator] Centralizes the powered-core check used by AI
+        // pointing and camera PVS subscription decisions.
         SharedApcPowerReceiverComponent? receiver = null;
         return PowerReceiverSystem.IsPowered((core, receiver));
     }
@@ -313,6 +352,8 @@ public sealed class StationAiSystem : SharedStationAiSystem
         Entity<StationAiHeldComponent> ai,
         [NotNullWhen(true)] out Entity<StationAiCoreComponent>? core)
     {
+        // [Changed by MisfitsCrew/Operator] Finds the AI core for a held AI even when the
+        // transform parent does not directly point at the core container owner.
         if (TryGetStationAiCore((ai.Owner, (StationAiHeldComponent?) ai.Comp), out core))
             return true;
 

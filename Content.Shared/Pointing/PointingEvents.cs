@@ -20,8 +20,8 @@ public sealed class PointingAttemptEvent : EntityEventArgs
 }
 
 /// <summary>
-/// Raised on the entity attempting to point so systems with remote vision can provide the
-/// entity that should act as the visual origin for the point.
+/// [Changed by MisfitsCrew/Operator] Allows remote-vision systems to provide the visual
+/// point source and rotation behavior used by the server-side pointing action.
 /// </summary>
 [ByRefEvent]
 public record struct GetPointingSourceEvent(EntityUid Pointer, EntityCoordinates Coordinates, EntityUid Pointed)

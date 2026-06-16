@@ -121,7 +121,8 @@ public sealed class StationAiVisionSystem : EntitySystem
     }
 
     /// <summary>
-    /// Finds the closest enabled vision source that can see the target tile.
+    /// [Changed by MisfitsCrew/Operator] Finds the closest enabled Station AI vision source
+    /// that can see the target tile so remote pointing can originate from a camera/core.
     /// </summary>
     public bool TryGetNearestVisibleSource(
         Entity<BroadphaseComponent, MapGridComponent> grid,
