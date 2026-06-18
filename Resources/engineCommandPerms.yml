@@ -91,6 +91,8 @@
 - Flags: ADMIN
   Commands:
   - delete
+  - forcewar
+  - forcewarjoin
   - kick
   - listplayers
   - tp

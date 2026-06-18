@@ -7328,3 +7328,65 @@ Entries:
   id: 6094
   time: '2026-06-17T21:25:35.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/837
+- author: Squagg
+  changes:
+    - type: Tweak
+      message: Allowed Compliance Officers to use the force war join command.
+  id: 6095
+  time: '2026-06-18T01:27:31.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/841
+- author: Operator
+  changes: []
+  id: 6096
+  time: '2026-06-18T01:30:16.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/838
+- author: Sirius
+  changes:
+    - type: Add
+      message: >-
+        The BoS have constructed 'Kitty Kingdom', a project which has seen the
+        significant time and effort contributed by the Paladins in the chapter
+        to construct a forested campground and rest area for the Chapter's pet,
+        Spoon. When the Head Knight attempted to investigate where they had
+        gotten the funds for construction, they were only given vague answers
+        about a mysterious benefactor wearing a red three-piece named "Mr.
+        Lowe". Investigations are continuing on how they got approval from the
+        Elder Council without anyone knowing about it beforehand.
+    - type: Tweak
+      message: >-
+        Maintenance crews have received complaints from Vault Dwellers in
+        Vault-14 that the Medical Department felt too much like it was made out
+        of plastic. An attempt has been made to remedy this; furthermore, the
+        lighting in the Vault has been swapped with a new technology: LEDS,
+        otherwise known as Light Emitting Diodes, are a patent pending
+        innovation that promises to cut down on the energy bill while providing
+        more light than a standard bulb.
+    - type: Tweak
+      message: >-
+        Vault-Dwellers were complaining about the eerie silence in the Medical
+        Department. Maintenance teams have installed some fans to increase the
+        background noise levels.
+  id: 6097
+  time: '2026-06-18T02:12:30.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/806
+- author: Bill
+  changes:
+    - type: Add
+      message: Added fun new melee weapon, THE RIPPER SWORD!
+    - type: Add
+      message: >-
+        Added said fun new melee weapon to the big block kit, and to a
+        paladin-grade kit. 
+    - type: Remove
+      message: Removed auto-shotgun from paladin kit, replaced with said rippersword.
+    - type: Tweak
+      message: Gave multiple legion variant sets for several kits.
+    - type: Fix
+      message: >-
+        Fixed the american 180 drum has been given its RL accurate capacity of
+        177 rounds
+    - type: Tweak
+      message: made american 180 more accurate, off of feedback from cylinders.
+  id: 6098
+  time: '2026-06-18T02:12:55.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/839
