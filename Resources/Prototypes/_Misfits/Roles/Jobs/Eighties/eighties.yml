@@ -41,6 +41,8 @@
         factions:
           - PlayerRaider
           - Wastelander
+  - !type:AddTraitSpecial
+    traits: [ N14RidingPerk ]
 
 - type: startingGear
   id: EightiesTheBlockGear
@@ -103,6 +105,8 @@
         factions:
           - PlayerRaider
           - Wastelander
+  - !type:AddTraitSpecial
+    traits: [ N14RidingPerk ]
 
 - type: startingGear
   id: EightiesCylindersGear
@@ -163,6 +167,8 @@
         factions:
           - PlayerRaider
           - Wastelander
+  - !type:AddTraitSpecial
+    traits: [ N14RidingPerk ]
 
 - type: startingGear
   id: EightiesPistonsGear
@@ -223,6 +229,8 @@
         factions:
           - PlayerRaider
           - Wastelander
+  - !type:AddTraitSpecial
+    traits: [ N14RidingPerk ]
 
 - type: startingGear
   id: EightiesOilersGear
@@ -284,6 +292,8 @@
         factions:
           - PlayerRaider
           - Wastelander
+  - !type:AddTraitSpecial
+    traits: [ N14RidingPerk ]
 
 - type: startingGear
   id: EightiesRoadRashGear
