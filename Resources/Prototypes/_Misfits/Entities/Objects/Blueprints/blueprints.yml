@@ -263,10 +263,7 @@
     recipes:
     - N14BPLegionWeaponTribalKnife
     - N14BPLegionWeaponTribalClub
-    - N14BPLegionWeaponBrokenPipe
-    - N14BPLegionWeaponNailBoard
     - N14BPLegionWeaponWastelandSpear
-    - N14BPLegionWeaponRevolver44Tribal
 
 - type: entity
   parent: N14BlueprintBase
@@ -276,14 +273,16 @@
   components:
   - type: Blueprint
     recipes:
+    - N14BPLegionWeaponRifle556EM2
     - N14BPLegionWeaponTribalMachete
     - N14BPLegionWeaponMachete
-    - N14BPLegionWeaponTribalHatchet
-    - N14BPLegionWeaponTribalSword
     - N14BPLegionWeaponRevolver44TribalUpgraded
-    - N14BPLegionWeaponShotgunDoubleBarrel
     - N14BPLegionWeaponShotgunPipe
     - N14BPLegionWeaponTrenchClub
+    - N14BPLegionWeaponLongSword
+    - N14BPLegionWeaponSledgeHammer
+    - N14BPLegionWeaponTribalBigClub
+    - N14BPLegionWeaponSMGGreaseGun #Misfits Add - .45 ACP SMG
 
 - type: entity
   parent: N14BlueprintBase
@@ -294,17 +293,15 @@
   - type: Blueprint
     recipes:
     - N14BPLegionWeaponCeremonialSword
-    - N14BPLegionWeaponLongSword
-    - N14BPLegionWeaponSledgeHammer
-    - N14BPLegionWeaponTribalBigClub
     - N14BPLegionWeaponRevolver44TribalExtra
-    - N14BPLegionWeaponHandcannon
-    - N14BPLegionWeaponRifleM1Garand
     - N14BPLegionWeaponLauncherGrenade
-    - N14BPLegionWeaponBaseballBat
-    - N14BPLegionWeaponShotgunNeostead  # #Misfits Add - Semi-auto shotgun
-    - N14BPLegionWeaponSMGGreaseGun    # #Misfits Add - .45 ACP SMG
     - N14BPLegionWeaponRifle762SKS     # #Misfits Add - 7.62mm semi-auto rifle
+    - N14BPLegionWeaponHandcannonUpgraded
+    - N14BPLegionWeaponRipper
+    - N14BPLegionWeaponShotgunAuto    # #Misfits Add - Auto Shotgun
+    - N14BPLegionWeaponRifle762Chinese
+    - N14BPLegionWeaponSMG10mmSuppressed
+    - N14BPLegionWeaponRifleSKS
 
 - type: entity
   parent: N14BlueprintBase
@@ -316,12 +313,10 @@
     recipes:
     - N14BPLegionWeaponSuperSledgeHammer
     - N14BPLegionWeaponTribalBigClubDecorated
-    - N14BPLegionWeaponHandcannonUpgraded
-    - N14BPLegionWeaponRipper
     - N14BPLegionWeaponPolearm
     - N14BPLegionWeaponLauncherMissile
     - N14BPLegionWeaponBren           # #Misfits Add - Bren LMG (.308 FullAuto)
-    - N14BPLegionWeaponShotgunAuto    # #Misfits Add - Auto Shotgun
+    - N14BPLegionWeaponShotgunNeostead  # #Misfits Add - Semi-auto shotgun
 
 # #Misfits Add - T5 Legion Weapons: Scorcher flamethrower (single apex incendiary)
 - type: entity
