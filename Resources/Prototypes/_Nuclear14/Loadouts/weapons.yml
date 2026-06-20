@@ -553,7 +553,7 @@
 - type: loadout
   id: N14WeaponSMGPPSh41
   category: Weapons
-  cost: 16
+  cost: 17
   requirements:
     - !type:CharacterItemGroupRequirement
       group: N14LoadoutGunsBig
@@ -573,7 +573,7 @@
 - type: loadout
   id: N14WeaponSMGAmerican180
   category: Weapons
-  cost: 15
+  cost: 21
   requirements:
     - !type:CharacterItemGroupRequirement
       group: N14LoadoutGunsBig
