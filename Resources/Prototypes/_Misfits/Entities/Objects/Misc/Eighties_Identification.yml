@@ -5,8 +5,8 @@
   description: Some keys used by a member of the 80's.
   components:
   - type: Sprite
-    sprite: _Nuclear14/Objects/Misc/identification.rsi #placeholder sprite
-    state: passport_blank
+    sprite: _Misfits/Objects/Identification.rsi
+    state: Eighties_Keyfob
   - type: PresetIdCard
     job: EightiesRoadRash
 
@@ -17,7 +17,7 @@
   description: The Block's keys.
   components:
   - type: Sprite
-    sprite: _Nuclear14/Objects/Misc/identification.rsi #placeholder sprite
-    state: passport_presidential
+    sprite: _Misfits/Objects/Identification.rsi
+    state: Eighties_Keyfob
   - type: PresetIdCard
     job: EightiesTheBlock

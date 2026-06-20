@@ -59,3 +59,7 @@
       key_slots:
       - EncryptionKeyWastelandGlobal
       - EncryptionKeyEighties
+  - type: Sprite
+    sprite: _Misfits/Clothing/Ears/Headsets/eighties.rsi
+  - type: Clothing
+    sprite: _Misfits/Clothing/Ears/Headsets/eighties.rsi

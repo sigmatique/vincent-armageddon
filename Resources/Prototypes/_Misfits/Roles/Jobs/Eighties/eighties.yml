@@ -59,7 +59,6 @@
     ears: MisfitsClothingHeadsetEighties
     back: N14ClothingBackpackMilitary
     pocket1: EightiesTheBlockloadoutkits
-    pocket2: VehicleKeyMotorbike
     belt: ClothingBeltMilitary
   storage:
     back:
@@ -122,7 +121,6 @@
     head: N14ClothingHeadHatBeanie
     back: N14ClothingBackpackMilitary
     pocket1: EightiesCylindersloadoutkits
-    pocket2: VehicleKeyMotorbike
     belt: ClothingBeltMilitary
   storage:
     back:
@@ -184,7 +182,6 @@
     ears: MisfitsClothingHeadsetEighties
     back: N14ClothingBackpackMilitary
     pocket1: EightiesPistonsloadoutkits
-    pocket2: VehicleKeyMotorbike
     belt: ClothingBeltMilitary
   storage:
     back:
@@ -246,7 +243,6 @@
     ears: MisfitsClothingHeadsetEighties
     back: N14ClothingBackpackMilitary
     pocket1: EightiesOilersloadoutkits
-    pocket2: VehicleKeyMotorbike
     belt: ClothingBeltMilitary
   storage:
     back:
@@ -307,7 +303,6 @@
     ears: MisfitsClothingHeadsetEighties
     back: N14ClothingBackpackMilitary
     pocket1: EightiesRoadRashloadoutkits
-    pocket2: VehicleKeyMotorbike
     belt: ClothingBeltMilitary
   storage:
     back:
