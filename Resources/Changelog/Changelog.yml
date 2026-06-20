@@ -7565,3 +7565,14 @@ Entries:
   id: 6114
   time: '2026-06-20T03:28:02.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/859
+- author: Bradysgaming
+  changes:
+    - type: Tweak
+      message: >-
+        Road Rash forgot how to ride bikes, oh no! They will have to learn ic 
+        )also cant take it from perks.)
+    - type: Tweak
+      message: 'Bikes cant fit through a single tile anymore. '
+  id: 6115
+  time: '2026-06-20T03:34:17.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/864
