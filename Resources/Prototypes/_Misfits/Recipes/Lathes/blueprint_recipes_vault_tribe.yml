@@ -53,7 +53,7 @@
   availableFaction:
   - Vault
   materials:
-    Steel: 1500
+    Steel: 3500
     Plastic: 100
     N14Iron: 500
 
@@ -81,7 +81,7 @@
   availableFaction:
   - Vault
   materials:
-    Steel: 600
+    Steel: 4000
     Glass: 375
     Circuitry: 250
     ScrapElectronic: 200
