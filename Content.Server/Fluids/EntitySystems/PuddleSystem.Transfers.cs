@@ -30,6 +30,8 @@ public sealed partial class PuddleSystem
             if (dump.Unlimited)
             {
                 var split = _solutionContainerSystem.SplitSolution(soln.Value, solution.Volume);
+                var capacity = FixedPoint2.Max(dumpableSolution.MaxVolume, dumpableSolution.Volume + split.Volume);
+                _solutionContainerSystem.SetCapacity(dumpableSoln.Value, capacity);
                 dumpableSolution.AddSolution(split, _prototypeManager);
                 _solutionContainerSystem.UpdateChemicals(dumpableSoln.Value, needsReactionsProcessing: false);
             }
