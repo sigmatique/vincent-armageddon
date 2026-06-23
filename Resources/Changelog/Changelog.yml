@@ -7714,3 +7714,10 @@ Entries:
   id: 6128
   time: '2026-06-23T21:44:18.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/881
+- author: Squagg
+  changes:
+    - type: Tweak
+      message: Chemical sets no longer have a 1000u buffer limit.
+  id: 6129
+  time: '2026-06-23T21:44:41.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/879
