@@ -43,7 +43,7 @@ public sealed class MotorbikeSystem : EntitySystem
 
         SubscribeLocalEvent<MotorbikeComponent, ComponentInit>(OnInit);
         SubscribeLocalEvent<MotorbikeComponent, EntInsertedIntoContainerMessage>(OnKeyInserted, after: [typeof(VehicleSystem)]);
-        SubscribeLocalEvent<MotorbikeComponent, InteractUsingEvent>(OnInteractUsing);
+        SubscribeLocalEvent<MotorbikeComponent, InteractUsingEvent>(OnInteractUsing, before: [typeof(FlammableSystem)]);
         SubscribeLocalEvent<MotorbikeComponent, SolutionTransferAttemptEvent>(OnSolutionTransferAttempt);
         SubscribeLocalEvent<MotorbikeComponent, MotorbikeRefuelDoAfterEvent>(OnRefuelDoAfter);
         SubscribeLocalEvent<MotorbikeComponent, DamageChangedEvent>(OnDamageChanged);
@@ -110,7 +110,16 @@ public sealed class MotorbikeSystem : EntitySystem
             return;
 
         if (IsWeldingTool(args.Used))
+        {
+            if (TryComp<DamageableComponent>(ent, out var damageable) &&
+                damageable.TotalDamage == 0)
+            {
+                _popup.PopupEntity("The motorbike is already fully repaired.", ent, args.User);
+                args.Handled = true;
+            }
+
             return;
+        }
 
         if (!TryStartRefuelDoAfter(ent, args.Used, args.User))
             return;
