@@ -7815,3 +7815,10 @@ Entries:
   id: 6136
   time: '2026-06-25T01:03:20.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/892
+- author: HungryCuban
+  changes:
+    - type: Add
+      message: Added several brass knuckles, sprites ported from ms13
+  id: 6137
+  time: '2026-06-25T01:04:54.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/891
