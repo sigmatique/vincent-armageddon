@@ -44,23 +44,27 @@ public sealed class HeldSpeedModifierSystem : EntitySystem
             sprintMod = clothingSpeedModifier.SprintModifier;
         }
 
-        if (ShouldIgnoreStrengthSlowdown(args.Holder, uid))
-        {
-            walkMod = MathF.Max(walkMod, 1f);
-            sprintMod = MathF.Max(sprintMod, 1f);
-        }
+        // #Misfits Add - strong holders can keep configurable partial slowdown on heavy bags.
+        ApplyStrengthSlowdown(args.Holder, uid, ref walkMod, ref sprintMod);
 
         args.Args.ModifySpeed(walkMod, sprintMod);
     }
 
-    private bool ShouldIgnoreStrengthSlowdown(EntityUid user, EntityUid held)
+    /// <summary>
+    /// #Misfits Add - Applies Strength-gated slowdown relief for held items.
+    /// </summary>
+    private void ApplyStrengthSlowdown(EntityUid user, EntityUid held, ref float walkMod, ref float sprintMod)
     {
         if (!TryComp<StrengthIgnoreClothingSlowdownComponent>(held, out var ignore) ||
             !TryComp<SpecialComponent>(user, out var special))
         {
-            return false;
+            return;
         }
 
-        return _special.GetEffective(user, SpecialStat.Strength, special) >= ignore.MinimumStrength;
+        if (_special.GetEffective(user, SpecialStat.Strength, special) < ignore.MinimumStrength)
+            return;
+
+        walkMod = ignore.ApplyStrengthModifier(walkMod, sprint: false);
+        sprintMod = ignore.ApplyStrengthModifier(sprintMod, sprint: true);
     }
 }

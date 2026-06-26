@@ -37,14 +37,14 @@
   id: BoSMidSquireGear
   equipment:
     jumpsuit: N14ClothingUniformJumpskirtBOSBlack  #Misfits Change /Tweak/: New consolidated BoS gear
-    back: N14ClothingBackpackMilitary
+    back: MisfitsClothingBackpackSquire # #Misfits Add - Squire Bag starting back item
     shoes: N14ClothingBootsLeatherFilled
     head: N14ClothingHeadHatBanganeBoS
     outerClothing: MisfitsBoSSquireArmor # #Misfits Tweak: T2 armor (0.85/0.80) — Squires are still in training, lighter protection than Knights
     pocket1: BoSBrotherhoodSquireKits
     id: N14IDBrotherhoodOfSteelHolotagSquire
     ears: N14ClothingHeadsetBrotherhoodOfSteel
-    belt: ClothingBeltMilitary
+    belt: MisfitsClothingBeltSquireWebbingBlack # #Misfits Add - black Squire Webbing default belt
   storage:
     back:
     - N14BoxPlasticFilledMilitary

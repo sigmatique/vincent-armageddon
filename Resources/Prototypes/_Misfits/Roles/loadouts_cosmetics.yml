@@ -768,6 +768,32 @@
   items:
     - N14ClothingHeadHatBrotherhoodFieldCap
 
+# #Misfits Add - Belt: Brotherhood of Steel Squire webbing.
+
+- type: loadout
+  id: MisfitsLoadoutSquireWebbingBlack
+  category: Roles
+  cost: 0
+  exclusive: true
+  requirements:
+    - !type:CharacterJobRequirement
+      jobs:
+        - BoSMidSquire
+  items:
+    - MisfitsClothingBeltSquireWebbingBlack
+
+- type: loadout
+  id: MisfitsLoadoutSquireWebbingBrown
+  category: Roles
+  cost: 0
+  exclusive: true
+  requirements:
+    - !type:CharacterJobRequirement
+      jobs:
+        - BoSMidSquire
+  items:
+    - MisfitsClothingBeltSquireWebbingBrown
+
 # === Head: Enclave ===
 
 - type: loadout

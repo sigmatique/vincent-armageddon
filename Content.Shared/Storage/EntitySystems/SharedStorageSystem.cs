@@ -1572,7 +1572,7 @@ public abstract class SharedStorageSystem : EntitySystem
         if (!canInteract)
             return false;
 
-        var ev = new StorageInteractAttemptEvent(silent);
+        var ev = new StorageInteractAttemptEvent(silent, user); // #Misfits Add - pass opener so restricted storages can validate hand or ground access.
         RaiseLocalEvent(storage, ref ev);
 
         return !ev.Cancelled;

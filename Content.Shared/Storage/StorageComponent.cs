@@ -264,7 +264,7 @@ namespace Content.Shared.Storage
     }
 
     [ByRefEvent]
-    public record struct StorageInteractAttemptEvent(bool Silent, bool Cancelled = false);
+    public record struct StorageInteractAttemptEvent(bool Silent, EntityUid? User = null, bool Cancelled = false); // #Misfits Add - carry opener for hand-or-ground storage restrictions.
 
     [ByRefEvent]
     public record struct StorageInteractUsingAttemptEvent(bool Cancelled = false);

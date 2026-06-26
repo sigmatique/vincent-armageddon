@@ -69,29 +69,33 @@ public sealed class ClothingSpeedModifierSystem : EntitySystem
             var walkModifier = component.WalkModifier;
             var sprintModifier = component.SprintModifier;
 
-            if (ShouldIgnoreStrengthSlowdown(uid))
-            {
-                walkModifier = MathF.Max(walkModifier, 1f);
-                sprintModifier = MathF.Max(sprintModifier, 1f);
-            }
+            // #Misfits Add - strong wearers can keep configurable partial slowdown on heavy bags.
+            ApplyStrengthSlowdown(uid, ref walkModifier, ref sprintModifier);
 
             args.Args.ModifySpeed(walkModifier, sprintModifier);
         }
     }
 
-    private bool ShouldIgnoreStrengthSlowdown(EntityUid clothing)
+    /// <summary>
+    /// #Misfits Add - Applies Strength-gated slowdown relief for worn clothing.
+    /// </summary>
+    private void ApplyStrengthSlowdown(EntityUid clothing, ref float walkModifier, ref float sprintModifier)
     {
         if (!TryComp<StrengthIgnoreClothingSlowdownComponent>(clothing, out var ignore) ||
             !_container.TryGetContainingContainer((clothing, null, null), out var container))
         {
-            return false;
+            return;
         }
 
         var wearer = container.Owner;
         if (!TryComp<SpecialComponent>(wearer, out var special))
-            return false;
+            return;
 
-        return _special.GetEffective(wearer, SpecialStat.Strength, special) >= ignore.MinimumStrength;
+        if (_special.GetEffective(wearer, SpecialStat.Strength, special) < ignore.MinimumStrength)
+            return;
+
+        walkModifier = ignore.ApplyStrengthModifier(walkModifier, sprint: false);
+        sprintModifier = ignore.ApplyStrengthModifier(sprintModifier, sprint: true);
     }
 
     private void OnClothingVerbExamine(EntityUid uid, ClothingSpeedModifierComponent component, GetVerbsEvent<ExamineVerb> args)
