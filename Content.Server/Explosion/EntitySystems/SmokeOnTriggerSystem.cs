@@ -6,6 +6,7 @@ using Content.Shared.Coordinates.Helpers;
 using Content.Shared.Maps;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 
 namespace Content.Server.Explosion.EntitySystems;
 
@@ -15,6 +16,7 @@ namespace Content.Server.Explosion.EntitySystems;
 public sealed class SmokeOnTriggerSystem : SharedSmokeOnTriggerSystem
 {
     [Dependency] private readonly IMapManager _mapMan = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly SmokeSystem _smoke = default!;
     [Dependency] private readonly TransformSystem _transform = default!;
 
@@ -29,14 +31,15 @@ public sealed class SmokeOnTriggerSystem : SharedSmokeOnTriggerSystem
     {
         var xform = Transform(uid);
         var mapCoords = _transform.GetMapCoordinates(uid, xform);
-        if (!_mapMan.TryFindGridAt(mapCoords, out _, out var grid) ||
-            !grid.TryGetTileRef(xform.Coordinates, out var tileRef) ||
-            tileRef.Tile.IsSpace())
+        if (!_mapMan.TryFindGridAt(mapCoords, out var gridUid, out var grid))
         {
             return;
         }
 
-        var coords = grid.MapToGrid(mapCoords);
+        if (!_mapSystem.TryGetTileRef(gridUid, grid, xform.Coordinates, out var tileRef) || tileRef.Tile.IsSpace())
+            return;
+
+        var coords = _mapSystem.MapToGrid(gridUid, mapCoords);
         var ent = Spawn(comp.SmokePrototype, coords.SnapToGrid());
         if (!TryComp<SmokeComponent>(ent, out var smoke))
         {

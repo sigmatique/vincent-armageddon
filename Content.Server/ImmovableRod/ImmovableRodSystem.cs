@@ -6,6 +6,7 @@ using Content.Shared.Damage;
 using Content.Shared.Examine;
 using Content.Shared.Popups;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
@@ -24,6 +25,7 @@ public sealed class ImmovableRodSystem : EntitySystem
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     public override void Update(float frameTime)
@@ -39,7 +41,7 @@ public sealed class ImmovableRodSystem : EntitySystem
             if (!TryComp<MapGridComponent>(trans.GridUid, out var grid))
                 continue;
 
-            grid.SetTile(trans.Coordinates, Tile.Empty);
+            _mapSystem.SetTile(trans.GridUid!.Value, grid, trans.Coordinates, Tile.Empty);
         }
     }
 

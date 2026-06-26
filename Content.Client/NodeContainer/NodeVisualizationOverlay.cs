@@ -5,6 +5,7 @@ using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.Enums;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Timing;
@@ -20,6 +21,7 @@ namespace Content.Client.NodeContainer
         private readonly IMapManager _mapManager;
         private readonly IInputManager _inputManager;
         private readonly IEntityManager _entityManager;
+        private readonly SharedMapSystem _mapSystem;
 
         private readonly Dictionary<(int, int), NodeRenderData> _nodeIndex = new();
         private readonly Dictionary<EntityUid, Dictionary<Vector2i, List<(GroupData, NodeDatum)>>> _gridIndex = new ();
@@ -46,6 +48,7 @@ namespace Content.Client.NodeContainer
             _mapManager = mapManager;
             _inputManager = inputManager;
             _entityManager = entityManager;
+            _mapSystem = entityManager.System<SharedMapSystem>();
 
             _font = cache.GetFont("/Fonts/NotoSans/NotoSans-Regular.ttf", 12);
         }
@@ -82,7 +85,7 @@ namespace Content.Client.NodeContainer
             var xform = _entityManager.GetComponent<TransformComponent>(_entityManager.GetEntity(node.Entity));
             if (!_entityManager.TryGetComponent<MapGridComponent>(xform.GridUid, out var grid))
                 return;
-            var gridTile = grid.TileIndicesFor(xform.Coordinates);
+            var gridTile = _mapSystem.TileIndicesFor(xform.GridUid!.Value, grid, xform.Coordinates);
 
             var sb = new StringBuilder();
             sb.Append($"entity: {node.Entity}\n");
@@ -131,7 +134,7 @@ namespace Content.Client.NodeContainer
                     if (float.IsNaN(coords.Position.X) || float.IsNaN(coords.Position.Y))
                         continue;
 
-                    var tile = gridDict.GetOrNew(grid.Comp.TileIndicesFor(coords));
+                    var tile = gridDict.GetOrNew(_mapSystem.TileIndicesFor(grid.Owner, grid.Comp, coords));
 
                     foreach (var (group, nodeDatum) in nodeData)
                     {

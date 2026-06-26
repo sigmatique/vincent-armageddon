@@ -3,6 +3,7 @@ using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NodeContainer.Nodes;
 using Content.Shared.Atmos;
 using Content.Shared.Atmos.Components;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 
 namespace Content.Server.Atmos.Piping.EntitySystems;
@@ -10,6 +11,7 @@ namespace Content.Server.Atmos.Piping.EntitySystems;
 public sealed class AtmosPipeAppearanceSystem : EntitySystem
 {
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
     public override void Initialize()
     {
@@ -54,10 +56,10 @@ public sealed class AtmosPipeAppearanceSystem : EntitySystem
 
         // find the cardinal directions of any connected entities
         var netConnectedDirections = PipeDirection.None;
-        var tile = grid.TileIndicesFor(xform.Coordinates);
+        var tile = _mapSystem.TileIndicesFor(xform.GridUid!.Value, grid, xform.Coordinates);
         foreach (var neighbour in connected)
         {
-            var otherTile = grid.TileIndicesFor(Transform(neighbour).Coordinates);
+            var otherTile = _mapSystem.TileIndicesFor(xform.GridUid.Value, grid, Transform(neighbour).Coordinates);
 
             netConnectedDirections |= (otherTile - tile) switch
             {

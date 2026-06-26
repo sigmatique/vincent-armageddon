@@ -8,6 +8,7 @@ using Content.Shared.Database;
 using Content.Shared.Maps;
 using Content.Shared.Physics;
 using Content.Shared.Respawn;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Random;
@@ -23,6 +24,7 @@ public sealed class SpecialRespawnSystem : SharedSpecialRespawnSystem
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly TurfSystem _turf = default!;
     [Dependency] private readonly IChatManager _chat = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
     public override void Initialize()
     {
@@ -100,12 +102,12 @@ public sealed class SpecialRespawnSystem : SharedSpecialRespawnSystem
 
             var found = false;
 
-            foreach (var tile in grid.GetTilesIntersecting(circle))
+            foreach (var tile in _mapSystem.GetTilesIntersecting(entityGridUid.Value, grid, circle))
             {
                 if (tile.IsSpace(_tileDefinitionManager)
                     || _turf.IsTileBlocked(tile, CollisionGroup.MobMask)
                     || !_atmosphere.IsTileMixtureProbablySafe(entityGridUid, entityMapUid.Value,
-                        grid.TileIndicesFor(mapPos)))
+                        _mapSystem.TileIndicesFor(entityGridUid.Value, grid, mapPos)))
                 {
                     continue;
                 }
@@ -151,7 +153,7 @@ public sealed class SpecialRespawnSystem : SharedSpecialRespawnSystem
 
         var xform = Transform(targetGrid);
 
-        if (!grid.TryGetTileRef(xform.Coordinates, out var tileRef))
+        if (!_mapSystem.TryGetTileRef(targetGrid, grid, xform.Coordinates, out var tileRef))
             return false;
 
         var tile = tileRef.GridIndices;
@@ -167,17 +169,17 @@ public sealed class SpecialRespawnSystem : SharedSpecialRespawnSystem
             var randomY = _random.Next((int) gridBounds.Bottom, (int) gridBounds.Top);
 
             tile = new Vector2i(randomX - (int) gridPos.X, randomY - (int) gridPos.Y);
-            var mapPos = grid.GridTileToWorldPos(tile);
-            var mapTarget = grid.WorldToTile(mapPos);
+            var mapPos = _mapSystem.GridTileToWorldPos(targetGrid, grid, tile);
+            var mapTarget = _mapSystem.WorldToTile(targetGrid, grid, mapPos);
             var circle = new Circle(mapPos, 2);
 
-            foreach (var newTileRef in grid.GetTilesIntersecting(circle))
+            foreach (var newTileRef in _mapSystem.GetTilesIntersecting(targetGrid, grid, circle))
             {
                 if (newTileRef.IsSpace(_tileDefinitionManager) || newTileRef.IsBlockedTurf(true) || !_atmosphere.IsTileMixtureProbablySafe(targetGrid, targetMap, mapTarget))
                     continue;
 
                 found = true;
-                targetCoords = grid.GridTileToLocal(tile);
+                targetCoords = _mapSystem.GridTileToLocal(targetGrid, grid, tile);
                 break;
             }
 

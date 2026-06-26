@@ -15,6 +15,7 @@ using Content.Shared.Power;
 using Content.Shared.Popups;
 using Content.Shared.Prying.Components;
 using Robust.Server.GameObjects;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 
 namespace Content.Server.Doors.Systems
@@ -27,6 +28,7 @@ namespace Content.Server.Doors.Systems
         [Dependency] private readonly AtmosphereSystem _atmosSystem = default!;
         [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
         [Dependency] private readonly AccessReaderSystem _accessReaderSystem = default!;
+        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
         private static float _visualUpdateInterval = 0.5f;
         private float _accumulatedFrameTime;
@@ -240,7 +242,7 @@ namespace Content.Server.Doors.Systems
                 return (false, false);
 
             var grid = Comp<MapGridComponent>(xform.ParentUid);
-            var pos = grid.CoordinatesToTile(xform.Coordinates);
+            var pos = _mapSystem.CoordinatesToTile(xform.ParentUid, grid, xform.Coordinates);
             var minPressure = float.MaxValue;
             var maxPressure = float.MinValue;
             var minTemperature = float.MaxValue;
@@ -286,7 +288,7 @@ namespace Content.Server.Doors.Systems
                 {
                     // Is there some airtight entity blocking this direction? If yes, don't include this direction in the
                     // pressure differential
-                    if (HasAirtightBlocker(grid.GetAnchoredEntities(adjacentPos), dir.GetOpposite(), airtightQuery))
+                    if (HasAirtightBlocker(_mapSystem.GetAnchoredEntities(xform.ParentUid, grid, adjacentPos), dir.GetOpposite(), airtightQuery))
                         continue;
 
                     var p = gas.Pressure;

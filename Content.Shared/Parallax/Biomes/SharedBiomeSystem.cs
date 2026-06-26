@@ -14,6 +14,7 @@ namespace Content.Shared.Parallax.Biomes;
 public abstract class SharedBiomeSystem : EntitySystem
 {
     [Dependency] protected readonly IPrototypeManager ProtoManager = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly ISerializationManager _serManager = default!;
     [Dependency] protected readonly ITileDefinitionManager TileDefManager = default!;
     [Dependency] private readonly TileSystem _tile = default!;
@@ -69,7 +70,7 @@ public abstract class SharedBiomeSystem : EntitySystem
 
     public bool TryGetBiomeTile(EntityUid uid, MapGridComponent grid, Vector2i indices, [NotNullWhen(true)] out Tile? tile)
     {
-        if (grid.TryGetTileRef(indices, out var tileRef) && !tileRef.Tile.IsEmpty)
+        if (_mapSystem.TryGetTileRef(uid, grid, indices, out var tileRef) && !tileRef.Tile.IsEmpty)
         {
             tile = tileRef.Tile;
             return true;
@@ -89,7 +90,7 @@ public abstract class SharedBiomeSystem : EntitySystem
     /// </summary>
     public bool TryGetBiomeTile(Vector2i indices, List<IBiomeLayer> layers, int seed, MapGridComponent? grid, [NotNullWhen(true)] out Tile? tile)
     {
-        if (grid?.TryGetTileRef(indices, out var tileRef) == true && !tileRef.Tile.IsEmpty)
+        if (grid != null && _mapSystem.TryGetTileRef(grid.Owner, grid, indices, out var tileRef) && !tileRef.Tile.IsEmpty)
         {
             tile = tileRef.Tile;
             return true;

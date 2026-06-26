@@ -1,5 +1,6 @@
 using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.Nodes;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 
@@ -17,9 +18,9 @@ namespace Content.Server.Power.Nodes
             if (!xform.Anchored || grid == null)
                 yield break;
 
-            var gridIndex = grid.TileIndicesFor(xform.Coordinates);
+            var gridIndex = entMan.System<SharedMapSystem>().TileIndicesFor(xform.GridUid!.Value, grid, xform.Coordinates);
 
-            var nodes = NodeHelpers.GetCardinalNeighborNodes(nodeQuery, grid, gridIndex, includeSameTile: false);
+            var nodes = NodeHelpers.GetCardinalNeighborNodes(nodeQuery, xform.GridUid.Value, grid, gridIndex, includeSameTile: false);
             foreach (var (_, node) in nodes)
             {
                 if (node is CableTerminalNode)

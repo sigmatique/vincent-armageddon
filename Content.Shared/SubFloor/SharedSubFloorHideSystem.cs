@@ -17,6 +17,7 @@ namespace Content.Shared.SubFloor
     {
         [Dependency] private readonly ITileDefinitionManager _tileDefinitionManager = default!;
         [Dependency] private readonly SharedAmbientSoundSystem _ambientSoundSystem = default!;
+        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
         [Dependency] protected readonly SharedAppearanceSystem Appearance = default!;
 
         public override void Initialize()
@@ -94,7 +95,7 @@ namespace Content.Shared.SubFloor
                 if (change.NewTile.IsEmpty)
                     continue; // Anything that was here will be unanchored anyways.
 
-                UpdateTile(args.Entity.Comp, change.GridIndices);
+                UpdateTile(args.Entity.Owner, args.Entity.Comp, change.GridIndices);
             }
         }
 
@@ -107,25 +108,32 @@ namespace Content.Shared.SubFloor
                 return;
 
             if (xform.Anchored && TryComp<MapGridComponent>(xform.GridUid, out var grid))
-                component.IsUnderCover = HasFloorCover(grid, grid.TileIndicesFor(xform.Coordinates));
+                component.IsUnderCover = HasFloorCover(xform.GridUid.Value, grid, _mapSystem.TileIndicesFor(xform.GridUid.Value, grid, xform.Coordinates));
             else
                 component.IsUnderCover = false;
 
             UpdateAppearance(uid, component);
         }
 
-        public bool HasFloorCover(MapGridComponent grid, Vector2i position)
+        public bool HasFloorCover(EntityUid gridUid, MapGridComponent grid, Vector2i position)
         {
             // TODO Redo this function. Currently wires on an asteroid are always "below the floor"
-            var tileDef = (ContentTileDefinition) _tileDefinitionManager[grid.GetTileRef(position).Tile.TypeId];
+            var tileDef = (ContentTileDefinition) _tileDefinitionManager[_mapSystem.GetTileRef(gridUid, grid, position).Tile.TypeId];
             return !tileDef.IsSubFloor;
         }
 
-        private void UpdateTile(MapGridComponent grid, Vector2i position)
+#pragma warning disable CS0618
+        public bool HasFloorCover(MapGridComponent grid, Vector2i position)
         {
-            var covered = HasFloorCover(grid, position);
+            return HasFloorCover(grid.Owner, grid, position);
+        }
+#pragma warning restore CS0618
 
-            foreach (var uid in grid.GetAnchoredEntities(position))
+        private void UpdateTile(EntityUid gridUid, MapGridComponent grid, Vector2i position)
+        {
+            var covered = HasFloorCover(gridUid, grid, position);
+
+            foreach (var uid in _mapSystem.GetAnchoredEntities(gridUid, grid, position))
             {
                 if (!TryComp(uid, out SubFloorHideComponent? hideComp))
                     continue;

@@ -4,6 +4,7 @@ using Content.Client.Radiation.Systems;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Shared.Enums;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 
 namespace Content.Client.Radiation.Overlays;
@@ -11,6 +12,7 @@ namespace Content.Client.Radiation.Overlays;
 public sealed class RadiationDebugOverlay : Overlay
 {
     [Dependency] private readonly IEntityManager _entityManager = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     private readonly RadiationSystem _radiation;
 
     private readonly Font _font;
@@ -67,7 +69,7 @@ public sealed class RadiationDebugOverlay : Overlay
 
                 foreach (var (tile, rads) in blockers)
                 {
-                    var worldPos = grid.GridTileToWorldPos(tile);
+                    var worldPos = _mapSystem.GridTileToWorldPos(gridUid, grid, tile);
                     var screenCenter = args.ViewportControl.WorldToScreen(worldPos);
                     handle.DrawString(_font, screenCenter, rads.ToString("F2"), 1.5f, Color.White);
                 }
@@ -95,8 +97,8 @@ public sealed class RadiationDebugOverlay : Overlay
             var offset = new Vector2(grid.TileSize, -grid.TileSize) * 0.25f;
             foreach (var (tile, value) in resMap)
             {
-                var localPos = grid.GridTileToLocal(tile).Position + offset;
-                var worldPos = grid.LocalToWorld(localPos);
+                var localPos = _mapSystem.GridTileToLocal(gridUid, grid, tile).Position + offset;
+                var worldPos = _mapSystem.LocalToWorld(gridUid, grid, localPos);
                 var screenCenter = args.ViewportControl.WorldToScreen(worldPos);
                 handle.DrawString(_font, screenCenter, value.ToString("F2"), color: Color.White);
             }
@@ -129,7 +131,7 @@ public sealed class RadiationDebugOverlay : Overlay
                 if (!_entityManager.TryGetComponent<MapGridComponent>(gridUid, out var grid))
                     continue;
                 var (destTile, _) = blockers.Last();
-                var destWorld = grid.GridTileToWorldPos(destTile);
+                var destWorld = _mapSystem.GridTileToWorldPos(gridUid, grid, destTile);
                 handle.DrawLine(ray.Source, destWorld, Color.Red);
             }
         }

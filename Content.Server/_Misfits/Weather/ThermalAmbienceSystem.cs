@@ -22,6 +22,7 @@ using Content.Shared.Ghost;
 using Content.Shared.Light.Components;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
@@ -34,10 +35,11 @@ namespace Content.Server._Misfits.Weather;
 /// Drives outdoor atmospheric temperature from the <see cref="DayNightCycleComponent"/>
 /// and delivers private thermal flavor messages to player-controlled entities.
 /// </summary>
-public sealed class ThermalAmbienceSystem : EntitySystem
+public sealed partial class ThermalAmbienceSystem : EntitySystem
 {
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -379,7 +381,7 @@ public sealed class ThermalAmbienceSystem : EntitySystem
                 continue;
             }
             if (!TryComp<MapGridComponent>(gridUid, out var grid) ||
-                !grid.TryGetTileRef(xform.Coordinates, out var tileRef) ||
+                !_mapSystem.TryGetTileRef(gridUid, grid, xform.Coordinates, out var tileRef) ||
                 !IsWeatherExposed(gridUid, grid, tileRef))
             {
                 ClearOutdoorExposure(uid);

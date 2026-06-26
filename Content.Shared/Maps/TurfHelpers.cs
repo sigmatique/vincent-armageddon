@@ -18,11 +18,12 @@ namespace Content.Shared.Maps
         public static TileRef GetTileRef(this Vector2i vector2i, EntityUid gridId, IEntityManager? entityManager = null)
         {
             entityManager ??= IoCManager.Resolve<IEntityManager>();
+            var mapSystem = entityManager.System<SharedMapSystem>();
 
             if (!entityManager.TryGetComponent<MapGridComponent>(gridId, out var grid))
                 return default;
 
-            if (!grid.TryGetTileRef(vector2i, out var tile))
+            if (!mapSystem.TryGetTileRef(gridId, grid, vector2i, out var tile))
                 return default;
 
             return tile;
@@ -39,11 +40,12 @@ namespace Content.Shared.Maps
                 return null;
 
             mapManager ??= IoCManager.Resolve<IMapManager>();
+            var mapSystem = entityManager.System<SharedMapSystem>();
             var pos = coordinates.ToMap(entityManager, entityManager.System<SharedTransformSystem>());
-            if (!mapManager.TryFindGridAt(pos, out _, out var grid))
+            if (!mapManager.TryFindGridAt(pos, out var gridUid, out var grid))
                 return null;
 
-            if (!grid.TryGetTileRef(coordinates, out var tile))
+            if (!mapSystem.TryGetTileRef(gridUid, grid, coordinates, out var tile))
                 return null;
 
             return tile;
@@ -140,11 +142,12 @@ namespace Content.Shared.Maps
             if (entManager.TryGetComponent<MapGridComponent>(turf.GridUid, out var tileGrid))
             {
                 var gridRot = entManager.GetComponent<TransformComponent>(turf.GridUid).WorldRotation;
+                var mapSystem = entManager.System<SharedMapSystem>();
 
                 // This is scaled to 90 % so it doesn't encompass walls on other tiles.
                 var tileBox = Box2.UnitCentered.Scale(0.9f);
                 tileBox = tileBox.Scale(tileGrid.TileSize);
-                var worldPos = tileGrid.GridTileToWorldPos(turf.GridIndices);
+                var worldPos = mapSystem.GridTileToWorldPos(turf.GridUid, tileGrid, turf.GridIndices);
                 tileBox = tileBox.Translated(worldPos);
                 // Now tileBox needs to be rotated to match grid rotation
                 res = new Box2Rotated(tileBox, gridRot, worldPos);

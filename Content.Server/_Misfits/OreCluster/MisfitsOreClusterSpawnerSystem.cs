@@ -2,6 +2,7 @@
 // Spawns a random-shaped blob of mineable rock entities at round start,
 // respecting all existing occupied tiles (walls, trees, structures, etc.).
 
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Random;
@@ -21,6 +22,7 @@ namespace Content.Server._Misfits.OreCluster;
 public sealed class MisfitsOreClusterSpawnerSystem : EntitySystem
 {
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
     public override void Initialize()
     {
@@ -62,7 +64,7 @@ public sealed class MisfitsOreClusterSpawnerSystem : EntitySystem
 
                 // Occupancy check: skip tiles that already have any hard-physics
                 // entity anchored (walls, trees, furniture, structures, etc.).
-                var enumerator = grid.GetAnchoredEntitiesEnumerator(tile);
+                var enumerator = _mapSystem.GetAnchoredEntitiesEnumerator(gridUid, grid, tile);
                 var blocked = false;
                 while (enumerator.MoveNext(out var anchored))
                 {
@@ -79,7 +81,7 @@ public sealed class MisfitsOreClusterSpawnerSystem : EntitySystem
                     continue;
 
                 // GridTileToLocal returns coordinates centred on the tile.
-                Spawn(ent.Comp.WallEntity, grid.GridTileToLocal(tile));
+                Spawn(ent.Comp.WallEntity, _mapSystem.GridTileToLocal(gridUid, grid, tile));
             }
         }
 

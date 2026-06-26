@@ -14,6 +14,7 @@ using Content.Shared.Maps;
 using Content.Shared.Nuke;
 using Content.Shared.Popups;
 using Robust.Server.GameObjects;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Containers;
@@ -34,6 +35,7 @@ public sealed class NukeSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly ITileDefinitionManager _tileDefManager = default!;
     [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly NavMapSystem _navMap = default!;
     [Dependency] private readonly PointLightSystem _pointLight = default!;
     [Dependency] private readonly PopupSystem _popups = default!;
@@ -183,7 +185,7 @@ public sealed class NukeSystem : EntitySystem
 
             var worldPos = _transform.GetWorldPosition(xform);
 
-            foreach (var tile in grid.GetTilesIntersecting(new Circle(worldPos, component.RequiredFloorRadius), false))
+            foreach (var tile in _mapSystem.GetTilesIntersecting(xform.GridUid.Value, grid, new Circle(worldPos, component.RequiredFloorRadius), false))
             {
                 if (!tile.IsSpace(_tileDefManager))
                     continue;

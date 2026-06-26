@@ -1,6 +1,7 @@
 using Content.Server.Administration;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 
@@ -11,6 +12,7 @@ sealed class TileReplaceCommand : IConsoleCommand
 {
     [Dependency] private readonly IEntityManager _entManager = default!;
     [Dependency] private readonly ITileDefinitionManager _tileDef = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
     // ReSharper disable once StringLiteralTypo
     public string Command => "tilereplace";
@@ -70,12 +72,12 @@ sealed class TileReplaceCommand : IConsoleCommand
         }
 
         var changed = 0;
-        foreach (var tile in grid.GetAllTiles())
+        foreach (var tile in _mapSystem.GetAllTiles(gridId.Value, grid))
         {
             var tileContent = tile.Tile;
             if (tileContent.TypeId == tileA.TileId)
             {
-                grid.SetTile(tile.GridIndices, new Tile(tileB.TileId));
+                _mapSystem.SetTile(gridId.Value, grid, tile.GridIndices, new Tile(tileB.TileId));
                 changed++;
             }
         }

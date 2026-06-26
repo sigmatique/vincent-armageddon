@@ -4,6 +4,7 @@ using Content.Server.Light.Components;
 using Content.Shared.Light.Components;
 using Content.Shared.Light.EntitySystems;
 using System;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Timing;
@@ -22,6 +23,7 @@ namespace Content.Server._N14.Support
         [Dependency] private readonly SharedTransformSystem _transform = default!;
         [Dependency] private readonly IMapManager _mapManager = default!;
         [Dependency] private readonly SharedRoofSystem _roof = default!;
+        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
         public override void Initialize()
         {
@@ -63,7 +65,7 @@ namespace Content.Server._N14.Support
 
                 if (_mapManager.TryFindGridAt(comp.Target, out var gridUid, out var grid))
                 {
-                    var tile = grid.WorldToTile(comp.Target.Position);
+                    var tile = _mapSystem.WorldToTile(gridUid, grid, comp.Target.Position);
                     RoofComponent? roof = null;
                     if (Resolve(gridUid, ref roof, false))
                     {

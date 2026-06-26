@@ -508,12 +508,12 @@ namespace Content.Shared.Movement.Systems
                 return false;
             }
 
-            var position = grid.LocalToTile(xform.Coordinates);
+            var position = _mapSystem.LocalToTile(xform.GridUid.Value, grid, xform.Coordinates);
             var soundEv = new GetFootstepSoundEvent(uid);
 
             // If the coordinates have a FootstepModifier component
             // i.e. component that emit sound on footsteps emit that sound
-            var anchored = grid.GetAnchoredEntitiesEnumerator(position);
+            var anchored = _mapSystem.GetAnchoredEntitiesEnumerator(xform.GridUid.Value, grid, position);
 
             while (anchored.MoveNext(out var maybeFootstep))
             {
@@ -535,7 +535,7 @@ namespace Content.Shared.Movement.Systems
             // Walking on a tile.
             // Tile def might have been passed in already from previous methods, so use that
             // if we have it
-            if (tileDef == null && grid.TryGetTileRef(position, out var tileRef))
+            if (tileDef == null && _mapSystem.TryGetTileRef(xform.GridUid.Value, grid, position, out var tileRef))
             {
                 tileDef = (ContentTileDefinition) _tileDefinitionManager[tileRef.Tile.TypeId];
             }

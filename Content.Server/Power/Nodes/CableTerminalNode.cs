@@ -1,5 +1,6 @@
 using Content.Server.NodeContainer;
 using Content.Server.NodeContainer.Nodes;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 
@@ -17,12 +18,12 @@ namespace Content.Server.Power.Nodes
             if (!xform.Anchored || grid == null)
                 yield break;
 
-            var gridIndex = grid.TileIndicesFor(xform.Coordinates);
+            var gridIndex = entMan.System<SharedMapSystem>().TileIndicesFor(xform.GridUid!.Value, grid, xform.Coordinates);
 
             var dir = xform.LocalRotation.GetDir();
             var targetIdx = gridIndex.Offset(dir);
 
-            foreach (var node in NodeHelpers.GetNodesInTile(nodeQuery, grid, targetIdx))
+            foreach (var node in NodeHelpers.GetNodesInTile(nodeQuery, xform.GridUid.Value, grid, targetIdx))
             {
                 if (node is CableTerminalPortNode)
                     yield return node;

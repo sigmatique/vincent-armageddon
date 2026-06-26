@@ -4,6 +4,7 @@ using Content.Shared.Database;
 using Content.Shared.Interaction;
 using Content.Shared.Maps;
 using Content.Shared.Stacks;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 
 namespace Content.Server.Power.EntitySystems;
@@ -11,6 +12,7 @@ namespace Content.Server.Power.EntitySystems;
 public sealed partial class CableSystem
 {
     [Dependency] private readonly IAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
     private void InitializeCablePlacer()
     {
@@ -26,16 +28,17 @@ public sealed partial class CableSystem
         if (component.CablePrototypeId == null)
             return;
 
-        if(!TryComp<MapGridComponent>(args.ClickLocation.GetGridUid(EntityManager), out var grid))
+        var gridUid = args.ClickLocation.GetGridUid(EntityManager);
+        if(!TryComp<MapGridComponent>(gridUid, out var grid))
             return;
 
-        var snapPos = grid.TileIndicesFor(args.ClickLocation);
-        var tileDef = (ContentTileDefinition) _tileManager[grid.GetTileRef(snapPos).Tile.TypeId];
+        var snapPos = _mapSystem.TileIndicesFor(gridUid!.Value, grid, args.ClickLocation);
+        var tileDef = (ContentTileDefinition) _tileManager[_mapSystem.GetTileRef(gridUid.Value, grid, snapPos).Tile.TypeId];
 
         if (!tileDef.IsSubFloor || !tileDef.Sturdy)
             return;
 
-        foreach (var anchored in grid.GetAnchoredEntities(snapPos))
+        foreach (var anchored in _mapSystem.GetAnchoredEntities(gridUid.Value, grid, snapPos))
         {
             if (TryComp<CableComponent>(anchored, out var wire) && wire.CableType == component.BlockingCableType)
                 return;
@@ -44,7 +47,7 @@ public sealed partial class CableSystem
         if (TryComp<StackComponent>(placer, out var stack) && !_stack.Use(placer, 1, stack))
             return;
 
-        var newCable = EntityManager.SpawnEntity(component.CablePrototypeId, grid.GridTileToLocal(snapPos));
+        var newCable = EntityManager.SpawnEntity(component.CablePrototypeId, _mapSystem.GridTileToLocal(gridUid.Value, grid, snapPos));
         _adminLogger.Add(LogType.Construction, LogImpact.Low,
             $"{ToPrettyString(args.User):player} placed {ToPrettyString(newCable):cable} at {Transform(newCable).Coordinates}");
         args.Handled = true;

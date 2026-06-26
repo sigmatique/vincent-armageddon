@@ -68,7 +68,7 @@ public sealed partial class ExplosionSystem : EntitySystem
         query ??= EntityManager.GetEntityQuery<AirtightComponent>();
         var damageQuery = EntityManager.GetEntityQuery<DamageableComponent>();
         var destructibleQuery = EntityManager.GetEntityQuery<DestructibleComponent>();
-        var anchoredEnumerator = grid.GetAnchoredEntitiesEnumerator(tile);
+        var anchoredEnumerator = _map.GetAnchoredEntitiesEnumerator(gridId, grid, tile);
 
         while (anchoredEnumerator.MoveNext(out var uid))
         {
@@ -104,7 +104,7 @@ public sealed partial class ExplosionSystem : EntitySystem
         if (!TryComp<MapGridComponent>(transform.GridUid, out var grid))
             return;
 
-        UpdateAirtightMap(transform.GridUid.Value, grid, grid.CoordinatesToTile(transform.Coordinates));
+        UpdateAirtightMap(transform.GridUid.Value, grid, _map.CoordinatesToTile(transform.GridUid.Value, grid, transform.Coordinates));
     }
 
     /// <summary>

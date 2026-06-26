@@ -847,8 +847,10 @@ sealed class Explosion
             }
 
             // Is the current tile on a grid (instead of in space)?
+            var mapSystem = _entMan.System<SharedMapSystem>();
+
             if (_currentGrid != null &&
-                _currentGrid.TryGetTileRef(_currentEnumerator.Current, out var tileRef) &&
+                mapSystem.TryGetTileRef(_currentGrid.Owner, _currentGrid, _currentEnumerator.Current, out var tileRef) &&
                 !tileRef.Tile.IsEmpty)
             {
                 if (!_tileUpdateDict.TryGetValue(_currentGrid, out var tileUpdateList))
@@ -909,7 +911,7 @@ sealed class Explosion
         {
             if (list.Count > 0 && _entMan.EntityExists(grid.Owner))
             {
-                grid.SetTiles(list);
+                _entMan.System<SharedMapSystem>().SetTiles(grid.Owner, grid, list);
             }
         }
         _tileUpdateDict.Clear();

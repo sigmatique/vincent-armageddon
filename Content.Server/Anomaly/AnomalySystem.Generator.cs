@@ -115,7 +115,7 @@ public sealed partial class AnomalySystem
             var valid = true;
 
             // TODO: This should be using static lookup.
-            foreach (var ent in gridComp.GetAnchoredEntities(tile))
+            foreach (var ent in _mapSystem.GetAnchoredEntities(grid, gridComp, tile))
             {
                 if (!physQuery.TryGetComponent(ent, out var body))
                     continue;

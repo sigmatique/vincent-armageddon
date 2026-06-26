@@ -48,7 +48,7 @@ public sealed partial class ExplosionSystem : EntitySystem
 
         // get the epicenter tile indices
         if (_mapManager.TryFindGridAt(epicenter, out var gridUid, out var candidateGrid) &&
-            candidateGrid.TryGetTileRef(candidateGrid.WorldToTile(epicenter.Position), out var tileRef) &&
+            _map.TryGetTileRef(gridUid, candidateGrid, epicenter.Position, out var tileRef) &&
             !tileRef.Tile.IsEmpty)
         {
             epicentreGrid = gridUid;
@@ -57,7 +57,8 @@ public sealed partial class ExplosionSystem : EntitySystem
         else if (referenceGrid != null)
         {
             // reference grid defines coordinate system that the explosion in space will use
-            initialTile = Comp<MapGridComponent>(referenceGrid.Value).WorldToTile(epicenter.Position);
+            var referenceMapGrid = Comp<MapGridComponent>(referenceGrid.Value);
+            initialTile = _map.WorldToTile(referenceGrid.Value, referenceMapGrid, epicenter.Position);
         }
         else
         {

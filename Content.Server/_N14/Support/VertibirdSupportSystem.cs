@@ -2,6 +2,7 @@ using Content.Shared._N14.Support;
 using Content.Server.Explosion.EntitySystems;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Random;
@@ -28,6 +29,7 @@ namespace Content.Server._N14.Support
         [Dependency] private readonly SharedTransformSystem _transform = default!;
         [Dependency] private readonly IMapManager _mapManager = default!;
         [Dependency] private readonly SharedRoofSystem _roof = default!;
+        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
         public override void Initialize()
         {
@@ -71,7 +73,7 @@ namespace Content.Server._N14.Support
 
                     if (_mapManager.TryFindGridAt(comp.Target, out var gridUid, out var grid))
                     {
-                        var tile = grid.WorldToTile(comp.Target.Position);
+                        var tile = _mapSystem.WorldToTile(gridUid, grid, comp.Target.Position);
                         RoofComponent? roof = null;
                         if (Resolve(gridUid, ref roof, false))
                         {
@@ -105,7 +107,7 @@ namespace Content.Server._N14.Support
 
                 if (_mapManager.TryFindGridAt(comp.Target, out var gridUid1, out var grid1))
                 {
-                    var tile = grid1.WorldToTile(comp.Target.Position);
+                    var tile = _mapSystem.WorldToTile(gridUid1, grid1, comp.Target.Position);
                     RoofComponent? roof2 = null;
                     if (Resolve(gridUid1, ref roof2, false))
                     {

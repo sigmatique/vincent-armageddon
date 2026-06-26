@@ -132,7 +132,7 @@ public sealed partial class DungeonJob
             ValidateResume();
         }
 
-        grid.SetTiles(tiles);
+        _maps.SetTiles(gridUid, grid, tiles);
 
         var dungeon = new Dungeon(rooms);
 

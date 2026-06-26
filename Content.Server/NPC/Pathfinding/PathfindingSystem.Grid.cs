@@ -61,7 +61,8 @@ public sealed partial class PathfindingSystem
             if (change.OldTile.IsEmpty == change.NewTile.IsEmpty)
                 continue;
 
-            DirtyChunk(ev.Entity, Comp<MapGridComponent>(ev.Entity).GridTileToLocal(change.GridIndices));
+            var mapGrid = Comp<MapGridComponent>(ev.Entity);
+            DirtyChunk(ev.Entity, _maps.GridTileToLocal(ev.Entity, mapGrid, change.GridIndices));
         }
     }
 
@@ -312,7 +313,7 @@ public sealed partial class PathfindingSystem
         {
             for (var y = Math.Floor(mapGrid.LocalAABB.Bottom); y <= Math.Ceiling(mapGrid.LocalAABB.Top + ChunkSize); y += ChunkSize)
             {
-                DirtyChunk(ev.EntityUid, mapGrid.GridTileToLocal(new Vector2i((int) x, (int) y)));
+                DirtyChunk(ev.EntityUid, _maps.GridTileToLocal(ev.EntityUid, mapGrid, new Vector2i((int) x, (int) y)));
             }
         }
     }

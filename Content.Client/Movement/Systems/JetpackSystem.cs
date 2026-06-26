@@ -3,6 +3,7 @@ using Content.Shared.Clothing.EntitySystems;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Systems;
 using Robust.Client.GameObjects;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
@@ -15,6 +16,7 @@ public sealed class JetpackSystem : SharedJetpackSystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly ClothingSystem _clothing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly SharedMapSystem _map = default!;
 
     public override void Initialize()
     {
@@ -77,7 +79,7 @@ public sealed class JetpackSystem : SharedJetpackSystem
 
         if (TryComp<MapGridComponent>(gridUid, out var grid))
         {
-            coordinates = new EntityCoordinates(gridUid.Value, grid.WorldToLocal(coordinates.ToMapPos(EntityManager, _transform)));
+            coordinates = new EntityCoordinates(gridUid.Value, _map.WorldToLocal(gridUid.Value, grid, coordinates.ToMapPos(EntityManager, _transform)));
         }
         else if (uidXform.MapUid != null)
         {

@@ -113,7 +113,7 @@ public sealed partial class DungeonJob
                 }
             }
 
-            if (!grid.TryGetTileRef(node, out var tileRef) || tileRef.Tile.IsEmpty)
+            if (!_maps.TryGetTileRef(gridUid, grid, node, out var tileRef) || tileRef.Tile.IsEmpty)
             {
                 continue;
             }
@@ -158,7 +158,7 @@ public sealed partial class DungeonJob
 
         foreach (var tile in cableTiles)
         {
-            var anchored = grid.GetAnchoredEntitiesEnumerator(tile);
+            var anchored = _maps.GetAnchoredEntitiesEnumerator(gridUid, grid, tile);
             var found = false;
 
             while (anchored.MoveNext(out var anc))
@@ -176,7 +176,7 @@ public sealed partial class DungeonJob
             if (found)
                 continue;
 
-            _entManager.SpawnEntity(gen.Entity, _grid.GridTileToLocal(tile));
+            _entManager.SpawnEntity(gen.Entity, _maps.GridTileToLocal(gridUid, grid, tile));
         }
     }
 
@@ -211,7 +211,7 @@ public sealed partial class DungeonJob
             tiles.Add((index, _tile.GetVariantTile((ContentTileDefinition)tileDef, random)));
         }
 
-        grid.SetTiles(tiles);
+        _maps.SetTiles(gridUid, grid, tiles);
 
         // Double iteration coz we bulk set tiles for speed.
         for (var i = 0; i < tiles.Count; i++)
@@ -250,11 +250,11 @@ public sealed partial class DungeonJob
                 }
 
                 if (isCorner)
-                    _entManager.SpawnEntity(gen.CornerWall, grid.GridTileToLocal(index.Index));
+                    _entManager.SpawnEntity(gen.CornerWall, _maps.GridTileToLocal(gridUid, grid, index.Index));
             }
 
             if (!isCorner)
-                _entManager.SpawnEntity(gen.Wall, grid.GridTileToLocal(index.Index));
+                _entManager.SpawnEntity(gen.Wall, _maps.GridTileToLocal(gridUid, grid, index.Index));
 
             if (i % 20 == 0)
             {
@@ -273,7 +273,7 @@ public sealed partial class DungeonJob
 
         foreach (var tile in dungeon.CorridorTiles)
         {
-            var enumerator = _grid.GetAnchoredEntitiesEnumerator(tile);
+            var enumerator = _maps.GetAnchoredEntitiesEnumerator(gridUid, grid, tile);
             var blocked = false;
 
             while (enumerator.MoveNext(out var ent))
@@ -310,7 +310,7 @@ public sealed partial class DungeonJob
 
                 if (random.Prob(gen.Chance))
                 {
-                    var coords = _grid.GridTileToLocal(tile);
+                    var coords = _maps.GridTileToLocal(gridUid, grid, tile);
                     var protos = EntitySpawnCollection.GetSpawns(gen.Contents, random);
                     _entManager.SpawnEntities(coords, protos);
                 }
@@ -326,7 +326,7 @@ public sealed partial class DungeonJob
         var pocketDirections = new ValueList<Direction>(4);
         var doorQuery = _entManager.GetEntityQuery<DoorComponent>();
         var physicsQuery = _entManager.GetEntityQuery<PhysicsComponent>();
-        var offset = -_grid.TileSizeHalfVector;
+        var offset = -grid.TileSizeHalfVector;
         var color = decks.Color;
 
         foreach (var tile in dungeon.CorridorTiles)
@@ -341,7 +341,7 @@ public sealed partial class DungeonJob
                 var dir = (DirectionFlag) Math.Pow(2, i);
                 var neighbor = tile + dir.AsDir().ToIntVec();
 
-                var anc = _grid.GetAnchoredEntitiesEnumerator(neighbor);
+                var anc = _maps.GetAnchoredEntitiesEnumerator(gridUid, grid, neighbor);
 
                 while (anc.MoveNext(out var ent))
                 {
@@ -368,7 +368,7 @@ public sealed partial class DungeonJob
                     var dir = (Direction) (i * 2 - 1);
                     var neighbor = tile + dir.ToIntVec();
 
-                    var anc = _grid.GetAnchoredEntitiesEnumerator(neighbor);
+                    var anc = _maps.GetAnchoredEntitiesEnumerator(gridUid, grid, neighbor);
 
                     while (anc.MoveNext(out var ent))
                     {
@@ -390,7 +390,7 @@ public sealed partial class DungeonJob
                     if (decks.PocketDecals.TryGetValue(pocketDirections[0], out var cDir))
                     {
                         // Decals not being centered biting my ass again
-                        var gridPos = _grid.GridTileToLocal(tile).Offset(offset);
+                        var gridPos = _maps.GridTileToLocal(gridUid, grid, tile).Offset(offset);
                         _decals.TryAddDecal(cDir, gridPos, out _, color: color);
                     }
                 }
@@ -403,7 +403,7 @@ public sealed partial class DungeonJob
                 if (decks.CardinalDecals.TryGetValue(directions[0], out var cDir))
                 {
                     // Decals not being centered biting my ass again
-                    var gridPos = _grid.GridTileToLocal(tile).Offset(offset);
+                    var gridPos = _maps.GridTileToLocal(gridUid, grid, tile).Offset(offset);
                     _decals.TryAddDecal(cDir, gridPos, out _, color: color);
                 }
 
@@ -418,7 +418,7 @@ public sealed partial class DungeonJob
 
                 if (decks.CornerDecals.TryGetValue(dirFlag, out var cDir))
                 {
-                    var gridPos = _grid.GridTileToLocal(tile).Offset(offset);
+                    var gridPos = _maps.GridTileToLocal(gridUid, grid, tile).Offset(offset);
                     _decals.TryAddDecal(cDir, gridPos, out _, color: color);
                 }
             }
@@ -483,15 +483,15 @@ public sealed partial class DungeonJob
                     isValid = true;
 
                     // Entrance wew
-                    grid.SetTile(tile, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
+                    _maps.SetTile(gridUid, grid, tile, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
                     ClearDoor(dungeon, grid, tile);
-                    var gridCoords = grid.GridTileToLocal(tile);
+                    var gridCoords = _maps.GridTileToLocal(gridUid, grid, tile);
                     // Need to offset the spawn to avoid spawning in the room.
 
                     _entManager.SpawnEntities(gridCoords, gen.Entities);
 
                     // Clear out any biome tiles nearby to avoid blocking it
-                    foreach (var nearTile in grid.GetTilesIntersecting(new Circle(gridCoords.Position, 1.5f), false))
+                    foreach (var nearTile in _maps.GetTilesIntersecting(gridUid, grid, new Circle(gridCoords.Position, 1.5f), false))
                     {
                         if (dungeon.RoomTiles.Contains(nearTile.GridIndices) ||
                             dungeon.RoomExteriorTiles.Contains(nearTile.GridIndices) ||
@@ -501,7 +501,7 @@ public sealed partial class DungeonJob
                             continue;
                         }
 
-                        grid.SetTile(nearTile.GridIndices, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));;
+                        _maps.SetTile(gridUid, grid, nearTile.GridIndices, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
                     }
 
                     break;
@@ -601,12 +601,12 @@ public sealed partial class DungeonJob
             }
         }
 
-        grid.SetTiles(tiles);
+        _maps.SetTiles(gridUid, grid, tiles);
         index = 0;
 
         foreach (var tile in tiles)
         {
-            var gridPos = grid.GridTileToLocal(tile.Item1);
+            var gridPos = _maps.GridTileToLocal(gridUid, grid, tile.Item1);
 
             index += gen.Entities.Count;
             _entManager.SpawnEntities(gridPos, gen.Entities);
@@ -694,8 +694,8 @@ public sealed partial class DungeonJob
                 for (var j = 0; j < Math.Min(validTiles.Count, 3); j++)
                 {
                     var tile = validTiles[j];
-                    var gridPos = grid.GridTileToLocal(tile);
-                    grid.SetTile(tile, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
+                    var gridPos = _maps.GridTileToLocal(gridUid, grid, tile);
+                    _maps.SetTile(gridUid, grid, tile, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
 
                     _entManager.SpawnEntities(gridPos, gen.Entities);
                 }
@@ -730,13 +730,13 @@ public sealed partial class DungeonJob
             }
         }
 
-        grid.SetTiles(setTiles);
+        _maps.SetTiles(gridUid, grid, setTiles);
 
         foreach (var room in dungeon.Rooms)
         {
             foreach (var entrance in room.Entrances)
             {
-                _entManager.SpawnEntities(grid.GridTileToLocal(entrance), gen.Entities);
+                _entManager.SpawnEntities(_maps.GridTileToLocal(gridUid, grid, entrance), gen.Entities);
             }
         }
     }
@@ -831,7 +831,7 @@ public sealed partial class DungeonJob
             setTiles.Add((tile, _tile.GetVariantTile(tileDef, random)));
         }
 
-        grid.SetTiles(setTiles);
+        _maps.SetTiles(gridUid, grid, setTiles);
         dungeon.CorridorTiles.UnionWith(corridorTiles);
         BuildCorridorExterior(dungeon);
     }
@@ -929,11 +929,11 @@ public sealed partial class DungeonJob
             }
         }
 
-        grid.SetTiles(tiles);
+        _maps.SetTiles(gridUid, grid, tiles);
 
         foreach (var entrance in spawnPositions)
         {
-            _entManager.SpawnEntities(_grid.GridTileToLocal(entrance), gen.Entities);
+            _entManager.SpawnEntities(_maps.GridTileToLocal(gridUid, grid, entrance), gen.Entities);
         }
     }
 
@@ -1034,9 +1034,9 @@ public sealed partial class DungeonJob
                     for (var x = -width + 1; x < width; x++)
                     {
                         var weh = tile + neighborDir.ToIntVec() * x;
-                        grid.SetTile(weh, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
+                        _maps.SetTile(gridUid, grid, weh, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
 
-                        var coords = grid.GridTileToLocal(weh);
+                        var coords = _maps.GridTileToLocal(gridUid, grid, weh);
                         _entManager.SpawnEntities(coords, gen.Entities);
                     }
 
@@ -1147,12 +1147,12 @@ public sealed partial class DungeonJob
                 for (var i = 0; i < nodeDistances.Count; i++)
                 {
                     var node = nodeDistances[i].Node;
-                    var gridPos = grid.GridTileToLocal(node);
+                    var gridPos = _maps.GridTileToLocal(gridUid, grid, node);
                     if (!_anchorable.TileFree(grid, node, DungeonSystem.CollisionLayer, DungeonSystem.CollisionMask))
                         continue;
 
                     width--;
-                    grid.SetTile(node, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
+                    _maps.SetTile(gridUid, grid, node, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
 
                     if (gen.EdgeEntities != null && nodeDistances.Count - i <= 2)
                     {
@@ -1238,8 +1238,8 @@ public sealed partial class DungeonJob
             if (!random.Prob(gen.Prob) || !checkedTiles.Add(neighbor))
                 continue;
 
-            grid.SetTile(neighbor, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
-            var gridPos = grid.GridTileToLocal(neighbor);
+            _maps.SetTile(gridUid, grid, neighbor, _tile.GetVariantTile((ContentTileDefinition) tileDef, random));
+            var gridPos = _maps.GridTileToLocal(gridUid, grid, neighbor);
             var protoNames = EntitySpawnCollection.GetSpawns(gen.Spawns, random);
 
             _entManager.SpawnEntities(gridPos, protoNames);

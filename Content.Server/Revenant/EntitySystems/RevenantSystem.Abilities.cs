@@ -227,8 +227,8 @@ public sealed partial class RevenantSystem
         var xform = Transform(uid);
         if (!TryComp<MapGridComponent>(xform.GridUid, out var map))
             return;
-        var tiles = map.GetTilesIntersecting(Box2.CenteredAround(xform.WorldPosition,
-            new Vector2(component.DefileRadius * 2, component.DefileRadius))).ToArray();
+        var tiles = EntityManager.System<SharedMapSystem>().GetTilesIntersecting(xform.GridUid.Value, map,
+            Box2.CenteredAround(xform.WorldPosition, new Vector2(component.DefileRadius * 2, component.DefileRadius))).ToArray();
 
         _random.Shuffle(tiles);
 

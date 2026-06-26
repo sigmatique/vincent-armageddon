@@ -189,7 +189,7 @@ public sealed class SpawnSalvageMissionJob : Job<bool>
 
         List<Vector2i> reservedTiles = new();
 
-        foreach (var tile in grid.GetTilesIntersecting(new Circle(Vector2.Zero, landingPadRadius), false))
+        foreach (var tile in _map.GetTilesIntersecting(mapUid, grid, new Circle(Vector2.Zero, landingPadRadius), false))
         {
             if (!_biome.TryGetBiomeTile(mapUid, grid, tile.GridIndices, out _))
                 continue;
@@ -302,7 +302,7 @@ public sealed class SpawnSalvageMissionJob : Job<bool>
                     continue;
                 }
 
-                var uid = _entManager.SpawnAtPosition(entry.Proto, grid.GridTileToLocal(tile));
+                var uid = _entManager.SpawnAtPosition(entry.Proto, _map.GridTileToLocal(grid.Owner, grid, tile));
                 _entManager.RemoveComponent<GhostRoleComponent>(uid);
                 _entManager.RemoveComponent<GhostTakeoverAvailableComponent>(uid);
                 return;

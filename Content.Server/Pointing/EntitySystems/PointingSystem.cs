@@ -17,7 +17,9 @@ using Robust.Server.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.GameStates;
 using Robust.Shared.Input.Binding;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Replays;
 using Robust.Shared.Timing;
@@ -29,6 +31,7 @@ namespace Content.Server.Pointing.EntitySystems
     {
         [Dependency] private readonly IReplayRecordingManager _replay = default!;
         [Dependency] private readonly IMapManager _mapManager = default!;
+        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
         [Dependency] private readonly IPlayerManager _playerManager = default!;
         [Dependency] private readonly ITileDefinitionManager _tileDefinitionManager = default!;
         [Dependency] private readonly IGameTiming _gameTiming = default!;
@@ -244,8 +247,9 @@ namespace Content.Server.Pointing.EntitySystems
 
                 if (_mapManager.TryFindGridAt(mapCoordsPointed, out var gridUid, out var grid))
                 {
-                    position = $"EntId={gridUid} {grid.WorldToTile(mapCoordsPointed.Position)}";
-                    tileRef = grid.GetTileRef(grid.WorldToTile(mapCoordsPointed.Position));
+                    var tilePos = _mapSystem.WorldToTile(gridUid, grid, mapCoordsPointed.Position);
+                    position = $"EntId={gridUid} {tilePos}";
+                    tileRef = _mapSystem.GetTileRef(gridUid, grid, tilePos);
                 }
 
                 var tileDef = _tileDefinitionManager[tileRef?.Tile.TypeId ?? 0];

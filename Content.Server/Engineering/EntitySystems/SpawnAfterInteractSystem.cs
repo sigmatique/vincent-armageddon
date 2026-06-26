@@ -6,6 +6,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Maps;
 using Content.Shared.Stacks;
 using JetBrains.Annotations;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 
 namespace Content.Server.Engineering.EntitySystems
@@ -15,6 +16,7 @@ namespace Content.Server.Engineering.EntitySystems
     {
         [Dependency] private readonly SharedDoAfterSystem _doAfterSystem = default!;
         [Dependency] private readonly StackSystem _stackSystem = default!;
+        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
         public override void Initialize()
         {
@@ -29,9 +31,10 @@ namespace Content.Server.Engineering.EntitySystems
                 return;
             if (string.IsNullOrEmpty(component.Prototype))
                 return;
-            if (!TryComp<MapGridComponent>(args.ClickLocation.GetGridUid(EntityManager), out var grid))
+            var gridUid = args.ClickLocation.GetGridUid(EntityManager);
+            if (!TryComp<MapGridComponent>(gridUid, out var grid))
                 return;
-            if (!grid.TryGetTileRef(args.ClickLocation, out var tileRef))
+            if (!_mapSystem.TryGetTileRef(gridUid!.Value, grid, args.ClickLocation, out var tileRef))
                 return;
 
             bool IsTileClear()

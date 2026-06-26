@@ -187,7 +187,7 @@ public sealed partial class DungeonJob
                             }
                         }
 
-                        grid.SetTiles(tiles);
+                        _maps.SetTiles(gridUid, grid, tiles);
                         tiles.Clear();
                         _sawmill.Error($"Unable to find room variant for {roomDimensions}, leaving empty.");
                         continue;

@@ -28,7 +28,7 @@ public sealed partial class ExplosionSystem : EntitySystem
         Dictionary<Vector2i, NeighborFlag> edges = new();
         _gridEdges[ev.EntityUid] = edges;
 
-        foreach (var tileRef in grid.GetAllTiles())
+        foreach (var tileRef in _map.GetAllTiles(ev.EntityUid, grid))
         {
             if (IsEdge(grid, tileRef.GridIndices, out var dir))
                 edges.Add(tileRef.GridIndices, dir);
@@ -258,7 +258,7 @@ public sealed partial class ExplosionSystem : EntitySystem
                 {
                     var neighbourIndex = change.GridIndices + NeighbourVectors[i];
 
-                    if (grid.TryGetTileRef(neighbourIndex, out var neighbourTile) && !neighbourTile.Tile.IsEmpty)
+                    if (_map.TryGetTileRef(ev.Entity.Owner, grid, neighbourIndex, out var neighbourTile) && !neighbourTile.Tile.IsEmpty)
                     {
                         var oppositeDirection = (NeighborFlag) (1 << ((i + 4) % 8));
                         edges[neighbourIndex] = edges.GetValueOrDefault(neighbourIndex) | oppositeDirection;
@@ -307,7 +307,7 @@ public sealed partial class ExplosionSystem : EntitySystem
         spaceDirections = NeighborFlag.Invalid;
         for (var i = 0; i < NeighbourVectors.Length; i++)
         {
-            if (!grid.TryGetTileRef(index + NeighbourVectors[i], out var neighborTile) || neighborTile.Tile.IsEmpty)
+            if (!_map.TryGetTileRef(grid.Owner, grid, index + NeighbourVectors[i], out var neighborTile) || neighborTile.Tile.IsEmpty)
                 spaceDirections |= (NeighborFlag) (1 << i);
         }
 

@@ -1,6 +1,7 @@
 using Content.Server.Radiation.Components;
 using Content.Shared.Doors;
 using Content.Shared.Doors.Components;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 
 namespace Content.Server.Radiation.Systems;
@@ -8,6 +9,8 @@ namespace Content.Server.Radiation.Systems;
 // create and update map of radiation blockers
 public partial class RadiationSystem
 {
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
+
     private void InitRadBlocking()
     {
         SubscribeLocalEvent<RadiationBlockerComponent, ComponentInit>(OnInit);
@@ -108,7 +111,7 @@ public partial class RadiationSystem
 
         // save resistance into rad protection grid
         var gridId = trs.GridUid.Value;
-        var tilePos = grid.TileIndicesFor(trs.Coordinates);
+        var tilePos = _mapSystem.TileIndicesFor(gridId, grid, trs.Coordinates);
         AddToTile(gridId, tilePos, component.RadResistance);
 
         // and remember it as last valid position

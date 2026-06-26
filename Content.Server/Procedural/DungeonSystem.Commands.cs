@@ -154,7 +154,7 @@ public sealed partial class DungeonSystem
             }
         }
 
-        grid.SetTiles(tiles);
+        _maps.SetTiles(mapUid, grid, tiles);
         shell.WriteLine(Loc.GetString("cmd-dungen_pack_vis"));
     }
 
@@ -195,7 +195,7 @@ public sealed partial class DungeonSystem
             }
         }
 
-        grid.SetTiles(tiles);
+        _maps.SetTiles(mapUid, grid, tiles);
         shell.WriteLine(Loc.GetString("cmd-dungen_pack_vis"));
     }
 

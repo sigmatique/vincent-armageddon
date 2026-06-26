@@ -30,6 +30,7 @@ public abstract class SharedEmitSoundSystem : EntitySystem
 {
     [Dependency] protected readonly IGameTiming Timing = default!;
     [Dependency] private readonly INetManager _netMan = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly ITileDefinitionManager _tileDefMan = default!;
     [Dependency] protected readonly IRobustRandom Random = default!;
     [Dependency] private   readonly SharedAmbientSoundSystem _ambient = default!;
@@ -89,7 +90,7 @@ public abstract class SharedEmitSoundSystem : EntitySystem
             return;
         }
 
-        var tile = grid.GetTileRef(xform.Coordinates);
+        var tile = _mapSystem.GetTileRef(xform.GridUid.Value, grid, xform.Coordinates);
 
         // Handle maps being grids (we'll still emit the sound).
         if (xform.GridUid != xform.MapUid && tile.IsSpace(_tileDefMan))

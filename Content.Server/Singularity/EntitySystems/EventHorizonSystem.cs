@@ -264,7 +264,7 @@ public sealed class EventHorizonSystem : SharedEventHorizonSystem
 
         var ev = new TilesConsumedByEventHorizonEvent(tiles, gridId, grid, hungry, eventHorizon);
         RaiseLocalEvent(hungry, ref ev);
-        grid.SetTiles(tiles);
+        EntityManager.System<SharedMapSystem>().SetTiles(gridId, grid, tiles);
     }
 
     /// <summary>
@@ -291,7 +291,7 @@ public sealed class EventHorizonSystem : SharedEventHorizonSystem
     /// </summary>
     public bool CanConsumeTile(EntityUid hungry, TileRef tile, MapGridComponent grid, EventHorizonComponent eventHorizon)
     {
-        foreach (var blockingEntity in grid.GetAnchoredEntities(tile.GridIndices))
+        foreach (var blockingEntity in EntityManager.System<SharedMapSystem>().GetAnchoredEntities(tile.GridUid, grid, tile.GridIndices))
         {
             if (!CanConsumeEntity(hungry, blockingEntity, eventHorizon))
                 return false;
@@ -317,7 +317,7 @@ public sealed class EventHorizonSystem : SharedEventHorizonSystem
         foreach (var grid in grids)
         {
             // TODO: Remover grid.Owner when this iterator returns entityuids as well.
-            AttemptConsumeTiles(uid, grid.Comp.GetTilesIntersecting(circle), grid, grid, eventHorizon);
+            AttemptConsumeTiles(uid, EntityManager.System<SharedMapSystem>().GetTilesIntersecting(grid.Owner, grid.Comp, circle), grid, grid, eventHorizon);
         }
     }
 

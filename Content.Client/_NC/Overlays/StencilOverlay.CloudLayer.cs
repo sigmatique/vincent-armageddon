@@ -2,6 +2,7 @@ using System.Numerics;
 using Content.Shared._NC.Clouds;
 using Content.Shared.Light.Components;
 using Robust.Client.Graphics;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Maths;
 using Robust.Shared.Utility;
@@ -33,7 +34,7 @@ public sealed partial class StencilOverlay
                 worldHandle.SetTransform(worldMatrix);
                 _entManager.TryGetComponent(grid.Owner, out RoofComponent? roofComp);
 
-                foreach (var tile in grid.Comp.GetTilesIntersecting(worldAABB))
+                foreach (var tile in _entManager.System<SharedMapSystem>().GetTilesIntersecting(grid.Owner, grid.Comp, worldAABB))
                 {
                     if (component.RespectWeatherBlockers && _weather.CanWeatherAffect(grid.Owner, grid, tile, roofComp))
                         continue;

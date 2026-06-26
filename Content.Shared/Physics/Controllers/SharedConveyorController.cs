@@ -18,6 +18,7 @@ public abstract class SharedConveyorController : VirtualController
 {
     [Dependency] protected readonly IMapManager MapManager = default!;
     [Dependency] protected readonly EntityLookupSystem Lookup = default!;
+    [Dependency] protected readonly SharedMapSystem MapSystem = default!;
     [Dependency] protected readonly SharedPhysicsSystem Physics = default!;
     [Dependency] private readonly SharedGravitySystem _gravity = default!;
 
@@ -150,7 +151,7 @@ public abstract class SharedConveyorController : VirtualController
     {
         // Check if the thing's centre overlaps the grid tile.
         var grid = Comp<MapGridComponent>(xform.GridUid!.Value);
-        var tile = grid.GetTileRef(xform.Coordinates);
+        var tile = MapSystem.GetTileRef(xform.GridUid.Value, grid, xform.Coordinates);
         var conveyorBounds = Lookup.GetLocalBounds(tile, grid.TileSize);
 
         foreach (var entity in comp.Intersecting)

@@ -2,6 +2,7 @@ using Content.Server.Atmos.EntitySystems;
 using Content.Server.Anomaly.Components;
 using Content.Shared.Anomaly.Components;
 using Content.Shared.Atmos;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Random;
 using System.Linq;
 using System.Numerics;
@@ -16,6 +17,7 @@ public sealed class GasProducerAnomalySystem : EntitySystem
 {
     [Dependency] private readonly AtmosphereSystem _atmosphere = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
     public override void Initialize()
     {
@@ -56,7 +58,7 @@ public sealed class GasProducerAnomalySystem : EntitySystem
             return;
 
         var localpos = xform.Coordinates.Position;
-        var tilerefs = grid.GetLocalTilesIntersecting(
+        var tilerefs = _mapSystem.GetLocalTilesIntersecting(xform.GridUid.Value, grid,
             new Box2(localpos + new Vector2(-radius, -radius), localpos + new Vector2(radius, radius))).ToArray();
 
         if (tilerefs.Length == 0)

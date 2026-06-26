@@ -14,6 +14,7 @@ using Content.Shared.NPC.Systems;
 using Content.Shared.Zombies;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 
@@ -29,6 +30,7 @@ public sealed partial class DragonSystem : EntitySystem
     [Dependency] private readonly RoleSystem _role = default!;
     [Dependency] private readonly SharedActionsSystem _actions = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     private EntityQuery<CarpRiftsConditionComponent> _objQuery;
@@ -157,7 +159,7 @@ public sealed partial class DragonSystem : EntitySystem
         }
 
         // cant put a rift on solars
-        foreach (var tile in grid.GetTilesIntersecting(new Circle(xform.WorldPosition, RiftTileRadius), false))
+        foreach (var tile in _mapSystem.GetTilesIntersecting(xform.GridUid.Value, grid, new Circle(xform.WorldPosition, RiftTileRadius), false))
         {
             if (!tile.IsSpace(_tileDef))
                 continue;

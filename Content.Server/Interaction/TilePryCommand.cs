@@ -3,6 +3,7 @@ using Content.Server.Administration;
 using Content.Shared.Administration;
 using Content.Shared.Maps;
 using Robust.Shared.Console;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 
@@ -12,6 +13,7 @@ namespace Content.Server.Interaction
     sealed class TilePryCommand : IConsoleCommand
     {
         [Dependency] private readonly IEntityManager _entities = default!;
+        [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
         public string Command => "tilepry";
         public string Description => "Pries up all tiles in a radius around the user.";
@@ -57,14 +59,14 @@ namespace Content.Server.Interaction
             {
                 for (var j = -radius; j <= radius; j++)
                 {
-                    var tile = mapGrid.GetTileRef(playerPosition.Offset(new Vector2(i, j)));
-                    var coordinates = mapGrid.GridTileToLocal(tile.GridIndices);
+                    var tile = _mapSystem.GetTileRef(playerGrid!.Value, mapGrid, playerPosition.Offset(new Vector2(i, j)));
+                    var coordinates = _mapSystem.GridTileToLocal(playerGrid.Value, mapGrid, tile.GridIndices);
                     var tileDef = (ContentTileDefinition) tileDefinitionManager[tile.Tile.TypeId];
 
                     if (!tileDef.CanCrowbar) continue;
 
                     var plating = tileDefinitionManager["Plating"];
-                    mapGrid.SetTile(coordinates, new Tile(plating.TileId));
+                    _mapSystem.SetTile(playerGrid.Value, mapGrid, coordinates, new Tile(plating.TileId));
                 }
             }
         }

@@ -13,6 +13,7 @@ using Robust.Client.State;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Console;
 using Robust.Shared.Graphics;
 using Robust.Shared.Input;
@@ -219,8 +220,8 @@ namespace Content.Client.Gameplay
                     entityToClick = GetClickedEntity(mousePosWorld);
                 }
 
-                coordinates = _mapManager.TryFindGridAt(mousePosWorld, out _, out var grid) ?
-                    grid.MapToGrid(mousePosWorld) :
+                coordinates = _mapManager.TryFindGridAt(mousePosWorld, out var gridUid, out var grid) ?
+                    _entitySystemManager.GetEntitySystem<SharedMapSystem>().MapToGrid(gridUid, mousePosWorld) :
                     EntityCoordinates.FromMap(_mapManager, mousePosWorld);
             }
 

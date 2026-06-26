@@ -1,11 +1,14 @@
 using Content.Shared.Construction.Components;
 using Content.Shared.SubFloor;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map.Components;
 
 namespace Content.Server.SubFloor;
 
 public sealed class SubFloorHideSystem : SharedSubFloorHideSystem
 {
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -19,7 +22,7 @@ public sealed class SubFloorHideSystem : SharedSubFloorHideSystem
         var xform = Transform(uid);
 
         if (TryComp<MapGridComponent>(xform.GridUid, out var grid)
-            && HasFloorCover(grid, grid.TileIndicesFor(xform.Coordinates)))
+            && HasFloorCover(grid, _mapSystem.TileIndicesFor(xform.GridUid!.Value, grid, xform.Coordinates)))
         {
             args.Cancel();
         }
