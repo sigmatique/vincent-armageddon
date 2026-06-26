@@ -7,6 +7,7 @@ using Content.Shared.DoAfter;
 using Content.Shared.Doors.Components;
 using Content.Shared.NPC;
 using Content.Shared.Weapons.Melee;
+using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;

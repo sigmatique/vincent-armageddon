@@ -6,6 +6,7 @@ using Content.Server.NPC.Pathfinding;
 using Content.Shared.Climbing;
 using Content.Shared.Coordinates; // Misfit Change
 using Content.Shared.Interaction;
+using Content.Shared.Maps; /// Misfit Change
 using Content.Shared.Movement.Components;
 using Content.Shared.NPC;
 using Content.Shared.Physics;
@@ -29,8 +30,10 @@ public sealed partial class NPCSteeringSystem
         {
             var angle = i * InterestRadians;
             var dot = MathF.Cos(directionAngle - angle);
-            dot = (dot + 1f) * 0.5f;
+            /// Misfit Change:
+            /// dot = (dot + 1f) * 0.5f;
             interest[i] = Math.Clamp(interest[i] + dot * weight, 0f, 1f);
+            /// end change
         }
     }
 
