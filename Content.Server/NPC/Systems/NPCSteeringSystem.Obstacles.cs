@@ -36,8 +36,10 @@ public sealed partial class NPCSteeringSystem
      *
      * Also need to make sure it picks nearest obstacle path so it starts smashing in front of it.
      */
-
-
+    // Misfit Add: shrinks(-) or enlarges(+) tile sized box
+    //              that determines what an NPC can target/attack when it detects an obstacle
+    //              Making it large results in NPCs attacking objects around the tile it detected the obstacle
+    const float BOX_ENLARGEMENT = -0.02f;
     private SteeringObstacleStatus TryHandleFlags(EntityUid uid, NPCSteeringComponent component, PathPoly poly)
     {
         DebugTools.Assert(!poly.Data.IsFreeSpace);
@@ -224,7 +226,14 @@ public sealed partial class NPCSteeringSystem
             return;
         }
 
-        foreach (var ent in _map.GetLocalAnchoredEntities(poly.GraphUid, grid, poly.Box))
+        // Misfit Change: We get the tileRef the pathPoly is in to get its relative position on the grid
+        var pathTile = _map.GetTileRef(poly.GraphUid, grid, poly.Coordinates);
+        // Changed to method that is able to target all obstacles(dynamic/static) that should probably be attacked
+        // Previous method was only limited to targetting anchored(static) entities
+        // bounding box is shrunk by BOX_ENLARGEMENT so it doesn't intersect with other obstacles outside its own tile
+        foreach (var ent in _lookup.GetLocalEntitiesIntersecting(poly.GraphUid, pathTile.GridIndices,
+                                                            BOX_ENLARGEMENT, LookupFlags.Dynamic | LookupFlags.Static))
+        // END CHANGE
         {
             if (!_physicsQuery.TryGetComponent(ent, out var body) ||
                 !body.Hard ||

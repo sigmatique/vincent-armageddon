@@ -32,6 +32,7 @@ using Content.Server.Worldgen; // #Misfits Add - chunk-aware steering
 using Content.Server.Worldgen.Components; // #Misfits Add - chunk-aware steering
 using Content.Server.Worldgen.Systems; // #Misfits Add - chunk-aware steering
 using Microsoft.Extensions.ObjectPool;
+using Robust.Shared.Map.Components; // #Misfits Add - steering stops ignoring unanchored entities
 
 namespace Content.Server.NPC.Systems;
 
@@ -74,6 +75,7 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
     private EntityQuery<TransformComponent> _xformQuery;
     private EntityQuery<WorldControllerComponent> _worldMapQuery; // #Misfits Add - chunk-aware steering
     private EntityQuery<LoadedChunkComponent> _loadedChunkQuery; // #Misfits Add - chunk-aware steering
+    private EntityQuery<MapGridComponent> _entityQuery; // #Misfits Add - stuff
 
     private ObjectPool<HashSet<EntityUid>> _entSetPool =
         new DefaultObjectPool<HashSet<EntityUid>>(new SetPolicy<EntityUid>());
@@ -111,6 +113,7 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         _xformQuery = GetEntityQuery<TransformComponent>();
         _worldMapQuery = GetEntityQuery<WorldControllerComponent>(); // #Misfits Add
         _loadedChunkQuery = GetEntityQuery<LoadedChunkComponent>(); // #Misfits Add
+        _entityQuery = GetEntityQuery<MapGridComponent>(); // #Misfits Add
 
         for (var i = 0; i < InterestDirections; i++)
         {
@@ -401,7 +404,9 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         }
 
         // Avoid static objects like walls
-        CollisionAvoidance(uid, offsetRot, worldPos, agentRadius, layer, mask, xform, danger);
+        // Misfit Change: steering passed to method as param
+        CollisionAvoidance(uid, offsetRot, worldPos, agentRadius, layer, mask, xform, danger, steering);
+        // End Change
         DebugTools.Assert(!float.IsNaN(danger[0]));
 
         Separation(uid, offsetRot, worldPos, agentRadius, layer, mask, body, xform, danger);
@@ -482,7 +487,7 @@ public sealed partial class NPCSteeringSystem : SharedNPCSteeringSystem
         if (targetPoly != null &&
             steering.Coordinates.Position.Equals(Vector2.Zero) &&
             TryComp<PhysicsComponent>(uid, out var physics) &&
-            _interaction.InRangeUnobstructed(uid, steering.Coordinates.EntityId, range: 30f, (CollisionGroup)physics.CollisionMask))
+            _interaction.InRangeUnobstructed(uid, steering.Coordinates.EntityId, range: 30f, (CollisionGroup) physics.CollisionMask))
         {
             steering.CurrentPath.Clear();
             steering.CurrentPath.Enqueue(targetPoly);
