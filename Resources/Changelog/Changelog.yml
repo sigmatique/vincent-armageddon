@@ -7962,3 +7962,16 @@ Entries:
   id: 6148
   time: '2026-06-27T18:09:56.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/897
+- author: Squagg
+  changes:
+    - type: Add
+      message: >-
+        Added Overwatch personnel monitoring to Brotherhood and NCR tactical
+        maps.
+    - type: Fix
+      message: >-
+        Changed Legion loadouts that change stats to require 50 hours played in
+        that role.
+  id: 6149
+  time: '2026-06-27T18:18:07.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/902
