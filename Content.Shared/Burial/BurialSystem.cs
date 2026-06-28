@@ -1,5 +1,6 @@
 using Content.Shared.Burial;
 using Content.Shared.Burial.Components;
+using Content.Shared.Buckle.Components;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
 using Content.Shared.Movement.Events;
@@ -40,6 +41,14 @@ public sealed class BurialSystem : EntitySystem
     {
         if (args.Handled || component.ActiveShovelDigging)
             return;
+
+        // #Misfits Fix - Can't dig while buckled (riding etc). BreakOnMove doesn't work
+        // because buckled entity coords are relative to parent and don't change on movement.
+        if (TryComp<BuckleComponent>(args.User, out var buckle) && buckle.Buckled)
+        {
+            _popupSystem.PopupClient(Loc.GetString("grave-digging-requires-tool", ("grave", args.Target)), uid, args.User);
+            return;
+        }
 
         if (TryComp<ShovelComponent>(args.Used, out var shovel))
         {

@@ -59,6 +59,9 @@ public sealed partial class HolotapeWindow : DefaultWindow
     public event Action<Guid?, Guid?, Guid?, Guid?>? OnRestoreDatabaseEntry;
     // #Misfits Add - Export the currently-open database document to a holotape entity in the actor's hand.
     public event Action<Guid>? OnExportDatabaseDocument;
+    // #Misfits Add - Permanent delete: actually remove entry from database (no restore possible).
+    // Carries folderId, subfolderParentFolderId, subfolderId, documentId (same pattern as restore).
+    public event Action<Guid?, Guid?, Guid?, Guid?>? OnPermanentDeleteDatabaseEntry;
     public event Action<OverwatchConsoleMessageType, uint?>? OnOverwatchAction;
 
     /// <summary>Whether we're currently showing the notes tab.</summary>
@@ -959,17 +962,31 @@ public sealed partial class HolotapeWindow : DefaultWindow
             row.AddChild(btn);
 
             // #Misfits Change - Delete/restore gated on Leadership (or Admin if marked).
+            var isAuthor = _viewerUserId != null && f.CreatedByUserId.HasValue
+                && _viewerUserId.Value.UserId == f.CreatedByUserId.Value;
             if (!deleted && canModify)
             {
                 var del = new Button { Text = "[ DEL ]", MinWidth = 60 };
                 del.OnPressed += _ => OnDeleteDatabaseFolder?.Invoke(capId, null);
                 row.AddChild(del);
             }
+            if (!deleted && (canModify || isAuthor))
+            {
+                var permDel = new Button { Text = "[ PERM DELETE ]", MinWidth = 110 };
+                permDel.OnPressed += _ => OnPermanentDeleteDatabaseEntry?.Invoke(capId, null, null, null);
+                row.AddChild(permDel);
+            }
             if (deleted && canModify)
             {
                 var rest = new Button { Text = "[ RESTORE ]", MinWidth = 80 };
                 rest.OnPressed += _ => OnRestoreDatabaseEntry?.Invoke(capId, null, null, null);
                 row.AddChild(rest);
+            }
+            if (deleted && (canModify || isAuthor))
+            {
+                var permDel = new Button { Text = "[ PERM DELETE ]", MinWidth = 110 };
+                permDel.OnPressed += _ => OnPermanentDeleteDatabaseEntry?.Invoke(capId, null, null, null);
+                row.AddChild(permDel);
             }
 
             DatabaseList.AddChild(row);
@@ -1025,6 +1042,9 @@ public sealed partial class HolotapeWindow : DefaultWindow
             var deleted = s.Deleted;
             // #Misfits Add - Subfolder lives under a root folder; inherits its Admin gating.
             var canModify = folder.IsAdmin ? _databaseState.CanAdmin : _databaseState.CanLeadership;
+            // #Misfits Add - Check if viewer is the original author of this subfolder.
+            var isAuthor = _viewerUserId != null && s.CreatedByUserId.HasValue
+                && _viewerUserId.Value.UserId == s.CreatedByUserId.Value;
             var row = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, SeparationOverride = 6, HorizontalExpand = true };
             var btn = new Button
             {
@@ -1046,11 +1066,23 @@ public sealed partial class HolotapeWindow : DefaultWindow
                 del.OnPressed += _ => OnDeleteDatabaseFolder?.Invoke(folder.FolderId, capSub);
                 row.AddChild(del);
             }
+            if (!deleted && (canModify || isAuthor))
+            {
+                var permDel = new Button { Text = "[ PERM DELETE ]", MinWidth = 110 };
+                permDel.OnPressed += _ => OnPermanentDeleteDatabaseEntry?.Invoke(null, folder.FolderId, capSub, null);
+                row.AddChild(permDel);
+            }
             if (deleted && canModify)
             {
                 var rest = new Button { Text = "[ RESTORE ]", MinWidth = 80 };
                 rest.OnPressed += _ => OnRestoreDatabaseEntry?.Invoke(null, folder.FolderId, capSub, null);
                 row.AddChild(rest);
+            }
+            if (deleted && (canModify || isAuthor))
+            {
+                var permDel = new Button { Text = "[ PERM DELETE ]", MinWidth = 110 };
+                permDel.OnPressed += _ => OnPermanentDeleteDatabaseEntry?.Invoke(null, folder.FolderId, capSub, null);
+                row.AddChild(permDel);
             }
             DatabaseList.AddChild(row);
         }
@@ -1120,6 +1152,9 @@ public sealed partial class HolotapeWindow : DefaultWindow
         var parentIsAdmin = parentFolder?.IsAdmin ?? false;
         var effectiveAdmin = parentIsAdmin || d.IsAdmin;
         var canModify = effectiveAdmin ? _databaseState!.CanAdmin : _databaseState!.CanLeadership;
+        // #Misfits Add - Check if viewer is the original author of this document.
+        var isAuthor = _viewerUserId != null && d.CreatedByUserId.HasValue
+            && _viewerUserId.Value.UserId == d.CreatedByUserId.Value;
         var row = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Horizontal, SeparationOverride = 6, HorizontalExpand = true };
 
         // #Misfits Add - Admin badge prefix on the doc row when this doc is independently Admin-protected
@@ -1142,11 +1177,23 @@ public sealed partial class HolotapeWindow : DefaultWindow
             del.OnPressed += _ => OnDeleteDatabaseDocument?.Invoke(capId);
             row.AddChild(del);
         }
+        if (!deleted && (canModify || isAuthor))
+        {
+            var permDel = new Button { Text = "[ PERM DELETE ]", MinWidth = 110 };
+            permDel.OnPressed += _ => OnPermanentDeleteDatabaseEntry?.Invoke(null, null, null, capId);
+            row.AddChild(permDel);
+        }
         if (deleted && canModify)
         {
             var rest = new Button { Text = "[ RESTORE ]", MinWidth = 80 };
             rest.OnPressed += _ => OnRestoreDatabaseEntry?.Invoke(null, null, null, capId);
             row.AddChild(rest);
+        }
+        if (deleted && (canModify || isAuthor))
+        {
+            var permDel = new Button { Text = "[ PERM DELETE ]", MinWidth = 110 };
+            permDel.OnPressed += _ => OnPermanentDeleteDatabaseEntry?.Invoke(null, null, null, capId);
+            row.AddChild(permDel);
         }
 
         return row;
@@ -1187,7 +1234,7 @@ public sealed partial class HolotapeWindow : DefaultWindow
         body.Pop();
         DatabaseDocBody.SetMessage(body);
 
-        // Action bar: back, edit, rollback list
+        // Action bar: back, edit, perm delete, rollback list
         var back = new Button { Text = "[ BACK ]", MinWidth = 80 };
         back.OnPressed += _ =>
         {
@@ -1197,6 +1244,24 @@ public sealed partial class HolotapeWindow : DefaultWindow
             RefreshDatabaseView();
         };
         DatabaseActionsBar.AddChild(back);
+
+        // #Misfits Add - Permanent delete button in document viewer. Available to
+        // original author OR Leadership/Admin (same logic as MakeDocRow).
+        var docCanModify = doc.IsAdmin ? _databaseState.CanAdmin : _databaseState.CanLeadership;
+        var docIsAuthor = _viewerUserId != null && doc.CreatedByUserId.HasValue
+            && _viewerUserId.Value.UserId == doc.CreatedByUserId.Value;
+        if (docCanModify || docIsAuthor)
+        {
+            var capDocId = doc.DocumentId;
+            var permDel = new Button
+            {
+                Text = "[ PERM DELETE ]",
+                MinWidth = 110,
+                ToolTip = "Permanently remove this document from the database. Cannot be restored.",
+            };
+            permDel.OnPressed += _ => OnPermanentDeleteDatabaseEntry?.Invoke(null, null, null, capDocId);
+            DatabaseActionsBar.AddChild(permDel);
+        }
 
         if (_databaseState.CanWrite && !doc.Deleted)
         {

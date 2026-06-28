@@ -83,6 +83,9 @@ public sealed class HolotapeBoundUserInterface : BoundUserInterface
         // #Misfits Add - Forward Database document export requests to the server.
         _window.OnExportDatabaseDocument += docId =>
             SendMessage(new ExportDatabaseDocumentMessage(docId));
+        // #Misfits Add - Forward permanent delete requests to the server.
+        _window.OnPermanentDeleteDatabaseEntry += (folderId, subParent, subId, docId) =>
+            SendMessage(new PermanentDeleteDatabaseEntryMessage(folderId, subParent, subId, docId));
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)

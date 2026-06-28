@@ -207,7 +207,7 @@
     energy: 1
     mask: /Textures/Effects/LightMasks/cone.png
     autoRot: true
-    # netsync: false # #Misfits Fix - this was preventing flashlight state from syncing to clients after toggle
+    netsync: false # #Misfits Fix - ToggleableLightVisualsSystem asserts PointLight must not have netsync; appearance changes handle client sync
   - type: LightBehaviour
     behaviours:
       - !type:FadeBehaviour

@@ -139,6 +139,13 @@
   - type: Tag # #Misfits Add - Super Mutants cannot ride mounts (too heavy)
     tags:
     - CannotRide
+    - CanPilot
+    - FootstepSound
+    - DoorBumpOpener
+  # #Misfits Add - Super Mutants are big stompy bois. Loud footsteps.
+  - type: FootstepVolumeModifier
+    sprintVolumeModifier: 15
+    walkVolumeModifier: 15
 
 - type: entity
   save: false

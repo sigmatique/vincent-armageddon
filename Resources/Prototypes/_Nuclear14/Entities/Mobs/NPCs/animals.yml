@@ -532,7 +532,7 @@
       amount: 1
       prob: 0.75
   - type: MeleeWeapon
-    range: 3 # big horn
+    range: 1 # Cythfix - Bighorner had range 3 (too long, could attack from ~4 tiles). Normal melee range, so set to 1
     altDisarm: false
     hidden: true
     soundHit:

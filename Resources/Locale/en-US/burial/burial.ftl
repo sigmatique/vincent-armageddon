@@ -7,3 +7,4 @@ grave-digging-requires-tool = You need a tool to dig this {$grave}!
 grave-creation-start-user = You start digging a grave.
 grave-creation-start-others = {CAPITALIZE($user)} starts digging a grave.
 grave-creation-complete = You've dug a grave.
+grave-creation-buckled = You can't dig a grave while buckled!

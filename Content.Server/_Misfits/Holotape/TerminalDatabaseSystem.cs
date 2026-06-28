@@ -68,6 +68,8 @@ public sealed class TerminalDatabaseSystem : EntitySystem
         SubscribeLocalEvent<HolotapeDataComponent, RestoreDatabaseEntryMessage>(OnRestoreEntry);
         // #Misfits Add - Export current document body+title into a physical holotape entity.
         SubscribeLocalEvent<HolotapeDataComponent, ExportDatabaseDocumentMessage>(OnExportDocument);
+        // #Misfits Add - Permanent delete: actually remove entries from the data store.
+        SubscribeLocalEvent<HolotapeDataComponent, PermanentDeleteDatabaseEntryMessage>(OnPermanentDeleteEntry);
     }
 
     // ── Public API: state assembly used by HolotapeSystem on UI open ─────────
@@ -114,12 +116,12 @@ public sealed class TerminalDatabaseSystem : EntitySystem
                 if (s.Deleted && !canLeadership)
                     continue;
                 subSummaries.Add(new DatabaseSubfolderSummary(
-                    s.SubfolderId, s.Name, s.Deleted, s.CreatedByCharName, s.CreatedAt,
+                    s.SubfolderId, s.Name, s.Deleted, s.CreatedByUserIdGuid, s.CreatedByCharName, s.CreatedAt,
                     BuildDocSummaries(s.Documents, canLeadership)));
             }
 
             folderSummaries.Add(new DatabaseFolderSummary(
-                f.FolderId, f.Name, f.Deleted, f.IsAdmin, f.CreatedByCharName, f.CreatedAt,
+                f.FolderId, f.Name, f.Deleted, f.IsAdmin, f.CreatedByUserIdGuid, f.CreatedByCharName, f.CreatedAt,
                 subSummaries,
                 BuildDocSummaries(f.Documents, canLeadership)));
         }
@@ -167,7 +169,7 @@ public sealed class TerminalDatabaseSystem : EntitySystem
                 continue;
             var lastEdit = d.Revisions.Count == 0 ? d.CreatedAt : d.Revisions[^1].Timestamp;
             result.Add(new DatabaseDocumentSummary(
-                d.DocumentId, d.Title, d.Deleted, d.IsAdmin, d.CreatedByCharName, d.CreatedAt, lastEdit, d.Revisions.Count));
+                d.DocumentId, d.Title, d.Deleted, d.IsAdmin, d.CreatedByUserIdGuid, d.CreatedByCharName, d.CreatedAt, lastEdit, d.Revisions.Count));
         }
         return result;
     }
@@ -186,7 +188,7 @@ public sealed class TerminalDatabaseSystem : EntitySystem
             revs.Add(new DatabaseRevisionSummary(r.RevisionNumber, r.AuthorCharName, r.Timestamp));
 
         return new DatabaseDocumentView(
-            doc.DocumentId, doc.Title, body, doc.Deleted, doc.IsAdmin, doc.CreatedByCharName, doc.CreatedAt, revs);
+            doc.DocumentId, doc.Title, body, doc.Deleted, doc.IsAdmin, doc.CreatedByUserIdGuid, doc.CreatedByCharName, doc.CreatedAt, revs);
     }
 
     // ── Message handlers ─────────────────────────────────────────────────────
@@ -464,6 +466,69 @@ public sealed class TerminalDatabaseSystem : EntitySystem
             return;
 
         PushFullState(uid, msg.Actor, openDocumentId: msg.DocumentId);
+    }
+
+    // #Misfits Add - Permanent delete handler. Authorized for original author OR
+    // Leadership (non-Admin entries) / Admin (Admin-protected entries).
+    private void OnPermanentDeleteEntry(EntityUid uid, HolotapeDataComponent comp, PermanentDeleteDatabaseEntryMessage msg)
+    {
+        var proto = ResolveDatabaseForViewer(msg.Actor);
+        if (proto == null)
+            return;
+        var perms = ResolveAccess(msg.Actor, proto);
+        var actorUserId = GetUserId(msg.Actor);
+
+        bool IsAuthor(Guid? entryUserId) =>
+            actorUserId != null && entryUserId.HasValue && actorUserId.Value.UserId == entryUserId.Value;
+
+        if (msg.FolderId.HasValue && !msg.SubfolderId.HasValue)
+        {
+            // Top-level folder permanent delete
+            var folders = _dataStore.GetFolders(proto.ID);
+            var folder = folders.Find(f => f.FolderId == msg.FolderId.Value);
+            if (folder == null)
+                return;
+            var authorized = IsAuthor(folder.CreatedByUserIdGuid)
+                || (folder.IsAdmin ? perms.admin : perms.leadership);
+            if (!authorized)
+                return;
+            _dataStore.HardDeleteFolder(proto.ID, msg.FolderId.Value);
+        }
+        else if (msg.SubfolderParentFolderId.HasValue && msg.SubfolderId.HasValue)
+        {
+            // Subfolder permanent delete
+            var folders = _dataStore.GetFolders(proto.ID);
+            var parent = folders.Find(f => f.FolderId == msg.SubfolderParentFolderId.Value);
+            if (parent == null)
+                return;
+            var sub = parent.Subfolders.Find(s => s.SubfolderId == msg.SubfolderId.Value);
+            if (sub == null)
+                return;
+            var authorized = IsAuthor(sub.CreatedByUserIdGuid)
+                || (parent.IsAdmin ? perms.admin : perms.leadership);
+            if (!authorized)
+                return;
+            _dataStore.HardDeleteSubfolder(proto.ID, msg.SubfolderParentFolderId.Value, msg.SubfolderId.Value);
+        }
+        else if (msg.DocumentId.HasValue)
+        {
+            // Document permanent delete
+            var requiresAdmin = IsDocumentInAdminFolder(proto.ID, msg.DocumentId.Value);
+            var doc = _dataStore.FindDocument(proto.ID, msg.DocumentId.Value);
+            if (doc == null)
+                return;
+            var authorized = IsAuthor(doc.CreatedByUserIdGuid)
+                || (requiresAdmin ? perms.admin : perms.leadership);
+            if (!authorized)
+                return;
+            _dataStore.HardDeleteDocument(proto.ID, msg.DocumentId.Value);
+        }
+        else
+        {
+            return; // nothing specified
+        }
+
+        PushFullState(uid, msg.Actor, openDocumentId: null);
     }
 
     // #Misfits Add - Spawn a holotape with the document's title + body and put it in the

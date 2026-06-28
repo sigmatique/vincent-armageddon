@@ -103,6 +103,7 @@ public sealed class DatabaseFolderSummary
     public readonly bool Deleted;
     /// <summary>#Misfits Add - True if this root folder is Admin-protected; only Admin-tier (job-gated) actors can delete/restore it.</summary>
     public readonly bool IsAdmin;
+    public readonly Guid? CreatedByUserId;
     public readonly string CreatedByCharName;
     public readonly DateTime CreatedAt;
     public readonly List<DatabaseSubfolderSummary> Subfolders;
@@ -113,6 +114,7 @@ public sealed class DatabaseFolderSummary
         string name,
         bool deleted,
         bool isAdmin,
+        Guid? createdByUserId,
         string createdByCharName,
         DateTime createdAt,
         List<DatabaseSubfolderSummary> subfolders,
@@ -122,6 +124,7 @@ public sealed class DatabaseFolderSummary
         Name = name;
         Deleted = deleted;
         IsAdmin = isAdmin;
+        CreatedByUserId = createdByUserId;
         CreatedByCharName = createdByCharName;
         CreatedAt = createdAt;
         Subfolders = subfolders;
@@ -138,6 +141,7 @@ public sealed class DatabaseSubfolderSummary
     public readonly Guid SubfolderId;
     public readonly string Name;
     public readonly bool Deleted;
+    public readonly Guid? CreatedByUserId;
     public readonly string CreatedByCharName;
     public readonly DateTime CreatedAt;
     public readonly List<DatabaseDocumentSummary> Documents;
@@ -146,6 +150,7 @@ public sealed class DatabaseSubfolderSummary
         Guid subfolderId,
         string name,
         bool deleted,
+        Guid? createdByUserId,
         string createdByCharName,
         DateTime createdAt,
         List<DatabaseDocumentSummary> documents)
@@ -153,6 +158,7 @@ public sealed class DatabaseSubfolderSummary
         SubfolderId = subfolderId;
         Name = name;
         Deleted = deleted;
+        CreatedByUserId = createdByUserId;
         CreatedByCharName = createdByCharName;
         CreatedAt = createdAt;
         Documents = documents;
@@ -171,6 +177,7 @@ public sealed class DatabaseDocumentSummary
     /// <summary>#Misfits Add - True if THIS document is independently Admin-protected
     /// (independent of its parent folder). Either flag forces Admin tier for edit/delete.</summary>
     public readonly bool IsAdmin;
+    public readonly Guid? CreatedByUserId;
     public readonly string CreatedByCharName;
     public readonly DateTime CreatedAt;
     public readonly DateTime LastEditedAt;
@@ -181,6 +188,7 @@ public sealed class DatabaseDocumentSummary
         string title,
         bool deleted,
         bool isAdmin,
+        Guid? createdByUserId,
         string createdByCharName,
         DateTime createdAt,
         DateTime lastEditedAt,
@@ -190,6 +198,7 @@ public sealed class DatabaseDocumentSummary
         Title = title;
         Deleted = deleted;
         IsAdmin = isAdmin;
+        CreatedByUserId = createdByUserId;
         CreatedByCharName = createdByCharName;
         CreatedAt = createdAt;
         LastEditedAt = lastEditedAt;
@@ -209,6 +218,7 @@ public sealed class DatabaseDocumentView
     public readonly bool Deleted;
     /// <summary>#Misfits Add - Mirrors DatabaseDocumentSummary.IsAdmin so the viewer knows when to gate Edit on Admin tier.</summary>
     public readonly bool IsAdmin;
+    public readonly Guid? CreatedByUserId;
     public readonly string CreatedByCharName;
     public readonly DateTime CreatedAt;
     public readonly List<DatabaseRevisionSummary> Revisions;
@@ -219,6 +229,7 @@ public sealed class DatabaseDocumentView
         string body,
         bool deleted,
         bool isAdmin,
+        Guid? createdByUserId,
         string createdByCharName,
         DateTime createdAt,
         List<DatabaseRevisionSummary> revisions)
@@ -228,6 +239,7 @@ public sealed class DatabaseDocumentView
         Body = body;
         Deleted = deleted;
         IsAdmin = isAdmin;
+        CreatedByUserId = createdByUserId;
         CreatedByCharName = createdByCharName;
         CreatedAt = createdAt;
         Revisions = revisions;
@@ -417,6 +429,36 @@ public sealed class ExportDatabaseDocumentMessage : BoundUserInterfaceMessage
 
     public ExportDatabaseDocumentMessage(Guid documentId)
     {
+        DocumentId = documentId;
+    }
+}
+
+// #Misfits Add - Permanently delete a folder or document from the database.
+// Unlike soft-delete, this actually REMOVES the entry from the data store.
+// Authorization (server-side): original author OR Leadership for normal entries;
+// original author OR Admin for Admin-protected entries. After deletion, the entry
+// cannot be restored by anyone.
+[Serializable, NetSerializable]
+public sealed class PermanentDeleteDatabaseEntryMessage : BoundUserInterfaceMessage
+{
+    /// <summary>Set this to delete a top-level folder (and everything inside it).</summary>
+    public readonly Guid? FolderId;
+    /// <summary>Parent folder of a subfolder to delete. Must be set with SubfolderId.</summary>
+    public readonly Guid? SubfolderParentFolderId;
+    /// <summary>Subfolder to delete. Must be set with SubfolderParentFolderId.</summary>
+    public readonly Guid? SubfolderId;
+    /// <summary>Set this to delete a single document.</summary>
+    public readonly Guid? DocumentId;
+
+    public PermanentDeleteDatabaseEntryMessage(
+        Guid? folderId = null,
+        Guid? subfolderParentFolderId = null,
+        Guid? subfolderId = null,
+        Guid? documentId = null)
+    {
+        FolderId = folderId;
+        SubfolderParentFolderId = subfolderParentFolderId;
+        SubfolderId = subfolderId;
         DocumentId = documentId;
     }
 }

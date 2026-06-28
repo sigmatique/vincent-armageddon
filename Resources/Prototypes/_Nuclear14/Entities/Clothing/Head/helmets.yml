@@ -629,7 +629,8 @@
   parent: N14ClothingHeadHatBaseHelmetMetal
   id: N14ClothingHeadHatChineseHelmetMk2
   name: special ops chinese helmet
-  description: A chinese rounded black helmet with integrated night vision.
+  # Misfits Edit - Marked NVGs as broken (never had functional toggle). Desc now says electronics died long ago.
+  description: A chinese rounded black helmet. The integrated night vision electronics died long ago — just a relic now.
   components:
   - type: Sprite
     sprite: _Nuclear14/Clothing/Head/FalloutHelmets/chinesespecialhelmet.rsi

@@ -1,6 +1,7 @@
 using Content.Shared._Misfits.Burial;
 using Content.Shared._Misfits.Burial.Components;
 using Content.Shared._Misfits.SandDigging;
+using Content.Shared.Buckle.Components;
 using Content.Shared.Burial.Components;
 using Content.Shared.Coordinates.Helpers;
 using Content.Shared.DoAfter;
@@ -38,6 +39,14 @@ public sealed class GraveCreationSystem : EntitySystem
         // Interactions with existing graves are handled by BurialSystem via InteractUsingEvent.
         if (args.Handled || args.Target != null || !args.CanReach || component.IsDigging)
             return;
+
+        // Can't dig while buckled (riding, sitting in a chair, etc) — the doAfter's
+        // BreakOnMove doesn't detect movement because local coords are relative to the parent.
+        if (TryComp<BuckleComponent>(args.User, out var buckle) && buckle.Buckled)
+        {
+            _popup.PopupClient(Loc.GetString("grave-creation-buckled"), args.User, args.User);
+            return;
+        }
 
         var doAfterArgs = new DoAfterArgs(
             EntityManager,

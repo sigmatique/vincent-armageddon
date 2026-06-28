@@ -335,6 +335,70 @@ public sealed class TerminalDatabaseDataStore
         return true;
     }
 
+    // #Misfits Add - Permanent (hard) delete: actually remove entries from the store.
+    // Unlike soft-delete, these cannot be restored.
+
+    /// <summary>
+    /// Permanently removes a top-level folder (and all contents) from the database.
+    /// </summary>
+    public bool HardDeleteFolder(string databaseId, Guid folderId)
+    {
+        var folders = GetFolders(databaseId);
+        var idx = folders.FindIndex(f => f.FolderId == folderId);
+        if (idx < 0)
+            return false;
+        folders.RemoveAt(idx);
+        Save();
+        return true;
+    }
+
+    /// <summary>
+    /// Permanently removes a subfolder (and all contents) from its parent folder.
+    /// </summary>
+    public bool HardDeleteSubfolder(string databaseId, Guid folderId, Guid subfolderId)
+    {
+        var folders = GetFolders(databaseId);
+        var folder = folders.Find(f => f.FolderId == folderId);
+        if (folder == null)
+            return false;
+        var idx = folder.Subfolders.FindIndex(s => s.SubfolderId == subfolderId);
+        if (idx < 0)
+            return false;
+        folder.Subfolders.RemoveAt(idx);
+        Save();
+        return true;
+    }
+
+    /// <summary>
+    /// Permanently removes a single document from wherever it lives
+    /// (folder root or subfolder). Returns true if found and removed.
+    /// </summary>
+    public bool HardDeleteDocument(string databaseId, Guid documentId)
+    {
+        var folders = GetFolders(databaseId);
+        foreach (var folder in folders)
+        {
+            var idx = folder.Documents.FindIndex(d => d.DocumentId == documentId);
+            if (idx >= 0)
+            {
+                folder.Documents.RemoveAt(idx);
+                Save();
+                return true;
+            }
+            foreach (var sub in folder.Subfolders)
+            {
+                var sidx = sub.Documents.FindIndex(d => d.DocumentId == documentId);
+                if (sidx >= 0)
+                {
+                    sub.Documents.RemoveAt(sidx);
+                    Save();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     // ── DTO classes (System.Text.Json compatible) ────────────────────────────
 
     /// <summary>JSON-friendly folder DTO. NetUserId stored as Guid? since STJ can't handle it directly.</summary>

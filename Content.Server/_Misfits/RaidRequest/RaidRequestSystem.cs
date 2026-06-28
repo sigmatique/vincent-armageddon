@@ -268,6 +268,13 @@ public sealed class RaidRequestSystem : EntitySystem
                 {
                     data.CanSubmit = true;
                 }
+                // #Misfits Fix - Original war participants bypass rank check.
+                // A higher-ranking late-joiner outranks the original declarer but can't submit
+                // (not being an original participant), bricking raid capability for the war.
+                else if (_factionWar.TryGetActiveWarForOriginalParticipant(GetNetEntity(playerEntity), out _))
+                {
+                    data.CanSubmit = true;
+                }
                 else
                 {
                     var topHolder = GetFactionTopJobHolder(canonicalFaction);
@@ -364,6 +371,9 @@ public sealed class RaidRequestSystem : EntitySystem
         var isIndividual = RaidRequestConfig.IsIndividualTier(canonicalFaction);
 
         // Top-rank check for faction-tier submitters.
+        // #Misfits Fix - Original war participants bypass rank check.
+        // A higher-ranking late-joiner outranks the original declarer but can't submit
+        // (not an original participant), bricking raid capability for the war.
         if (!isIndividual)
         {
             if (!_minds.TryGetMind(playerEntity, out var mindId, out _))
@@ -375,10 +385,18 @@ public sealed class RaidRequestSystem : EntitySystem
             var topWeight = GetFactionTopWeight(canonicalFaction);
             if (myWeight <= 0 || myWeight < topWeight)
             {
-                var topHolder = GetFactionTopJobHolder(canonicalFaction);
-                SendSubmitResult(session, false,
-                    $"Only the highest-ranking online member may submit. Outranked by: {topHolder}.");
-                return;
+                // Original war participant — authority stands regardless of later joiners.
+                if (_factionWar.TryGetActiveWarForOriginalParticipant(GetNetEntity(playerEntity), out _))
+                {
+                    // allow through
+                }
+                else
+                {
+                    var topHolder = GetFactionTopJobHolder(canonicalFaction);
+                    SendSubmitResult(session, false,
+                        $"Only the highest-ranking online member may submit. Outranked by: {topHolder}.");
+                    return;
+                }
             }
         }
 
