@@ -8130,3 +8130,44 @@ Entries:
   id: 6161
   time: '2026-06-29T12:51:49.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/926
+- author: Sirius
+  changes:
+    - type: Add
+      message: >-
+        Mr. Lowe, impressed with Vault-14s performance recently, has used the
+        windfall their pockets are burdened with to provide the aging Vault with
+        a much-needed update to its infrastructure - Vault-14 now has a
+        Logistics department, complete with Cargo, Courier, and Salvage
+        services.
+    - type: Add
+      message: >-
+        The Cargo department, to fulfill its duties and obligations, has been
+        provided with a state-of-the-art cargo elevator. The elevator is capable
+        of being used by a patented ASRS terminal which has been provided to the
+        department and can handle sales and purchases for the Vault as a whole.
+        Don't think too hard about where it all goes and comes from.
+    - type: Tweak
+      message: >-
+        Reflecting on the failures of Vault-14 security in the past to protect
+        the reactor, it was decided that a new site for Vault-14's power supply
+        would be excavated beneath the rest of the Vault in a nearby cavern.
+        Less energy is needed for active cooling, and in the event of a
+        catastrophic failure, damage to the rest of the vault is minimized by
+        the Reactors distance from important infrastructure, as well as a robust
+        battery bank which can provide prolonged power until emergency power
+        generation can be hooked up to the grid.
+    - type: Tweak
+      message: >-
+        The Engineering Department has been moved across the hall. No expense
+        was spared in uprooting and moving the old, ragged atmospherics
+        facilities to make room for a brand-new Workshop.
+    - type: Tweak
+      message: >-
+        The waterworks in Vault-14 were lackluster, and prone to failure due to
+        aging infrastructure. A new water treatment facility was integrated into
+        the Vault and is fitted with state-of-the-art monitoring and control
+        systems to help maintain and provide potable water for residents of
+        Vault-14.
+  id: 6162
+  time: '2026-06-29T13:01:53.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/928
