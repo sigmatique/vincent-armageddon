@@ -326,7 +326,7 @@ public sealed partial class AdminLogManager : SharedAdminLogManager, IAdminLogMa
         }
     }
 
-    // #Misfits Add - Admin action alerts. Sends High+ impact logs (godmode, antags, freeze, etc.) to admin chat.
+    // Keep live alerts for important admin actions, but suppress the projectile hit spam.
     private void DoAdminAlerts(AdminLog log)
     {
         if (log.Impact < LogImpact.High)
@@ -334,6 +334,12 @@ public sealed partial class AdminLogManager : SharedAdminLogManager, IAdminLogMa
 
         if (_runLevel == GameRunLevel.PreRoundLobby)
             return;
+
+        if (log.Type == LogType.BulletHit &&
+            log.Message.StartsWith("Projectile ", StringComparison.Ordinal))
+        {
+            return;
+        }
 
         _chat.SendAdminAlert(log.Message);
     }

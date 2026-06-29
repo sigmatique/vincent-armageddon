@@ -10,6 +10,7 @@ using Content.MapRenderer.Painters;
 using Content.Server.Maps;
 using Newtonsoft.Json;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Utility; // #Misfits Add - ResPath for raw map path rendering
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Webp;
 
@@ -30,7 +31,7 @@ namespace Content.MapRenderer
                 return;
 
             PoolManager.Startup(null);
-            if (arguments.Maps.Count == 0)
+            if (arguments.Maps.Count == 0 && arguments.RawMapPaths.Count == 0)
             {
                 Console.WriteLine("Didn't specify any maps to paint! Loading the map list...");
 
@@ -141,7 +142,65 @@ namespace Content.MapRenderer
 
         private static async Task Run(CommandLineArguments arguments)
         {
-            Console.WriteLine($"Creating images for {arguments.Maps.Count} maps");
+            var totalMaps = arguments.Maps.Count + arguments.RawMapPaths.Count;
+            Console.WriteLine($"Creating images for {totalMaps} maps");
+
+            // #Misfits Add - render raw map file paths first
+            foreach (var rawPath in arguments.RawMapPaths)
+            {
+                var mapLabel = Path.GetFileNameWithoutExtension(rawPath);
+                Console.WriteLine($"Painting raw map path: {rawPath}");
+
+                var mapViewerData = new MapViewerData
+                {
+                    Id = mapLabel,
+                    Name = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(mapLabel)
+                };
+
+                mapViewerData.ParallaxLayers.Add(LayerGroup.DefaultParallax());
+                var directory = Path.Combine(arguments.OutputPath, mapLabel);
+
+                var i = 0;
+                try
+                {
+                    await foreach (var renderedGrid in MapPainter.PaintFromPath(new ResPath(rawPath)))
+                    {
+                        var grid = renderedGrid.Image;
+                        Directory.CreateDirectory(directory);
+
+                        var savePath = $"{directory}{Path.DirectorySeparatorChar}{mapLabel}-{i}.{arguments.Format}";
+
+                        Console.WriteLine($"Writing grid of size {grid.Width}x{grid.Height} to {savePath}");
+
+                        switch (arguments.Format)
+                        {
+                            case OutputFormat.webp:
+                                var encoder = new WebpEncoder
+                                {
+                                    Method = WebpEncodingMethod.BestQuality,
+                                    FileFormat = WebpFileFormatType.Lossless,
+                                    TransparentColorMode = WebpTransparentColorMode.Preserve
+                                };
+                                await grid.SaveAsync(savePath, encoder);
+                                break;
+                            default:
+                            case OutputFormat.png:
+                                await grid.SaveAsPngAsync(savePath);
+                                break;
+                        }
+
+                        grid.Dispose();
+                        mapViewerData.Grids.Add(new GridLayer(renderedGrid, Path.Combine(mapLabel, Path.GetFileName(savePath))));
+                        i++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Painting raw map {rawPath} failed:");
+                    Console.WriteLine(ex);
+                    continue;
+                }
+            }
 
             var mapNames = new List<string>();
             foreach (var map in arguments.Maps)

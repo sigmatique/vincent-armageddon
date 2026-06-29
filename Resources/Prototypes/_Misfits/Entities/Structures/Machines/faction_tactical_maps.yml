@@ -17,9 +17,8 @@
   suffix: NCR, Mapping
   components:
   - type: WastelandMap
-    mapTexturePath: _Misfits/Maps/wendover_map.png
-    mapTitle: NCR Tactical Map - Wendover
-    worldBounds: "-517,-308,484,311"
+    mapConfigId: Wendover
+    mapTitle: NCR Tactical Map
     tacticalFeed: NCR
   - type: OverwatchConsole
     monitorTitle: overwatch-monitor-title-ncr
@@ -50,9 +49,8 @@
   suffix: NCR, Broken
   components:
   - type: WastelandMap
-    mapTexturePath: _Misfits/Maps/wendover_map.png
-    mapTitle: NCR Tactical Map - Wendover
-    worldBounds: "-517,-308,484,311"
+    mapConfigId: Wendover
+    mapTitle: NCR Tactical Map
     tacticalFeed: NCR
   - type: OverwatchConsole
     monitorTitle: overwatch-monitor-title-ncr
@@ -73,9 +71,8 @@
   suffix: Followers, Mapping
   components:
   - type: WastelandMap
-    mapTexturePath: _Misfits/Maps/wendover_map.png
-    mapTitle: Followers Tactical Map - Wendover
-    worldBounds: "-517,-308,484,311"
+    mapConfigId: Wendover
+    mapTitle: Followers Tactical Map
     tacticalFeed: Followers
   - type: AccessReader
     access: [["FotA"]]
@@ -102,9 +99,8 @@
   suffix: Followers, Broken
   components:
   - type: WastelandMap
-    mapTexturePath: _Misfits/Maps/wendover_map.png
-    mapTitle: Followers Tactical Map - Wendover
-    worldBounds: "-517,-308,484,311"
+    mapConfigId: Wendover
+    mapTitle: Followers Tactical Map
     tacticalFeed: Followers
   - type: AccessReader
     access: [["FotA"]]
@@ -121,9 +117,8 @@
   suffix: Rangers, Mapping
   components:
   - type: WastelandMap
-    mapTexturePath: _Misfits/Maps/wendover_map.png
-    mapTitle: Rangers Tactical Map - Wendover
-    worldBounds: "-517,-308,484,311"
+    mapConfigId: Wendover
+    mapTitle: Rangers Tactical Map
     tacticalFeed: NCR
   - type: AccessReader
     access: [["NCRRanger"]]
@@ -150,9 +145,8 @@
   suffix: Rangers, Broken
   components:
   - type: WastelandMap
-    mapTexturePath: _Misfits/Maps/wendover_map.png
-    mapTitle: Rangers Tactical Map - Wendover
-    worldBounds: "-517,-308,484,311"
+    mapConfigId: Wendover
+    mapTitle: Rangers Tactical Map
     tacticalFeed: NCR
   - type: AccessReader
     access: [["NCRRanger"]]

@@ -6,9 +6,8 @@
   suffix: Enclave, Mapping
   components:
   - type: WastelandMap
-    mapTexturePath: _Misfits/Maps/wendover_map.png
-    mapTitle: Enclave TacMap - Wendover
-    worldBounds: "-517,-308,484,311"
+    mapConfigId: Wendover
+    mapTitle: Enclave TacMap
     tacticalFeed: Enclave
   - type: AccessReader
     access: [["Enclave"]]
@@ -35,9 +34,8 @@
   suffix: Enclave, Broken
   components:
   - type: WastelandMap
-    mapTexturePath: _Misfits/Maps/wendover_map.png
-    mapTitle: Enclave TacMap - Wendover
-    worldBounds: "-517,-308,484,311"
+    mapConfigId: Wendover
+    mapTitle: Enclave TacMap
     tacticalFeed: Enclave
   - type: AccessReader
     access: [["Enclave"]]

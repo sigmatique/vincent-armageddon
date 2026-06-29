@@ -154,9 +154,10 @@ public sealed partial class WastelandMapComponent : Component
 {
     /// <summary>
     /// Path to the map texture to display, relative to Resources/Textures/.
+    /// If not set, the system will resolve it from the MapConfigId prototype.
     /// </summary>
-    [DataField(required: true), AutoNetworkedField]
-    public ResPath MapTexturePath = default!;
+    [DataField, AutoNetworkedField]
+    public ResPath? MapTexturePath;
 
     /// <summary>
     /// Title displayed on the map window.
@@ -168,9 +169,22 @@ public sealed partial class WastelandMapComponent : Component
     /// The world-space tile bounds (left, bottom, right, top) that the map image covers.
     /// Used server-side to populate the BUI state. NOT AutoNetworkedField because Box2
     /// is not [NetSerializable] in RobustToolbox.
+    /// If left at default (zero), the system will auto-detect bounds from the
+    /// entity's current map grid(s), or resolve from MapConfigId.
     /// </summary>
     [DataField]
     public Box2 WorldBounds = default;
+
+    /// <summary>
+    /// Optional reference to a WastelandMapConfig prototype. When set, the system
+    /// resolves MapTexturePath and WorldBounds from the named config at runtime,
+    /// allowing tactical maps to work across different game maps without hardcoding
+    /// per-map values. Falls back to the component's own values if the config is
+    /// not found or these fields are already set.
+    /// Example values: "Wendover", "Vault", "Sunnyvale"
+    /// </summary>
+    [DataField]
+    public string? MapConfigId;
 
     /// <summary>
     /// If true, the server streams live positions for Brotherhood holotag entities

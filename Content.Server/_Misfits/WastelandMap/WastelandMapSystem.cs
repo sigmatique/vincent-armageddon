@@ -21,7 +21,13 @@ using Content.Shared.UserInterface;
 using Robust.Server.GameObjects;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components; // #Misfits Add - MapGridComponent for auto-bounds
 using Robust.Shared.Player; // #Misfits Add - ActorComponent for faction filter iteration
+using Robust.Shared.Utility; // #Misfits Add - ResPath for auto-detect
+// #Misfits Add - MapId→gameMap tracking for auto-detect
+using Content.Server.GameTicking;
+using Content.Server.Maps;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server._Misfits.WastelandMap;
 
@@ -39,6 +45,10 @@ public sealed class WastelandMapSystem : EntitySystem
     // #Misfits Add - Followers dead body tracking & death alerts
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly IChatManager _chatManager = default!;
+    // #Misfits Add - Auto-detect map bounds and texture
+    [Dependency] private readonly IMapManager _mapManager = default!;
+    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private readonly SharedMapSystem _mapSystem = default!;
 
     private const int MaxSharedAnnotations = 128;
     private const int MaxStrokePoints = 512; // 256 UV points × 2 floats each
@@ -50,6 +60,11 @@ public sealed class WastelandMapSystem : EntitySystem
 
     // #Misfits Add - Scratch buffer for Followers death-alert session dispatch.
     private readonly List<ICommonSession> _followerSessionScratch = new();
+
+    // #Misfits Add - Track which GameMapPrototype ID was used for each loaded MapId.
+    // Populated by PostGameMapLoad; used by ResolveMapConfig to look up
+    // WastelandMapConfig prototypes for auto-detecting map texture and bounds.
+    private readonly Dictionary<MapId, string> _gameMapByMapId = new();
 
     // #Misfits Add - Scratch buffers + tick-local cache for BuildState.
     // At 150 pop with many open wasteland maps, the 2.5s sweep was the single hottest user-
@@ -70,6 +85,91 @@ public sealed class WastelandMapSystem : EntitySystem
         SubscribeLocalEvent<WastelandMapComponent, WastelandMapClearAnnotationsMessage>(OnClearAnnotationsMessage);
         // #Misfits Add - notify Followers players when a player humanoid dies
         SubscribeLocalEvent<MindContainerComponent, MobStateChangedEvent>(OnMindedEntityMobStateChanged);
+        // #Misfits Add - track MapId→gameMap for auto-detect bounds/texture
+        SubscribeLocalEvent<PostGameMapLoad>(OnPostGameMapLoad);
+    }
+
+    // #Misfits Add - Track MapId→gameMap prototype ID so BuildState can auto-resolve
+    // the correct WastelandMapConfig (texture path + world bounds) for each game map.
+    private void OnPostGameMapLoad(PostGameMapLoad ev)
+    {
+        _gameMapByMapId[ev.Map] = ev.GameMap.ID;
+    }
+
+    // #Misfits Add - Resolve map texture path and world bounds for auto-detect.
+    // Priority:
+    //   1. If component has explicit MapTexturePath/WorldBounds (not default), use them.
+    //   2. If component has MapConfigId set, look up that WastelandMapConfig prototype.
+    //   3. If we know the MapId's game map (from PostGameMapLoad), look up config by that ID.
+    //   4. Fall back to computing world bounds from all grids on the given MapId.
+    private (ResPath TexturePath, Box2 Bounds) ResolveMapConfig(
+        WastelandMapComponent comp, MapId mapId)
+    {
+        // Priority 1: component has explicit values
+        if (comp.MapTexturePath != null && comp.WorldBounds != default)
+            return (comp.MapTexturePath.Value, comp.WorldBounds);
+
+        // Priority 2: explicit MapConfigId on the component
+        WastelandMapConfigPrototype? config = null;
+        if (comp.MapConfigId != null)
+            _prototypeManager.TryIndex(comp.MapConfigId, out config);
+
+        // Priority 3: look up by game map ID from PostGameMapLoad tracking
+        if (config == null && _gameMapByMapId.TryGetValue(mapId, out var gameMapId))
+            _prototypeManager.TryIndex(gameMapId, out config);
+
+        if (config != null)
+        {
+            var texPath = comp.MapTexturePath ?? config.MapTexturePath;
+            var bounds = comp.WorldBounds != default ? comp.WorldBounds : config.WorldBounds;
+            // If still default after config, compute from grids
+            if (bounds == default)
+                bounds = ComputeMapBounds(mapId);
+            return (texPath, bounds);
+        }
+
+        // Priority 4: compute from grids
+        var fallbackTex = comp.MapTexturePath ?? new ResPath("_Misfits/Maps/wendover_map.png");
+        var fallbackBounds = comp.WorldBounds != default ? comp.WorldBounds : ComputeMapBounds(mapId);
+        return (fallbackTex, fallbackBounds);
+    }
+
+    // #Misfits Add - Compute the combined world AABB of all grids on a MapId.
+    private Box2 ComputeMapBounds(MapId mapId)
+    {
+        var bounds = new Box2(float.MaxValue, float.MaxValue, float.MinValue, float.MinValue);
+        var any = false;
+
+        foreach (var grid in _mapManager.GetAllGrids(mapId))
+        {
+            var gridBounds = grid.Comp.LocalAABB;
+            if (gridBounds.IsEmpty())
+                continue;
+            any = true;
+            // #Misfits Fix - Map-grid combos may have empty LocalAABB but non-empty tile data.
+            // Compute from tiles in that case (same pattern as MapPainter).
+            if (gridBounds.IsEmpty() && grid.Comp.ChunkCount > 0)
+            {
+                int minX = int.MaxValue, minY = int.MaxValue;
+                int maxX = int.MinValue, maxY = int.MinValue;
+                var enumerator = _mapSystem.GetAllTilesEnumerator(grid.Owner, grid.Comp);
+                while (enumerator.MoveNext(out var tileRef))
+                {
+                    if (tileRef.Value.X < minX) minX = tileRef.Value.X;
+                    if (tileRef.Value.X > maxX) maxX = tileRef.Value.X;
+                    if (tileRef.Value.Y < minY) minY = tileRef.Value.Y;
+                    if (tileRef.Value.Y > maxY) maxY = tileRef.Value.Y;
+                }
+                if (minX <= maxX)
+                {
+                    gridBounds = new Box2(minX, minY, maxX + 1, maxY + 1);
+                    any = true;
+                }
+            }
+            bounds = bounds.Union(gridBounds);
+        }
+
+        return any ? bounds : new Box2(-517, -308, 484, 311); // fallback to Wendover bounds
     }
 
     public override void Update(float frameTime)
@@ -154,8 +254,11 @@ public sealed class WastelandMapSystem : EntitySystem
     // #Misfits Add - optional uid lets fixed TacMap entities expose Overwatch without leaking it to cartridges/HUDs.
     public WastelandMapBoundUserInterfaceState BuildState(EntityUid? uid, WastelandMapComponent comp, MapId mapId, WastelandMapTacticalFeedKind? feedOverride = null, EntityUid? actor = null)
     {
+        // #Misfits Add - auto-detect map texture and bounds if not hardcoded
+        var (texPath, bounds) = ResolveMapConfig(comp, mapId);
+
         var feed = feedOverride ?? GetEffectiveFeed(comp);
-        var trackedBlips = GetTrackedBlips(feed, mapId, comp.WorldBounds, actor);
+        var trackedBlips = GetTrackedBlips(feed, mapId, bounds, actor);
         var sharedAnnotations = GetSharedAnnotations(comp, mapId, feed).ToArray();
         var overwatch = uid == null
             ? null
@@ -163,12 +266,12 @@ public sealed class WastelandMapSystem : EntitySystem
 
         return new WastelandMapBoundUserInterfaceState(
             comp.MapTitle,
-            comp.MapTexturePath.ToString(),
+            texPath.ToString(),
             comp.CompactHud,
-            comp.WorldBounds.Left,
-            comp.WorldBounds.Bottom,
-            comp.WorldBounds.Right,
-            comp.WorldBounds.Top,
+            bounds.Left,
+            bounds.Bottom,
+            bounds.Right,
+            bounds.Top,
             trackedBlips,
             sharedAnnotations,
             overwatch);

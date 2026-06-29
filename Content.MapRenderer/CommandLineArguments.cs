@@ -12,6 +12,8 @@ public sealed class CommandLineArguments
     public bool ExportViewerJson { get; set; } = false;
     public string OutputPath { get; set; } = DirectoryExtensions.MapImages().FullName;
     public bool ArgumentsAreFileNames { get; set; } = false;
+    // #Misfits Add - raw map file paths that bypass gameMap prototype lookup
+    public List<string> RawMapPaths { get; set; } = new();
 
     public static bool TryParse(IReadOnlyList<string> args, [NotNullWhen(true)] out CommandLineArguments? parsed)
     {
@@ -59,6 +61,13 @@ public sealed class CommandLineArguments
                     parsed.ArgumentsAreFileNames = true;
                     break;
 
+                // #Misfits Add - raw map file paths, no gameMap prototype needed
+                // Use multiple --raw entries for multiple maps, e.g. --raw /Maps/A.yml --raw /Maps/B.yml
+                case "--raw":
+                    enumerator.MoveNext();
+                    parsed.RawMapPaths.Add(enumerator.Current);
+                    break;
+
                 case "-h":
                 case "--help":
                     PrintHelp();
@@ -96,6 +105,9 @@ Options:
     -f / --files
         This option tells the map renderer that you supplied a list of map file names instead of their ids.
         Example: Content.MapRenderer -f box.yml bagel.yml
+    --raw <map paths...>
+        #Misfits Add - render map files directly by their resource path, without needing a gameMap prototype.
+        Example: Content.MapRenderer --raw /Maps/Misfits/Vault.yml
     -h / --help
         Displays this help text");
     }

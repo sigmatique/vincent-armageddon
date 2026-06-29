@@ -30,6 +30,19 @@ namespace Content.MapRenderer.Painters
         // #Misfits Change - bypass GameTicker round flow for map rendering to support large maps
         public static async IAsyncEnumerable<RenderedGridImage<Rgba32>> Paint(string map)
         {
+            await foreach (var grid in PaintCore(map, null))
+                yield return grid;
+        }
+
+        // #Misfits Add - render a map directly from its resource path, without a gameMap prototype.
+        public static async IAsyncEnumerable<RenderedGridImage<Rgba32>> PaintFromPath(ResPath mapPath)
+        {
+            await foreach (var grid in PaintCore(null, mapPath))
+                yield return grid;
+        }
+
+        private static async IAsyncEnumerable<RenderedGridImage<Rgba32>> PaintCore(string? gameMapId, ResPath? rawPath)
+        {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
@@ -68,14 +81,24 @@ namespace Content.MapRenderer.Painters
             await server.WaitPost(() =>
             {
                 var protoManager = server.ResolveDependency<IPrototypeManager>();
-                var mapProto = protoManager.Index<GameMapPrototype>(map);
+                ResPath mapFilePath;
 
-                Console.WriteLine($"Loading map file: {mapProto.MapPath}");
+                if (rawPath.HasValue)
+                {
+                    mapFilePath = rawPath.Value;
+                    Console.WriteLine($"Loading map file (raw path): {mapFilePath}");
+                }
+                else
+                {
+                    var mapProto = protoManager.Index<GameMapPrototype>(gameMapId!);
+                    mapFilePath = mapProto.MapPath;
+                    Console.WriteLine($"Loading map file: {mapFilePath}");
+                }
 
                 // Pre-check: validate that all referenced entity prototypes exist
                 var missingProtos = new List<string>();
                 var resMan = server.ResolveDependency<IResourceManager>();
-                if (resMan.TryContentFileRead(mapProto.MapPath, out var stream))
+                if (resMan.TryContentFileRead(mapFilePath, out var stream))
                 {
                     using var reader = new System.IO.StreamReader(stream);
                     string? line;
@@ -108,16 +131,16 @@ namespace Content.MapRenderer.Painters
 
                 var mapLoader = sEntityManager.System<MapLoaderSystem>();
 
-                if (!mapLoader.TryLoadGeneric(mapProto.MapPath, out var result))
+                if (!mapLoader.TryLoadGeneric(mapFilePath, out var result))
                 {
-                    throw new Exception($"TryLoadGeneric failed for: {mapProto.MapPath}");
+                    throw new Exception($"TryLoadGeneric failed for: {mapFilePath}");
                 }
 
                 Console.WriteLine($"TryLoadGeneric succeeded: {result.Maps.Count} map(s), {result.Grids.Count} grid(s)");
 
                 if (result.Maps.Count == 0)
                 {
-                    throw new Exception($"No maps found in file: {mapProto.MapPath}");
+                    throw new Exception($"No maps found in file: {mapFilePath}");
                 }
 
                 var mapEntity = result.Maps.First();
@@ -127,7 +150,7 @@ namespace Content.MapRenderer.Painters
                 var mapManager = server.ResolveDependency<IMapManager>();
                 mapManager.DoMapInitialize(loadedMapId);
 
-                Console.WriteLine($"Directly loaded map {map} (MapId {loadedMapId}) in {(int) stopwatch.Elapsed.TotalMilliseconds} ms");
+                Console.WriteLine($"Directly loaded map (MapId {loadedMapId}) in {(int) stopwatch.Elapsed.TotalMilliseconds} ms");
             });
 
             stopwatch.Restart();

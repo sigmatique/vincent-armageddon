@@ -1,0 +1,22 @@
+# #Misfits Add - Wasteland map rendering configurations.
+# Maps game map IDs to their pre-rendered tactical image and world bounds.
+# Referenced by WastelandMapComponent.MapConfigId for auto-detect.
+# When adding a new map, render it via Content.MapRenderer then add its entry here.
+
+- type: wastelandMapConfig
+  id: Wendover
+  mapTexturePath: _Misfits/Maps/wendover_map.png
+  # Computed from Wendover surface grid tile AABB (2026-06-28 render)
+  worldBounds: "-517,-328,484,311"
+
+- type: wastelandMapConfig
+  id: Vault
+  mapTexturePath: _Misfits/Maps/vault_map.png
+  # Computed from Vault grid tile AABB (2026-06-28 render)
+  worldBounds: "-233,-60,142,78"
+
+# Placeholder for Sunnyvale - needs a rendered map image.
+#- type: wastelandMapConfig
+#  id: Sunnyvale
+#  mapTexturePath: _Misfits/Maps/sunnyvale_map.png
+#  worldBounds: "..."
