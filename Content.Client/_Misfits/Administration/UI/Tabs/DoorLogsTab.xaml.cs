@@ -12,12 +12,26 @@ public sealed partial class DoorLogsTab : Control
     {
         RobustXamlLoader.Load(this);
 
+        OpenLogsButton.Text = GetLocalizedOrFallback(
+            "misfits-logs-tab-open-logs-btn",
+            "Logs");
+        OpenLogsDescription.Text = GetLocalizedOrFallback(
+            "misfits-logs-tab-open-logs-desc",
+            "Open the regular admin logs viewer.");
+
         OpenDoorLogsButton.Text = GetLocalizedOrFallback(
-            "misfits-door-logs-tab-open-btn",
-            "Open Door Logs");
+            "misfits-logs-tab-open-door-logs-btn",
+            "Door Logs");
         OpenDoorLogsDescription.Text = GetLocalizedOrFallback(
-            "misfits-door-logs-tab-open-desc",
+            "misfits-logs-tab-open-door-logs-desc",
             "View the door destruction log - which doors were destroyed and by whom.");
+
+        OpenWhitelistLogsButton.Text = GetLocalizedOrFallback(
+            "misfits-logs-tab-open-whitelist-logs-btn",
+            "Whitelist Logs");
+        OpenWhitelistLogsDescription.Text = GetLocalizedOrFallback(
+            "misfits-logs-tab-open-whitelist-logs-desc",
+            "View whitelist grants and removals in a dedicated log.");
     }
 
     /// <summary>
