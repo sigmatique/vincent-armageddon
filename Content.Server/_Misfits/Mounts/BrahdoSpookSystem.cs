@@ -1,4 +1,5 @@
 using Content.Shared._Misfits.Mounts;
+using Content.Shared._NC.Mountable;
 using Content.Shared._NC.Mountable.Components;
 using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
@@ -40,8 +41,8 @@ public sealed class BrahdoSpookSystem : EntitySystem
         // Fires on the user BEFORE the shot resolves.
         SubscribeLocalEvent<RiderComponent, SelfBeforeGunShotEvent>(OnBeforeGunShot);
 
-        // If someone remounts a spooked Brahdo, break the relay again.
-        SubscribeLocalEvent<MountableComponent, StrappedEvent>(OnStrappedSpooked);
+        // Cancel mount control when spooked, preventing the relay from being set up.
+        SubscribeLocalEvent<BrahdoSpookedComponent, MountMovementControlAttemptEvent>(OnMountControlAttempt);
     }
 
     /// <summary>
@@ -62,18 +63,12 @@ public sealed class BrahdoSpookSystem : EntitySystem
     }
 
     /// <summary>
-    /// If a rider remounts while the Brahdo is still spooked, keep control broken.
+    /// Cancel mount movement control while spooked, preventing the relay from being set up.
     /// </summary>
-    private void OnStrappedSpooked(Entity<MountableComponent> mount, ref StrappedEvent args)
+    private void OnMountControlAttempt(Entity<BrahdoSpookedComponent> ent, ref MountMovementControlAttemptEvent args)
     {
-        if (!_spookedQuery.TryGetComponent(mount.Owner, out var spooked) || spooked.Accumulator <= 0f)
-            return;
-
-        // Re-break the relay that OnStrapped just set up.
-        BreakRelay(args.Buckle.Owner, mount.Owner);
-
-        // Keep NPC AI active.
-        EnsureComp<ActiveNPCComponent>(mount.Owner);
+        if (ent.Comp.Accumulator > 0f)
+            args.Cancelled = true;
     }
 
     /// <summary>
