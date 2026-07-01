@@ -8309,3 +8309,10 @@ Entries:
   id: 6173
   time: '2026-07-01T01:37:58.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/934
+- author: Vixting
+  changes:
+    - type: Add
+      message: 10 int can craft conveyer, lever, button
+  id: 6174
+  time: '2026-07-01T01:38:32.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/941
