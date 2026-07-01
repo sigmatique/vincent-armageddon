@@ -1,6 +1,6 @@
 #Misfits Change /Add/: NCR rank-specific loadout kit flavors.
 
--# #Misfits Add - MSL kit and mantle sprites credited to Pinky109.
+# #Misfits Add - MSL kit and mantle sprites credited to Pinky109.
 - type: UndecidedLoadoutBackpackSet
   id: NCRA_PFCFireteamSet
   name: undecided-loadout-category-misfits-ncra-pfc-fireteam-name
