@@ -16,6 +16,13 @@
   - Paige_404
   - Bradysgaming
 
+# --- Pink ---
+- type: misfitsGhostColor
+  id: Pink
+  color: "#ff69b4cc" # hot pink at ~80% opacity
+  users:
+  - GalaxyCard
+
 # --- Admin Red ---
 # Uncomment if you want to override admin ghost color via this system too.
 # By default, admin ghosts are red from the AdminObserver prototype sprite.
