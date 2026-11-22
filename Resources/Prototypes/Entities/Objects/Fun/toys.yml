@@ -2189,3 +2189,33 @@
     damage:
       types:
         Blunt: 1000
+
+- type: entity
+  parent: BasePlushie
+  id: PlushieTheseus
+  name: Theseus plushie
+  description: A  small version of the honorguard Diana Theseus Callisto, in casual clothing and no power armor. Hand stitched by Callista Pierce.
+  components:
+    - type: Sprite
+      sprite: Objects/Fun/toys.rsi
+      state: plushie_hgdiana 
+  - type: EmitSoundOnUse
+    sound:
+      path: /Audio/Effects/bite.ogg
+  - type: EmitSoundOnLand
+    sound:
+      path: /Audio/Effects/bite.ogg
+  - type: EmitSoundOnActivate
+    sound:
+      path: /Audio/Effects/bite.ogg
+  - type: Food
+    requiresSpecialDigestion: true
+    useSound:
+      path: /Audio/Effects/bite.ogg
+  - type: EmitSoundOnTrigger
+    sound:
+      path: /Audio/Voice/Human/femalescream_2.ogg
+  - type: MeleeWeapon
+    wideAnimationRotation: 180
+    soundHit:
+      path: /Audio/Effects/PowerSink/electric.ogg
