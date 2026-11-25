@@ -816,6 +816,30 @@
 
 - type: entity
   parent: MisfitsSpawnPointEnclaveCommander
+  id: MisfitsSpawnPointEnclaveCombatMedic
+  name: Enclave Combat Medic Supervisor
+  components:
+  - type: SpawnPoint
+    job_id: EnclaveCombatMedic
+  - type: Sprite
+    layers:
+      - state: red
+      - state: medic
+
+- type: entity
+  parent: MisfitsSpawnPointEnclaveCommander
+  id: MisfitsSpawnPointEnclaveCombatMedic
+  name: Enclave Combat Medic
+  components:
+  - type: SpawnPoint
+    job_id: EnclaveCombatMedic
+  - type: Sprite
+    layers:
+      - state: red
+      - state: medic
+
+- type: entity
+  parent: MisfitsSpawnPointEnclaveCommander
   id: MisfitsSpawnPointEnclaveEnlisted
   name: Enclave Enlisted
   components:

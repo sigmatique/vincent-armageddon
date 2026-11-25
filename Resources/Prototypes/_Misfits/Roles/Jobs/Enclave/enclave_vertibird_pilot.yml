@@ -6,7 +6,7 @@
   setPreference: true
   jobWhitelistBypassesRoleTimers: true
   weight: 106
-  displayWeight: 124
+  displayWeight: 127
   showBorder: true
   overrideConsoleVisibility: false
   canBeAntag: false

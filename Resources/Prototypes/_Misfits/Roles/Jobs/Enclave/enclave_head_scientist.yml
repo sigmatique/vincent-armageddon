@@ -5,7 +5,7 @@
   setPreference: true
   jobWhitelistBypassesRoleTimers: true # #Misfits Change
   weight: 112
-  displayWeight: 126
+  displayWeight: 131
   showBorder: true
   overrideConsoleVisibility: false
   canBeAntag: false

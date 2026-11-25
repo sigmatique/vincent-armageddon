@@ -5,7 +5,7 @@
   setPreference: true
   jobWhitelistBypassesRoleTimers: true # #Misfits Change
   weight: 100
-  displayWeight: 122
+  displayWeight: 123
   overrideConsoleVisibility: false
   canBeAntag: false
   name: job-name-enclave-enlisted
@@ -34,7 +34,6 @@
           - Wastelander
       - type: ReplacementAccent
         accent: n14Enclave
-      - type: PowerArmorProficiency
   # #Cythisiax Added - rank pins this job works up through, by hours played
   rank:
     pins:
@@ -49,7 +48,7 @@
     head: N14ClothingHeadHatEnclavePeacekeeperCap
     back: N14ClothingBackpackMilitary
     jumpsuit: N14ClothingUniformJumpsuitEnclave
-    outerClothing: N14ClothingOuterPowerArmorAdvanced1
+    outerClothing: N14ClothingOuterEnclaveZuluGruntCombatArmor
     shoes: N14ClothingBootsCombatFilled
     gloves: N14ClothingHandsGlovesCombat
     belt: ClothingBeltMilitary

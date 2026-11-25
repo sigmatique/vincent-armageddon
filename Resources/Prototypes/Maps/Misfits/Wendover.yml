@@ -178,7 +178,9 @@
           EnclaveJuniorOfficer: [ 1, 1 ]
           EnclaveVertibirdPilot: [ 1, 1 ] # #Misfits Add
           EnclaveNCO: [ 2, 2 ]
-          EnclaveEnlisted: [ 4, 4 ]
+          EnclaveNCOCombatMedic: [ 1, 1 ]
+          EnclaveCombatMedic: [ 2, 2 ]
+          EnclaveEnlisted: [ 6, 6 ]
           EnclaveHeadScientist: [ 1, 1 ]
           EnclaveScientist: [ 2, 2 ]
           EnclaveJuniorScientist: [ 2, 2 ]

@@ -582,6 +582,29 @@ undecided-loadout-category-misfits-enclave-command-plasma-description =
     2 smoke grenades, 1 stimpak, 1 super stimpak,
     1 RadAway blood bag, and 1 gauze pack.
 
+undecided-loadout-category-misfits-enclave-combat-medic-senior-name = Medical Supervisor Kit
+undecided-loadout-category-misfits-enclave-combat-medic-senior-description =
+    Includes Enclave armor, a military belt,
+    an AER-12 Laser Rifle with 2 MF cells,
+    a handheld radio, 2 psycho syringe, 2 super stimpaks,
+    a filled combat medkit and 1 smoke grenade.
+
+undecided-loadout-category-misfits-enclave-combat-medic-laser-name = Medical Laser Kit
+undecided-loadout-category-misfits-enclave-combat-medic-laser-description =
+    Includes Enclave armor, a military belt,
+    an AER-9A Laser Rifle with 2 MF cells,
+    an AEP-7 Laser Pistol with 2 energy cells,
+    a handheld radio, 1 psycho syringe, 1 super stimpaks,
+    a filled combat medkit and 1 smoke grenade.
+
+undecided-loadout-category-misfits-enclave-combat-medic-plasma-name = Medical Plasma Kit
+undecided-loadout-category-misfits-enclave-combat-medic-plasma-description =
+    Includes Enclave armor, a military belt,
+    an AER-9 Laser Rifle with 2 MF cells,
+    a plasma pistol with 2 plasma cartridges,
+    a handheld radio, 1 smoke grenade, 2 stimpaks,
+    a filled combat medkit and 1 gauze pack.
+
 undecided-loadout-category-misfits-enclave-rifleman-name = Trooper Rifleman Kit
 undecided-loadout-category-misfits-enclave-rifleman-description =
     Includes Peacekeeper armor, a military belt,

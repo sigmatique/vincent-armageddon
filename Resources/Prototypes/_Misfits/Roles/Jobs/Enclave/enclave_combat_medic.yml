@@ -1,0 +1,73 @@
+# #Misfits Add - Enclave Combat Medic Specialist role (Private through Specialist).
+# Requiring both Enclave and Sci (Not JR) time as this is a Medical Combat role held to higher standards.
+
+- type: job
+  id: EnclaveCombatMedic
+  setPreference: true
+  hideIfPlaytimeRequirementsNotMet: false # #Misfits Tweak - all jobs visible in selection
+  jobWhitelistBypassesRoleTimers: true
+  weight: 100
+  displayWeight: 124
+  overrideConsoleVisibility: false
+  canBeAntag: false
+  name: job-name-enclave-combat-medic
+  description: job-description-enclave-combat-medic
+  playTimeTracker: EnclaveCombatMedic
+  requirements:
+    - !type:CharacterSpeciesRequirement
+      species:
+      - Human
+      - Ghoul
+    - !type:CharacterDepartmentTimeRequirement 
+      department: Enclave
+      min: 28800 # 8 hours
+    - !type:CharacterDepartmentTimeRequirement
+      tracker: EnclaveScientist
+      min: 43200 # 12 hours
+  startingGear: EnclaveCombatMedicGear
+  icon: "JobIconEnclaveEnlisted"
+  supervisors: job-supervisors-enclave
+  alwaysUseSpawner: true
+  accessGroups:
+  - EnclaveEnlisted
+  - EnclaveScientist
+  special:
+  - !type:AddComponentSpecial
+    components:
+      - type: NpcFactionMember
+        factions:
+          - Enclave
+          - Wastelander
+      - type: ReplacementAccent
+        accent: n14Enclave
+      - type: CPRTraining
+
+  # #Cythisiax Added - rank pins this job works up through, by hours played
+  rank:
+    pins:
+    - { pin: ClothingNeckPinEnclavePrivate }
+    - { pin: ClothingNeckPinEnclavePFC, hours: 20 }
+    - { pin: ClothingNeckPinEnclaveSpecialist, hours: 40 }
+
+- type: startingGear
+  id: EnclaveCombatMedicGear
+  equipment:
+    wallet: N14Wallet
+    head: ClothingHeadHatBeretBrigmedic
+    back: N14ClothingBackpackMilitary
+    jumpsuit: N14ClothingUniformJumpsuitEnclave
+    outerClothing: N14ClothingOuterEnclaveCombatArmor
+    shoes: N14ClothingBootsCombatFilled
+    gloves: N14ClothingHandsGlovesCombat
+    belt: ClothingBeltCorpsmanWebbing
+    ears: N14ClothingHeadsetEnclave
+    pocket1: EnclaveSoldierloadoutkits
+    id: N14EnclaveTrooperPipboy
+  satchel: N14ClothingBackpackSatchelMilitaryFilled
+  duffelbag: N14ClothingBackpackDuffelMilitaryFilled
+  storage:
+    back:
+    - N14BoxPlasticFilledMilitary
+
+- type: playTimeTracker
+  id: EnclaveCombatMedic

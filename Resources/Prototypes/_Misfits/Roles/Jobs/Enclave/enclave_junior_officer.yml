@@ -5,7 +5,7 @@
   setPreference: true
   jobWhitelistBypassesRoleTimers: true # #Misfits Change
   weight: 110
-  displayWeight: 127
+  displayWeight: 132
   overrideConsoleVisibility: false
   canBeAntag: false
   name: job-name-enclave-junior-officer

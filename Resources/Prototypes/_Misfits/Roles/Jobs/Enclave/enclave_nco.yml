@@ -5,7 +5,7 @@
   setPreference: true
   jobWhitelistBypassesRoleTimers: true # #Misfits Change
   weight: 105
-  displayWeight: 123
+  displayWeight: 126
   overrideConsoleVisibility: false
   canBeAntag: false
   name: job-name-enclave-nco
@@ -48,10 +48,10 @@
   id: EnclaveNCOGear
   equipment:
     wallet: N14Wallet
-    head: N14ClothingHeadHatEnclavePeacekeeperCap
+    head: N14ClothingHeadHatEnclaveZuluCombatHelmet
     back: N14ClothingBackpackMilitary
     jumpsuit: N14ClothingUniformJumpsuitEnclave
-    outerClothing: N14ClothingOuterPowerArmorAdvanced2
+    outerClothing: N14ClothingOuterEnclaveZuluCombatArmorMK2
     shoes: N14ClothingBootsCombatFilled
     gloves: N14ClothingHandsGlovesCombat
     belt: ClothingBeltMilitary

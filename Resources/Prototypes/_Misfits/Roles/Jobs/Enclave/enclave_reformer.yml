@@ -5,8 +5,8 @@
   setPreference: true
   hideWithoutJobWhitelist: true
   jobWhitelistBypassesRoleTimers: true # bypass faction timelocks — admin-only
-  weight: 130
-  displayWeight: 130 # keep the Reformer/General alone at the top of the Enclave rank stack
+  weight: 135
+  displayWeight: 135 # keep the Reformer/General alone at the top of the Enclave rank stack
   # #Misfits Removed - showBorder moved to Commander so the gap appears after Reformer/General instead of above it
   overrideConsoleVisibility: false
   canBeAntag: false
