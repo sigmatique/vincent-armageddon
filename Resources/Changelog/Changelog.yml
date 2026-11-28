@@ -13207,3 +13207,152 @@ Entries:
   id: 6595
   time: '2026-11-25T04:19:55.0000000+00:00'
   url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2211
+- author: Enkidienne
+  changes:
+    - type: Tweak
+      message: Mortar fixes
+  id: 6596
+  time: '2026-11-25T22:52:09.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2192
+- author: Wassuy
+  changes:
+    - type: Remove
+      message: radhog and bloatfly from extractor waves
+  id: 6597
+  time: '2026-11-25T22:53:39.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2212
+- author: ToasterEnjoyer
+  changes: []
+  id: 6598
+  time: '2026-11-25T22:54:36.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2214
+- author: Enkidienne
+  changes:
+    - type: Add
+      message: Scoped weapons. Need a high enough perception to use the scope.
+  id: 6599
+  time: '2026-11-26T03:04:38.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2178
+- author: Wassuy
+  changes:
+    - type: Add
+      message: 'Added Raider S.P.E.I.C.A.L. '
+    - type: Add
+      message: Added MG Raiders
+    - type: Add
+      message: Added Taser Raiders
+    - type: Add
+      message: Added More Raiders Varitants
+    - type: Add
+      message: Added PowerArmor Raiders.
+    - type: Add
+      message: Added Reinforced Longjohns from fallout 4
+    - type: Tweak
+      message: Better Little Stash Loot.
+    - type: Tweak
+      message: Raiders now carry grenades, look out!
+    - type: Tweak
+      message: Better Raider Bosses loot.
+    - type: Tweak
+      message: Increased Raider Bosses Health.
+    - type: Tweak
+      message: Raider at extractor now spawn more in numbers, plus more varitants!
+    - type: Tweak
+      message: Raider Intelligence
+    - type: Tweak
+      message: Raider Equipments.
+    - type: Tweak
+      message: Raider Can Now Be Operated With Surgecy.
+    - type: Tweak
+      message: Raider now drop bone and human meats upon meatspiking!, yummy!
+    - type: Tweak
+      message: All Raider Had Worsen Accurcy.
+    - type: Remove
+      message: Non-locusts now no longer spawn at extractor waves
+    - type: Remove
+      message: >-
+        Removed All Voicelines From Raiders, Sorry bud. (Required voice actors,
+        everyone its welcome., ping/dm wassuy on the discord)
+    - type: Remove
+      message: Raider regeneration upon hitting critical and stunned states.
+  id: 6600
+  time: '2026-11-26T05:24:43.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2174
+- author: hobolyra
+  changes:
+    - type: Add
+      message: >-
+        New Vault-Tec uniform and Jacket. Based off TG sprites. Edited by
+        Hobolyra
+    - type: Tweak
+      message: Vault Management role changes and fixes
+  id: 6601
+  time: '2026-11-26T05:29:15.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2215
+- author: hobolyra
+  changes:
+    - type: Add
+      message: Holiday decorations
+    - type: Add
+      message: Eggnog as a craftable drink
+    - type: Tweak
+      message: Vault Christmas special
+  id: 6602
+  time: '2026-11-26T05:30:13.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2205
+- author: cythisiax
+  changes:
+    - type: Add
+      message: >-
+        Snowballs! You can click a snowpacked tile, and your character doAfter's
+        a snowball. Keep clicking for easter egg.
+    - type: Add
+      message: Snowman creation, figure out how to make it!
+    - type: Tweak
+      message: >-
+        Any prototype that exists with `onfire` melts snow around it, i.e open
+        campfires. (There is still no temperature gameplay design)
+    - type: Add
+      message: >-
+        Reskinned chicken sprite with feathers = turkey placeholder, pulled
+        tgstation sprite so it was different than chicken, less work.
+    - type: Tweak
+      message: >-
+        Snow weather EdgeFade update so it didn't look strange, now softened all
+        together, a bit better with no adjacent snow tiles.
+    - type: Tweak
+      message: >-
+        Updated rainfall weather, removed cascading sprite-screen overlay for
+        shader rainfall with water droplets, like snow shader. I plan to update
+        all weather types with this hash w/o sine reasonably. But I am new to
+        shaders.
+    - type: Tweak
+      message: >-
+        Removed Ashfall/Sandstorm weather rotation for the duration of the year.
+        SnowMedium & SnowLight are now in weather rotation, blizzards & heavy
+        are admin only.
+  id: 6603
+  time: '2026-11-26T16:02:19.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2217
+- author: ToasterEnjoyer
+  changes:
+    - type: Fix
+      message: Rangers can actually use their 60 hour trophy now
+    - type: Tweak
+      message: >-
+        Changed some item visibility in loadouts for SMs, no available items
+        were changed
+    - type: Fix
+      message: The NCRR roman tunic should work
+  id: 6604
+  time: '2026-11-26T19:53:44.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2218
+- author: Cythisiax
+  changes:
+    - type: Fix
+      message: Snowball issue when it was thrown.
+    - type: Tweak
+      message: Reduction of global piss-level lighting color scheme.
+  id: 6605
+  time: '2026-11-27T23:14:51.0000000+00:00'
+  url: https://github.com/Misfit-Sanctuary/nuclear-14/pull/2220
